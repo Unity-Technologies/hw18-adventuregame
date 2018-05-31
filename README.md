@@ -1,6 +1,6 @@
 ## Hackweek 2018 - Adventure Game Studio
 
-The goal of this project is to create domain specific tools and workflows within Unity for creating a point and click adventure game.  [Adventure Game Studio](http://www.adventuregamestudio.co.uk/) has had success in allowing indie developers to release commercial quality adventure games.  Let's enable creators to do the same thing within Unity!  The focus of our tools should be on creating easy to use tools and processes that allow for rapid iteration without writing any code.
+The goal of this project is to create production level domain specific tools and workflows within Unity for creating a point and click adventure game.  [Adventure Game Studio](http://www.adventuregamestudio.co.uk/) has had some success in allowing indie developers to release commercial quality adventure games.  Let's enable creators to do the same thing within Unity!  The focus of our tools should be on creating easy to use tools and processes that allow for rapid iteration without writing any code.
 
 Official slack channel is: [**#hw18-adventuregame**](https://unity.slack.com/?redir=%2Fmessages%2Fhw18-adventuregame)
 
