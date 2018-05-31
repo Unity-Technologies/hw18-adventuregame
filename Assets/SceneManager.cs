@@ -11,7 +11,9 @@ public class SceneManager : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+#if UNITY_EDITOR
 	    ReloadScenePrefabs();
+#endif
 	}
 
     // Update is called once per frame
@@ -19,10 +21,19 @@ public class SceneManager : MonoBehaviour
 		
 	}
 
+#if UNITY_EDITOR
+    public void SaveScenePrefabs()
+    {
+        foreach (Transform child in transform)
+        {
+            GameObject prefab = PrefabUtility.CreatePrefab(string.Format("{0}/{1}.prefab", m_outputPath, child.name), child.gameObject);
+            PrefabUtility.ReplacePrefab(child.gameObject, prefab, ReplacePrefabOptions.ConnectToPrefab);
+        }
+    }
+
     // replace all children with the associated prefabs
     public void ReloadScenePrefabs()
     {
-#if UNITY_EDITOR
         List<GameObject> deleteGameObjects = new List<GameObject>();
         List<Object> prefabObjects = new List<Object>();
         foreach (Transform child in transform)
@@ -49,9 +60,10 @@ public class SceneManager : MonoBehaviour
             // Relink the prefab
             PrefabUtility.ConnectGameObjectToPrefab(go, (GameObject)prefabObjects[i]);
 
-            deleteGameObjects[i].transform.parent = null;
-            Destroy(deleteGameObjects[i]);
+            deleteGameObjects[i].name = deleteGameObjects[i].name + "_old";
+            //deleteGameObjects[i].transform.parent = null;
+            DestroyImmediate(deleteGameObjects[i]);
         }
-#endif
     }
+#endif
 }

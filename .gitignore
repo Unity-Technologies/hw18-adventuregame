@@ -1,5 +1,7 @@
 Library/
 Temp/
-AdventureGameStudio.sln
-AdventureGameStudio.Editor.csproj
-AdventureGameStudio.csproj
+adventuregame.sln
+adventuregame.Editor.csproj
+adventuregame.csproj
+.vs/
+adventuregame.userprefs

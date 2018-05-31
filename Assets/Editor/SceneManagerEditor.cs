@@ -38,11 +38,7 @@ public class SceneManagerEditor : Editor
         SceneManager sceneManager = target as SceneManager;
         if (sceneManager != null)
         {
-            foreach (Transform child in sceneManager.transform)
-            {
-                GameObject prefab = PrefabUtility.CreatePrefab(string.Format("{0}/{1}.prefab", sceneManager.m_outputPath, child.name), child.gameObject);
-                PrefabUtility.ReplacePrefab(child.gameObject, prefab, ReplacePrefabOptions.ConnectToPrefab);
-            }
+            sceneManager.SaveScenePrefabs();
         }
     }
 
