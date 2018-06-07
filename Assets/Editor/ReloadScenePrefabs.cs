@@ -6,7 +6,7 @@ using UnityEditor;
 public class ResaveScenePrefabs
 {
 
-	[MenuItem("Adventure Game/Reload Scene Prefabs #r")]
+	[MenuItem("Adventure Game/Reload Scene Prefabs &r")]
 	static void MenuItemReloadScenePrefabs()
 	{
 		SceneManager sceneManager = (SceneManager)Object.FindObjectOfType(typeof(SceneManager));
@@ -20,7 +20,7 @@ public class ResaveScenePrefabs
 		}
 	}
 	
-	[MenuItem("Adventure Game/Save Scene Prefabs #s")]
+	[MenuItem("Adventure Game/Save Scene Prefabs &s")]
 	static void MenuItemSaveScenePrefabs()
 	{
 		SceneManager sceneManager = (SceneManager)Object.FindObjectOfType(typeof(SceneManager));

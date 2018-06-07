@@ -1,6 +1,40 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
+public class SceneManagerAssetPostProcessor : UnityEditor.AssetModificationProcessor
+{
+    public static string[] OnWillSaveAssets(string[] paths)
+    {
+        foreach (string path in paths)
+        {
+            if (path.EndsWith(".unity"))
+            {
+                AssetDatabase.LoadAssetAtPath<Object>(path);
+                SceneManager manager = Object.FindObjectOfType<SceneManager>();
+                manager.SaveScenePrefabs();
+            }
+        }
+
+        return paths;
+    }
+}
+
+[InitializeOnLoad]
+public class AutosaveOnRun : ScriptableObject
+{
+    static AutosaveOnRun()
+    {
+        EditorApplication.playModeStateChanged += state =>
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
+            {
+                SceneManager manager = Object.FindObjectOfType<SceneManager>();
+                manager.SaveScenePrefabs();
+            }
+        };
+    }
+}
+
 [CustomEditor(typeof(SceneManager))]
 public class SceneManagerEditor : Editor
 {
