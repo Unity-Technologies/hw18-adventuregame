@@ -289,7 +289,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="NavMeshComponentsEditor.csproj">
+      <Project>{9A2A1A50-E65B-74A8-AF77-B45DF78A7632}</Project>
+      <Name>NavMeshComponentsEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="NavMeshComponents.csproj">
+      <Project>{39BB8A60-453F-EEAD-9859-5F71DB02F6D6}</Project>
+      <Name>NavMeshComponents</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\SceneManager.cs" />
+    <Compile Include="Assets\SpriteMesh.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\NavMeshComponents\Editor\NavMeshComponentsEditor.asmdef" />
+    <None Include="Assets\NavMeshComponents\Scripts\NavMeshComponents.asmdef" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
