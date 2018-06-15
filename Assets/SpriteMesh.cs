@@ -3,18 +3,16 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(MeshFilter), typeof(NavMeshSurface), typeof(MeshRenderer))]
+[RequireComponent(typeof(NavMeshSurface))]
 public class SpriteMesh : MonoBehaviour
 {
     public Sprite m_sprite;
+    public Color  m_color = new Color(0.0f, 0.0f, 1.0f, 0.25f);
 
     [Range(0.0f, 1.0f)]
     public float m_detail = 0.5f;
 
-    void Awake()
-    {
-    }
-
+#if UNITY_EDITOR
     public void RegenerateMesh()
     {
         Mesh mesh = new Mesh();
@@ -42,6 +40,7 @@ public class SpriteMesh : MonoBehaviour
         Vector3[] vertices = new Vector3[m_sprite.vertices.Length];
         Vector3[] normals = new Vector3[m_sprite.vertices.Length];
         Vector2[] uv = new Vector2[m_sprite.vertices.Length];
+
         for (int i = 0; i < m_sprite.vertices.Length; ++i)
         {
             vertices[i] = new Vector3(m_sprite.vertices[i].x, 0.0f, m_sprite.vertices[i].y);
@@ -59,8 +58,10 @@ public class SpriteMesh : MonoBehaviour
         }
         mesh.triangles = triangles;
 
-        MeshFilter meshFilter = GetComponent<MeshFilter>();
+        MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
         meshFilter.mesh = mesh;
+
+        MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
 
         NavMeshSurface surface = GetComponent<NavMeshSurface>();
         surface.BuildNavMesh();
@@ -99,9 +100,8 @@ public class SpriteMesh : MonoBehaviour
             AssetDatabase.CreateAsset(surface.navMeshData, navmeshAssetPath);
         }
 
-        if (Application.isPlaying)
-        {
-            meshFilter.mesh = null;
-        }
+        DestroyImmediate(meshRenderer);
+        DestroyImmediate(meshFilter);
     }
+#endif
 }
