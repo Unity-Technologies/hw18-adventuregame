@@ -24,7 +24,7 @@ public class SceneManager : MonoBehaviour
             string prefabPath = string.Format("{0}/{1}.prefab", m_outputPath, child.name);
             PropertyModification[] modifications = PrefabUtility.GetPropertyModifications(child);
 
-            GameObject prefabObj = (GameObject)PrefabUtility.GetPrefabParent(child.gameObject);
+            GameObject prefabObj = (GameObject)PrefabUtility.GetCorrespondingObjectFromSource(child.gameObject);
 
             List<PropertyModification> listModifications = new List<PropertyModification>();
             if (modifications != null)
