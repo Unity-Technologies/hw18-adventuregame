@@ -6,3 +6,4 @@ adventuregame.csproj
 .vs/
 adventuregame.userprefs
 *.csproj
+obj/

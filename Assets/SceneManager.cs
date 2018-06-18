@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -21,7 +22,6 @@ public class SceneManager : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            string prefabPath = string.Format("{0}/{1}.prefab", m_outputPath, child.name);
             PropertyModification[] modifications = PrefabUtility.GetPropertyModifications(child);
 
             GameObject prefabObj = (GameObject)PrefabUtility.GetCorrespondingObjectFromSource(child.gameObject);
@@ -43,7 +43,11 @@ public class SceneManager : MonoBehaviour
 
             if (modifications == null || listModifications.Count > 0 || !SceneHierarchyEqual(prefabObj, child.gameObject))
             {
+                string prefabDirectory = string.Format("{0}/{1}", m_outputPath, child.name);
+                string prefabPath = string.Format("{0}/{1}.prefab", prefabDirectory, child.name);
                 Debug.LogFormat("Saving Scene Prefab: {0}", prefabPath);
+
+                Directory.CreateDirectory(prefabDirectory);
                 GameObject prefab = PrefabUtility.CreatePrefab(prefabPath, child.gameObject);
                 PrefabUtility.ReplacePrefab(child.gameObject, prefab, ReplacePrefabOptions.ConnectToPrefab);
             }

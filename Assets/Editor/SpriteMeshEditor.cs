@@ -141,6 +141,12 @@ public class SpriteMeshEditor : Editor
             m_SpriteMesh.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize))
         });
 
+        // for some reason we get a zero pixel height or pixel width during editing so ignore it
+        if (Camera.current.pixelHeight == 0 || Camera.current.pixelWidth == 0)
+        {
+            return;
+        }
+
         Ray ray = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition);
         RaycastHit hit;
         bool isHit = Physics.Raycast(ray, out hit);

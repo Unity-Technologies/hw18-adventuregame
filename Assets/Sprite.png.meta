@@ -50,7 +50,7 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: 0.692
+  spriteTessellationDetail: 0.5
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
