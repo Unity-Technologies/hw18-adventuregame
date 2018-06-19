@@ -4,15 +4,15 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshSurface))]
-public class SpriteMesh : MonoBehaviour
+public class WalkableArea : MonoBehaviour
 {
+#if UNITY_EDITOR
     public Sprite m_sprite;
     public Color  m_color = new Color(0.0f, 0.0f, 1.0f, 0.25f);
 
     [Range(0.0f, 1.0f)]
     public float m_detail = 0.5f;
 
-#if UNITY_EDITOR
     public void RegenerateMesh()
     {
         Mesh mesh = new Mesh();
@@ -34,8 +34,6 @@ public class SpriteMesh : MonoBehaviour
 
         EditorUtility.SetDirty(importer);
         AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
-
-        //Sprite testSprite = Sprite.Create(m_texture, new Rect(0, 0, m_texture.width, m_texture.height), new Vector2(0.5f, 0.5f));
         
         Vector3[] vertices = new Vector3[m_sprite.vertices.Length];
         Vector3[] normals = new Vector3[m_sprite.vertices.Length];

@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using UnityEditor;
+using UnityEditor.AI;
 using UnityEngine;
-using UnityEngine.UI;
 
-[CustomEditor(typeof(SpriteMesh))]
-public class SpriteMeshEditor : Editor
+[CustomEditor(typeof(WalkableArea))]
+public class WalkableAreaEditor : Editor
 {
     const float k_SpriteMeshSize = 2.6f;
     readonly Color k_TransparentWhite = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -15,22 +15,24 @@ public class SpriteMeshEditor : Editor
     SerializedProperty m_SpriteProp;
     SerializedProperty m_DetailProp;
     SerializedProperty m_ColorProp;
-    SpriteMesh         m_SpriteMesh;
+    WalkableArea       m_WalkableArea;
+    bool               m_Modified = false;
     bool               m_Painting = false;
+    Texture2D          m_PaintTexture;
 
     enum PaintMode
     {
         Painting,
         Erasing
     }
-
-    static float       m_BrushSize = 10.0f;
-    static PaintMode   m_PaintMode = PaintMode.Painting;
-
-
+    
+    static float       s_BrushSize = 10.0f;
+    static PaintMode   s_PaintMode = PaintMode.Painting;
+    static GUIStyle    s_EditColliderButtonStyle;
+    
     void OnEnable()
     {
-        m_SpriteMesh = (SpriteMesh)target;
+        m_WalkableArea = (WalkableArea)target;
 
         m_SpriteProp = serializedObject.FindProperty("m_sprite");
         m_DetailProp = serializedObject.FindProperty("m_detail");
@@ -67,7 +69,7 @@ public class SpriteMeshEditor : Editor
         m_CollisionMeshMaterial = new Material(Shader.Find("UI/Default"));
 
         m_CollisionObject = new GameObject("__CollisionObject__");
-        m_CollisionObject.transform.SetParent(m_SpriteMesh.transform, false);
+        m_CollisionObject.transform.SetParent(m_WalkableArea.transform, false);
         m_CollisionObject.hideFlags = HideFlags.HideAndDontSave;
 
         MeshFilter meshFilter = m_CollisionObject.AddComponent<MeshFilter>();
@@ -77,11 +79,40 @@ public class SpriteMeshEditor : Editor
         meshFilter.mesh = collisionMesh;
         meshCollider.sharedMesh = collisionMesh;
         meshRenderer.material = m_CollisionMeshMaterial;
+
+        m_PaintTexture = new Texture2D(m_WalkableArea.m_sprite.texture.width, m_WalkableArea.m_sprite.texture.height, TextureFormat.RGBA32, false);
+
+        string texturePath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
+        TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
+        if (importer != null)
+        {
+            if (importer.DoesSourceTextureHaveAlpha())
+            {
+                Graphics.CopyTexture(m_WalkableArea.m_sprite.texture, m_PaintTexture);
+            }
+            else
+            {
+                Graphics.ConvertTexture(m_WalkableArea.m_sprite.texture, m_PaintTexture);
+            }
+        }
+
+        Tools.hidden = true;
     }
 
     void OnDisable()
     {
+        if (m_Modified)
+        {
+            string outputPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
+            byte[] bytes = m_PaintTexture.EncodeToPNG();
+            File.WriteAllBytes(outputPath, bytes);
+            AssetDatabase.ImportAsset(outputPath);
+            m_CollisionObject.SetActive(false);
+            m_WalkableArea.RegenerateMesh();
+        }
+
         DestroyImmediate(m_CollisionObject);
+        Tools.hidden = false;
     }
 
     public override void OnInspectorGUI()
@@ -90,10 +121,17 @@ public class SpriteMeshEditor : Editor
         EditorGUILayout.PropertyField(m_DetailProp);
         EditorGUILayout.PropertyField(m_ColorProp);
 
+        if (s_EditColliderButtonStyle == null)
+        {
+            s_EditColliderButtonStyle = new GUIStyle("Button");
+            s_EditColliderButtonStyle.padding = new RectOffset(0, 0, 0, 0);
+            s_EditColliderButtonStyle.margin = new RectOffset(0, 0, 0, 0);
+        }
+
         if (GUILayout.Button("Regenerate Mesh"))
         {
             m_CollisionObject.SetActive(false);
-            m_SpriteMesh.RegenerateMesh();
+            m_WalkableArea.RegenerateMesh();
         }
 
         serializedObject.ApplyModifiedProperties();
@@ -101,45 +139,45 @@ public class SpriteMeshEditor : Editor
 
     void OnSceneGUI()
     {
+        Color oldColor = Handles.color;
+
+        m_CollisionMeshMaterial.mainTexture = m_PaintTexture;
+        m_CollisionMeshMaterial.color = m_WalkableArea.m_color;
+        Handles.DrawAAPolyLine(3, 5, new []
+        {
+            m_WalkableArea.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize)),
+            m_WalkableArea.transform.TransformPoint(new Vector3( k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize)),
+            m_WalkableArea.transform.TransformPoint(new Vector3( k_SpriteMeshSize, -0.1f,  k_SpriteMeshSize)),
+            m_WalkableArea.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f,  k_SpriteMeshSize)),
+            m_WalkableArea.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize))
+        });
+
         Handles.BeginGUI();
         Color oldGuiColor = GUI.color;
-        switch (m_PaintMode)
+        switch (s_PaintMode)
         {
             case PaintMode.Painting:
                 GUI.color = Color.green;
                 if (GUI.Button(new Rect(0, 0, 100, 25), "Paint Mode"))
                 {
-                    m_PaintMode = PaintMode.Erasing;
+                    s_PaintMode = PaintMode.Erasing;
                 }
                 break;
             case PaintMode.Erasing:
                 GUI.color = Color.red;
                 if (GUI.Button(new Rect(0, 0, 100, 25), "Erase Mode"))
                 {
-                    m_PaintMode = PaintMode.Painting;
+                    s_PaintMode = PaintMode.Painting;
                 }
                 break;
         }
         GUI.color = Color.black;
-        GUI.Label(new Rect(110, 0, 150, 25), string.Format("Brush Size: {0}", m_BrushSize));
+        GUI.Label(new Rect(110, 0, 150, 25), string.Format("Brush Size: {0}", s_BrushSize));
         GUI.color = oldGuiColor;
 
-        m_BrushSize = GUI.HorizontalSlider(new Rect(110, 10, 150, 25), m_BrushSize, 1.0f, 20.0f);
-        
+        s_BrushSize = GUI.HorizontalSlider(new Rect(110, 10, 150, 25), s_BrushSize, 1.0f, 20.0f);
+
         Handles.EndGUI();
-
-        Color oldColor = Handles.color;
-
-        m_CollisionMeshMaterial.mainTexture = m_SpriteMesh.m_sprite.texture;
-        m_CollisionMeshMaterial.color = m_SpriteMesh.m_color;
-        Handles.DrawAAPolyLine(3, 5, new []
-        {
-            m_SpriteMesh.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize)),
-            m_SpriteMesh.transform.TransformPoint(new Vector3( k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize)),
-            m_SpriteMesh.transform.TransformPoint(new Vector3( k_SpriteMeshSize, -0.1f,  k_SpriteMeshSize)),
-            m_SpriteMesh.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f,  k_SpriteMeshSize)),
-            m_SpriteMesh.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize))
-        });
 
         // for some reason we get a zero pixel height or pixel width during editing so ignore it
         if (Camera.current.pixelHeight == 0 || Camera.current.pixelWidth == 0)
@@ -152,8 +190,8 @@ public class SpriteMeshEditor : Editor
         bool isHit = Physics.Raycast(ray, out hit);
         if (isHit)
         {
-            Handles.color = new Color(m_SpriteMesh.m_color.r, m_SpriteMesh.m_color.g, m_SpriteMesh.m_color.b);
-            Handles.DrawWireDisc(hit.point, hit.normal, m_BrushSize);
+            Handles.color = new Color(m_WalkableArea.m_color.r, m_WalkableArea.m_color.g, m_WalkableArea.m_color.b);
+            Handles.DrawWireDisc(hit.point, hit.normal, s_BrushSize);
             Handles.DrawSolidDisc(hit.point, hit.normal, 0.5f);
         }
         
@@ -165,8 +203,10 @@ public class SpriteMeshEditor : Editor
                     if (isHit)
                     {
                         GUIUtility.hotControl = GUIUtility.GetControlID(FocusType.Passive);
-                        DrawBrush(hit.textureCoord);
+
                         m_Painting = true;
+                        
+                        DrawBrush(hit.textureCoord);
 
                         Event.current.Use();
                     }
@@ -182,14 +222,7 @@ public class SpriteMeshEditor : Editor
                         Event.current.Use();
                     }
 
-                    string outputPath = AssetDatabase.GetAssetPath(m_SpriteMesh.m_sprite);
-                    byte[] bytes = m_SpriteMesh.m_sprite.texture.EncodeToPNG();
-                    File.WriteAllBytes(outputPath, bytes);
-                    AssetDatabase.ImportAsset(outputPath);
-
-                    m_CollisionObject.SetActive(false);
-                    m_SpriteMesh.RegenerateMesh();
-
+                    m_Modified = true;
                     m_Painting = false;
                 }
                 break;
@@ -213,31 +246,31 @@ public class SpriteMeshEditor : Editor
     void DrawBrush(Vector2 texCoord)
     {
         // convert brush size to pixel size in texture
-        int pixelWidth = (int)(m_SpriteMesh.m_sprite.texture.width * m_BrushSize / m_SpriteMesh.transform.localScale.x / k_SpriteMeshSize / 2.0f);
-        int pixelHeight = (int)(m_SpriteMesh.m_sprite.texture.height * m_BrushSize / m_SpriteMesh.transform.localScale.z / k_SpriteMeshSize / 2.0f);
+        int pixelWidth = (int)(m_PaintTexture.width * s_BrushSize / m_WalkableArea.transform.lossyScale.x / k_SpriteMeshSize / 2.0f);
+        int pixelHeight = (int)(m_PaintTexture.height * s_BrushSize / m_WalkableArea.transform.lossyScale.z / k_SpriteMeshSize / 2.0f);
 
-        int pixelHitX = (int)(texCoord.x * m_SpriteMesh.m_sprite.texture.width);
-        int pixelHitY = (int)(texCoord.y * m_SpriteMesh.m_sprite.texture.height);
+        int pixelHitX = (int)(texCoord.x * m_PaintTexture.width);
+        int pixelHitY = (int)(texCoord.y * m_PaintTexture.height);
 
         for (int x = pixelHitX - pixelWidth; x <= pixelHitX + pixelWidth; ++x)
         {
-            if (x >= 0 && x < m_SpriteMesh.m_sprite.texture.width)
+            if (x >= 0 && x < m_PaintTexture.width)
             {
                 for (int y = pixelHitY - pixelHeight; y <= pixelHitY + pixelHeight; ++y)
                 {
-                    if (y >= 0 && y < m_SpriteMesh.m_sprite.texture.height)
+                    if (y >= 0 && y < m_PaintTexture.height)
                     {
                         float distX = x - pixelHitX;
                         float distY = y - pixelHitY;
                         if ((distX * distX) / (pixelWidth * pixelWidth) + (distY * distY) / (pixelHeight * pixelHeight) <= 1.0f)
                         {
-                            m_SpriteMesh.m_sprite.texture.SetPixel(x, y, m_PaintMode == PaintMode.Painting ? Color.white : k_TransparentWhite);
+                            m_PaintTexture.SetPixel(x, y, s_PaintMode == PaintMode.Painting ? Color.white : k_TransparentWhite);
                         }
                     }
                 }
             }
         }
 
-        m_SpriteMesh.m_sprite.texture.Apply();
+        m_PaintTexture.Apply();
     }
 }
