@@ -10,7 +10,7 @@ namespace UnityEditor.AdventureGame
     [CustomEditor(typeof(WalkableArea))]
     public class WalkableAreaEditor : Editor
     {
-        const float k_SpriteMeshSize = 2.6f;
+        public const float k_SpriteMeshSize = 2.6f;
         readonly Color k_TransparentWhite = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         readonly Vector2 k_DefaultTextureSize = new Vector2(512.0f, 512.0f);
 
@@ -302,9 +302,7 @@ namespace UnityEditor.AdventureGame
             }
 
             EditorGUILayout.Space();
-
-            serializedObject.ApplyModifiedProperties();
-
+            
 
             EditorGUILayout.PropertyField(m_Sprite);
             EditorGUILayout.PropertyField(m_Detail);
@@ -317,7 +315,7 @@ namespace UnityEditor.AdventureGame
                 s_EditColliderButtonStyle.margin = new RectOffset(0, 0, 0, 0);
             }
 
-            if (GUILayout.Button("Regenerate Mesh"))
+            if (GUILayout.Button("Regenerate NavMesh"))
             {
                 m_CollisionObject.SetActive(false);
                 RegenerateMesh();
