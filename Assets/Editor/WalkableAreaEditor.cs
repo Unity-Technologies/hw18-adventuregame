@@ -18,6 +18,7 @@ namespace UnityEditor.AdventureGame
         GameObject m_CollisionObject;
 
         SerializedProperty m_Sprite;
+        SerializedProperty m_NavMeshData;
         SerializedProperty m_Detail;
         SerializedProperty m_Color;
 
@@ -51,6 +52,7 @@ namespace UnityEditor.AdventureGame
             m_WalkableArea = (WalkableArea)target;
 
             m_Sprite = serializedObject.FindProperty("m_sprite");
+            m_NavMeshData = serializedObject.FindProperty("m_NavMeshData");
             m_Detail = serializedObject.FindProperty("m_detail");
             m_Color = serializedObject.FindProperty("m_color");
             m_AgentTypeID = serializedObject.FindProperty("m_AgentTypeID");
@@ -178,6 +180,72 @@ namespace UnityEditor.AdventureGame
             Tools.hidden = true;
         }
 
+        void OnDisable()
+        {
+            if (m_Modified)
+            {
+                EditorUtility.DisplayProgressBar("Rebuilding Navmesh",
+                    string.Format("Applying Changes to WalkableArea {0}", m_WalkableArea.name), 0.5f);
+                string outputPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
+                byte[] bytes = m_PaintTexture.EncodeToPNG();
+                File.WriteAllBytes(outputPath, bytes);
+                AssetDatabase.ImportAsset(outputPath);
+                m_CollisionObject.SetActive(false);
+                RegenerateMesh();
+                EditorUtility.ClearProgressBar();
+            }
+
+            DestroyImmediate(m_CollisionObject);
+            Tools.hidden = false;
+        }
+
+        public static void EnsureProjectConsistency(SceneManager manager, WalkableArea walkableArea)
+        {
+            if (walkableArea.m_sprite != null)
+            {
+                string assetPath = AssetDatabase.GetAssetPath(walkableArea.m_sprite);
+                string assetFilename = Path.GetFileName(assetPath);
+                string targetFilename = string.Format("{0}.png", walkableArea.name);
+                if (assetFilename != targetFilename)
+                {
+                    EditorUtility.DisplayProgressBar("Renaming WalkableArea Sprite",
+                        string.Format("Renaming WalkableArea sprite from {0} to {1}", assetFilename, targetFilename), 0.5f);
+                    string targetPath = Path.Combine(Path.GetDirectoryName(assetPath), targetFilename);
+                    if (File.Exists(targetPath))
+                    {
+                        targetPath = AssetDatabase.GenerateUniqueAssetPath(targetPath);
+                    }
+
+                    AssetDatabase.MoveAsset(assetPath, targetPath);
+                    AssetDatabase.ImportAsset(targetPath);
+                    Debug.LogFormat("Moved WalkableArea sprite from {0} to {1}.", assetPath, targetPath);
+                    EditorUtility.ClearProgressBar();
+                }
+            }
+
+            if (walkableArea.navMeshData != null)
+            {
+                string assetPath = AssetDatabase.GetAssetPath(walkableArea.navMeshData);
+                string assetFilename = Path.GetFileName(assetPath);
+                string targetFilename = string.Format("{0}.asset", walkableArea.name);
+                if (assetFilename != targetFilename)
+                {
+                    EditorUtility.DisplayProgressBar("Renaming WalkableArea NavMeshData",
+                        string.Format("Renaming WalkableArea NavMeshData from {0} to {1}", assetFilename, targetFilename), 0.5f);
+                    string targetPath = Path.Combine(Path.GetDirectoryName(assetPath), targetFilename);
+                    if (File.Exists(targetPath))
+                    {
+                        targetPath = AssetDatabase.GenerateUniqueAssetPath(targetPath);
+                    }
+
+                    AssetDatabase.MoveAsset(assetPath, targetPath);
+                    AssetDatabase.ImportAsset(targetPath);
+                    Debug.LogFormat("Moved WalkableArea navMeshData from {0} to {1}.", assetPath, targetPath);
+                    EditorUtility.ClearProgressBar();
+                }
+            }
+        }
+
         void ResetTextureImporterSettings(string texturePath)
         {
             TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
@@ -197,22 +265,6 @@ namespace UnityEditor.AdventureGame
                     importer.SaveAndReimport();
                 }
             }
-        }
-
-        void OnDisable()
-        {
-            if (m_Modified)
-            {
-                string outputPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
-                byte[] bytes = m_PaintTexture.EncodeToPNG();
-                File.WriteAllBytes(outputPath, bytes);
-                AssetDatabase.ImportAsset(outputPath);
-                m_CollisionObject.SetActive(false);
-                RegenerateMesh();
-            }
-
-            DestroyImmediate(m_CollisionObject);
-            Tools.hidden = false;
         }
 
         public override void OnInspectorGUI()
@@ -302,9 +354,9 @@ namespace UnityEditor.AdventureGame
             }
 
             EditorGUILayout.Space();
-            
 
             EditorGUILayout.PropertyField(m_Sprite);
+            EditorGUILayout.PropertyField(m_NavMeshData);
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
 
@@ -406,7 +458,7 @@ namespace UnityEditor.AdventureGame
                 case EventType.MouseUp:
                     if (m_Painting)
                     {
-                        GUIUtility.hotControl = GUIUtility.GetControlID(FocusType.Passive);
+                        GUIUtility.hotControl = 0;
                         if (isHit)
                         {
                             DrawBrush(hit.textureCoord);
@@ -423,7 +475,6 @@ namespace UnityEditor.AdventureGame
                     {
                         if (isHit)
                         {
-                            GUIUtility.hotControl = GUIUtility.GetControlID(FocusType.Passive);
                             DrawBrush(hit.textureCoord);
                             Event.current.Use();
                         }

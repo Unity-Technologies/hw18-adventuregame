@@ -15,7 +15,7 @@ namespace UnityEditor.AdventureGame
                 {
                     AssetDatabase.LoadAssetAtPath<Object>(path);
                     SceneManager manager = Object.FindObjectOfType<SceneManager>();
-                    SceneManagerEditor.SaveScenePrefabs(manager);
+                    SceneManagerEditor.SaveAllScenePrefabs(manager);
                 }
             }
 
@@ -24,7 +24,7 @@ namespace UnityEditor.AdventureGame
     }
 
     [InitializeOnLoad]
-    public class AutosaveOnRun : ScriptableObject
+    public class AutosaveOnRun
     {
         static AutosaveOnRun()
         {
@@ -33,8 +33,21 @@ namespace UnityEditor.AdventureGame
                 if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
                 {
                     SceneManager manager = Object.FindObjectOfType<SceneManager>();
-                    SceneManagerEditor.SaveScenePrefabs(manager);
+                    SceneManagerEditor.SaveAllScenePrefabs(manager);
                 }
+            };
+        }
+    }
+
+    [InitializeOnLoad]
+    public class ValidateOnHierarchyChange
+    {
+        static ValidateOnHierarchyChange()
+        {
+            EditorApplication.hierarchyChanged += () =>
+            {
+                SceneManager manager = Object.FindObjectOfType<SceneManager>();
+                SceneManagerEditor.EnsureProjectConsistency(manager);
             };
         }
     }
@@ -90,7 +103,7 @@ namespace UnityEditor.AdventureGame
             GUILayout.Space(15);
             if (GUILayout.Button("Save Scene Prefabs", GUILayout.Height(50)))
             {
-                SaveScenePrefabs(m_SceneManager);
+                SaveAllScenePrefabs(m_SceneManager);
             }
             GUILayout.Space(15);
             GUILayout.EndHorizontal();
@@ -136,7 +149,7 @@ namespace UnityEditor.AdventureGame
             EditorGUIUtility.PingObject(sceneRoot);
         }
 
-        public static void SaveScenePrefabs(SceneManager manager)
+        public static void SaveAllScenePrefabs(SceneManager manager)
         {
             foreach (Transform child in manager.transform)
             {
@@ -144,37 +157,124 @@ namespace UnityEditor.AdventureGame
 
                 GameObject prefabObj = (GameObject)PrefabUtility.GetCorrespondingObjectFromSource(child.gameObject);
 
+                // look for any modification to the prefab
                 List<PropertyModification> listModifications = new List<PropertyModification>();
-                if (modifications != null)
+                if (modifications != null && prefabObj != null)
                 {
                     for (int i = 0; i < modifications.Length; ++i)
                     {
                         if (modifications[i].target as Transform != prefabObj.transform ||
                             (!modifications[i].propertyPath.StartsWith("m_LocalPosition.") &&
-                                !modifications[i].propertyPath.StartsWith("m_LocalRotation.") &&
-                                modifications[i].propertyPath != "m_RootOrder"))
+                             !modifications[i].propertyPath.StartsWith("m_LocalRotation.") &&
+                             modifications[i].propertyPath != "m_RootOrder"))
                         {
                             listModifications.Add(modifications[i]);
                         }
                     }
                 }
 
-                if (modifications == null || listModifications.Count > 0 || !SceneHierarchyEqual(prefabObj, child.gameObject))
+                if (modifications == null ||
+                    prefabObj == null ||
+                    listModifications.Count > 0 ||
+                    !SceneHierarchyEqual(prefabObj, child.gameObject))
                 {
                     SaveScenePrefab(manager, child);
                 }
             }
         }
 
+        static string NormalizePath(string path)
+        {
+            return path.Replace('\\', '/').ToUpperInvariant();
+        }
+
+        static string GetScenePrefabPath(SceneManager manager, Transform child)
+        {
+            return string.Format("{0}/{1}/{1}.prefab", manager.m_outputPath, child.name);
+        }
+
         static void SaveScenePrefab(SceneManager manager, Transform child)
         {
-            string prefabDirectory = string.Format("{0}/{1}", manager.m_outputPath, child.name);
-            string prefabPath = string.Format("{0}/{1}.prefab", prefabDirectory, child.name);
-            Debug.LogFormat("Saving Scene Prefab: {0}", prefabPath);
+            EditorUtility.DisplayProgressBar("Saving Scene Prefab",
+                string.Format("Applying Changes to Scene {0}", child.name), 0.5f);
+            GameObject prefabObj = (GameObject)PrefabUtility.GetCorrespondingObjectFromSource(child.gameObject);
 
-            Directory.CreateDirectory(prefabDirectory);
-            GameObject prefab = PrefabUtility.CreatePrefab(prefabPath, child.gameObject);
-            PrefabUtility.ReplacePrefab(child.gameObject, prefab, ReplacePrefabOptions.ConnectToPrefab);
+            // check for prefab object rename and rename the source directory to try and organize assets for the user
+            if (prefabObj != null)
+            {
+                string prefabPath = AssetDatabase.GetAssetPath(prefabObj);
+                GameObject prefab = PrefabUtility.CreatePrefab(prefabPath, child.gameObject);
+                PrefabUtility.ReplacePrefab(child.gameObject, prefab, ReplacePrefabOptions.ConnectToPrefab);
+                Debug.LogFormat("Saved Scene Prefab: {0}", prefabPath);
+            }
+            else
+            {
+                string targetPath = GetScenePrefabPath(manager, child);
+                Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
+                GameObject prefab = PrefabUtility.CreatePrefab(targetPath, child.gameObject);
+                PrefabUtility.ReplacePrefab(child.gameObject, prefab, ReplacePrefabOptions.ConnectToPrefab);
+                Debug.LogFormat("Saved Scene Prefab: {0}", targetPath);
+            }
+            EditorUtility.ClearProgressBar();
+        }
+
+        public static void EnsureProjectConsistency(SceneManager manager)
+        {
+            foreach (Transform child in manager.transform)
+            {
+                // if the name changed or it is not a prefab yet then save it
+                GameObject prefabObj = (GameObject)PrefabUtility.GetCorrespondingObjectFromSource(child.gameObject);
+                if (prefabObj == null)
+                {
+                    SaveScenePrefab(manager, child);
+                }
+                else if (prefabObj.name != child.name)
+                {
+                    string targetPath = GetScenePrefabPath(manager, child);
+                    string prefabPath = AssetDatabase.GetAssetPath(prefabObj);
+
+                    // set the filename if it is not the same
+                    string prefabFilename = Path.GetFileName(prefabPath);
+                    string targetFilename = Path.GetFileName(targetPath);
+                    string prefabDirectory = Path.GetDirectoryName(prefabPath);
+                    string targetDirectory = Path.GetDirectoryName(targetPath);
+                    if (prefabFilename != targetFilename)
+                    {
+                        EditorUtility.DisplayProgressBar("Renaming Scene Prefab",
+                            string.Format("Renaming Scene prefab from {0} to {1}", prefabFilename, targetFilename), 0.5f);
+                        string targetRenamePath = Path.Combine(prefabDirectory, targetFilename);
+                        if (File.Exists(targetRenamePath))
+                        {
+                            targetRenamePath = AssetDatabase.GenerateUniqueAssetPath(targetRenamePath);
+                        }
+                        AssetDatabase.MoveAsset(prefabPath, targetRenamePath);
+                        Debug.LogFormat("Renamed Scene prefab from {0} to {1}!", prefabFilename, targetFilename);
+                        AssetDatabase.Refresh();
+                        EditorUtility.ClearProgressBar();
+                    }
+
+                    // set the directory if it is not the same
+                    if (NormalizePath(prefabPath) != NormalizePath(targetPath))
+                    {
+                        EditorUtility.DisplayProgressBar("Moving Scene Path",
+                            string.Format("Moving Scene prefab directory from {0} to {1}", prefabDirectory, targetDirectory), 0.5f);
+                        if (Directory.Exists(targetDirectory))
+                        {
+                            targetDirectory = AssetDatabase.GenerateUniqueAssetPath(targetDirectory);
+                        }
+                        AssetDatabase.MoveAsset(prefabDirectory, targetDirectory);
+                        Debug.LogFormat("Moved Scene prefab from {0} to {1}!", prefabDirectory, targetDirectory);
+                        AssetDatabase.Refresh();
+                        EditorUtility.ClearProgressBar();
+                    }
+                }
+
+                WalkableArea[] walkableAreas = child.transform.GetComponentsInChildren<WalkableArea>();
+                for (int i = 0; i < walkableAreas.Length; ++i)
+                {
+                    WalkableAreaEditor.EnsureProjectConsistency(manager, walkableAreas[i]);
+                }
+            }
         }
 
         static bool SceneHierarchyEqual(GameObject go1, GameObject go2)

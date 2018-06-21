@@ -29,7 +29,7 @@ namespace UnityEditor.AdventureGame
             }
             else
             {
-                SceneManagerEditor.SaveScenePrefabs(sceneManager);
+                SceneManagerEditor.SaveAllScenePrefabs(sceneManager);
             }
         }
     }
