@@ -40,8 +40,7 @@ namespace UnityEngine.Experimental.Input
                 m_StateBuffer.Dispose();
 
             m_StateBuffer = new NativeArray<byte>();
-            m_Head = 0;
-            m_Tail = 0;
+
         }
 
         ////REVIEW: make control settable?
@@ -52,8 +51,7 @@ namespace UnityEngine.Experimental.Input
         public int Count { get; private set; }
 
         private NativeArray<byte> m_StateBuffer;
-        private int m_Head;
-        private int m_Tail;
+
     }
 
     /// <summary>
