@@ -5,7 +5,7 @@ using UnityEngine.AdventureGame;
 
 namespace UnityEditor.AdventureGame
 {
-    public class ReloadScenePrefabsMenuItems
+    public class SceneManagerMenuItems
     {
         [MenuItem("Adventure Game/Reload Scene Prefabs &r")]
         static void MenuItemReloadScenePrefabs()
@@ -35,7 +35,8 @@ namespace UnityEditor.AdventureGame
             }
         }
     }
-
+    
+    // auto-saves the scene prefabs when the scene is saved
     public class SceneManagerAssetPostProcessor : UnityEditor.AssetModificationProcessor
     {
         public static string[] OnWillSaveAssets(string[] paths)
@@ -54,35 +55,6 @@ namespace UnityEditor.AdventureGame
         }
     }
 
-    [InitializeOnLoad]
-    public class AutosaveOnRun
-    {
-        static AutosaveOnRun()
-        {
-            EditorApplication.playModeStateChanged += state =>
-            {
-                if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
-                {
-                    SceneManager manager = Object.FindObjectOfType<SceneManager>();
-                    SceneManagerEditor.SaveAllScenePrefabs(manager);
-                }
-            };
-        }
-    }
-
-    [InitializeOnLoad]
-    public class ValidateOnHierarchyChange
-    {
-        static ValidateOnHierarchyChange()
-        {
-            EditorApplication.hierarchyChanged += () =>
-            {
-                SceneManager manager = Object.FindObjectOfType<SceneManager>();
-                SceneManagerEditor.EnsureProjectConsistency(manager);
-            };
-        }
-    }
-
     [CustomEditor(typeof(SceneManager))]
     public class SceneManagerEditor : Editor
     {
@@ -90,6 +62,28 @@ namespace UnityEditor.AdventureGame
         SerializedProperty m_OutputPath;
         SerializedProperty m_DefaultWidth;
         SerializedProperty m_DefaultHeight;
+
+        [InitializeOnLoadMethod]
+        static void InitializeOnLoad()
+        {
+            // auto-saves the scene prefabs when run is pressed
+            EditorApplication.playModeStateChanged += state =>
+            {
+                if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
+                {
+                    SceneManager manager =FindObjectOfType<SceneManager>();
+                    SaveAllScenePrefabs(manager);
+                }
+            };
+
+            // Ensures that the project files are named according to the GameObject scene names
+            // whenever a game object rename occurs
+            EditorApplication.hierarchyChanged += () =>
+            {
+                SceneManager manager = FindObjectOfType<SceneManager>();
+                EnsureProjectConsistency(manager);
+            };
+        }
 
         void OnEnable()
         {
