@@ -5,6 +5,37 @@ using UnityEngine.AdventureGame;
 
 namespace UnityEditor.AdventureGame
 {
+    public class ReloadScenePrefabsMenuItems
+    {
+        [MenuItem("Adventure Game/Reload Scene Prefabs &r")]
+        static void MenuItemReloadScenePrefabs()
+        {
+            SceneManager sceneManager = (SceneManager)Object.FindObjectOfType(typeof(SceneManager));
+            if (sceneManager == null)
+            {
+                Debug.LogWarning("Could not find SceneManager in the scene! Make sure to add a SceneManager component to a game component in your scene.");
+            }
+            else
+            {
+                sceneManager.ReloadScenePrefabs();
+            }
+        }
+
+        [MenuItem("Adventure Game/Save Scene Prefabs &s")]
+        static void MenuItemSaveScenePrefabs()
+        {
+            SceneManager sceneManager = (SceneManager)Object.FindObjectOfType(typeof(SceneManager));
+            if (sceneManager == null)
+            {
+                Debug.LogWarning("Could not find SceneManager in the scene! Make sure to add a SceneManager component to a game component in your scene.");
+            }
+            else
+            {
+                SceneManagerEditor.SaveAllScenePrefabs(sceneManager);
+            }
+        }
+    }
+
     public class SceneManagerAssetPostProcessor : UnityEditor.AssetModificationProcessor
     {
         public static string[] OnWillSaveAssets(string[] paths)
