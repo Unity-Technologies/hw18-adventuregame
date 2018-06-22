@@ -71,8 +71,11 @@ namespace UnityEditor.AdventureGame
             {
                 if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
                 {
-                    SceneManager manager =FindObjectOfType<SceneManager>();
-                    SaveAllScenePrefabs(manager);
+                    SceneManager manager = FindObjectOfType<SceneManager>();
+                    if (manager != null)
+                    {
+                        SaveAllScenePrefabs(manager);
+                    }
                 }
             };
 
@@ -81,7 +84,20 @@ namespace UnityEditor.AdventureGame
             EditorApplication.hierarchyChanged += () =>
             {
                 SceneManager manager = FindObjectOfType<SceneManager>();
-                EnsureProjectConsistency(manager);
+                if (manager != null)
+                {
+                    EnsureProjectConsistency(manager);
+                }
+            };
+
+            // handle hiding other scenes when the selection has changed
+            Selection.selectionChanged += () =>
+            {
+                SceneManager manager = FindObjectOfType<SceneManager>();
+                if (manager != null && Selection.activeGameObject != null)
+                {
+                    SetSelectedScenePrefab(manager);
+                }
             };
         }
 
@@ -254,7 +270,7 @@ namespace UnityEditor.AdventureGame
             EditorUtility.ClearProgressBar();
         }
 
-        public static void EnsureProjectConsistency(SceneManager manager)
+        static void EnsureProjectConsistency(SceneManager manager)
         {
             foreach (Transform child in manager.transform)
             {
@@ -309,6 +325,28 @@ namespace UnityEditor.AdventureGame
                 for (int i = 0; i < walkableAreas.Length; ++i)
                 {
                     WalkableAreaEditor.EnsureProjectConsistency(manager, walkableAreas[i]);
+                }
+            }
+        }
+
+        static void SetSelectedScenePrefab(SceneManager manager)
+        {
+            GameObject selectedScenePrefab = null;
+            foreach (Transform child in manager.transform)
+            {
+                GameObject prefabRoot = PrefabUtility.FindPrefabRoot(Selection.activeGameObject);
+                if (prefabRoot.GetInstanceID() == child.gameObject.GetInstanceID())
+                {
+                    selectedScenePrefab = prefabRoot;
+                    break;
+                }
+            }
+
+            if (selectedScenePrefab != null)
+            {
+                foreach (Transform child in manager.transform)
+                {
+                    child.gameObject.SetActive(selectedScenePrefab.GetInstanceID() == child.gameObject.GetInstanceID());
                 }
             }
         }
