@@ -43,12 +43,18 @@ namespace UnityEditor.AdventureGame
             Erasing
         }
 
-        static float s_BrushSize = 10.0f;
+        static float s_BrushSize = 5.0f;
         static PaintMode s_PaintMode = PaintMode.Painting;
         static GUIStyle s_EditColliderButtonStyle;
 
         void OnEnable()
         {
+            SceneView sceneViewWindow = EditorWindow.GetWindow<SceneView>();
+            if (sceneViewWindow != null)
+            {
+                sceneViewWindow.Focus();
+            }
+
             m_WalkableArea = (WalkableArea)target;
 
             m_Sprite = serializedObject.FindProperty("m_sprite");
@@ -184,15 +190,7 @@ namespace UnityEditor.AdventureGame
         {
             if (m_Modified)
             {
-                EditorUtility.DisplayProgressBar("Rebuilding Navmesh",
-                    string.Format("Applying Changes to WalkableArea {0}", m_WalkableArea.name), 0.5f);
-                string outputPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
-                byte[] bytes = m_PaintTexture.EncodeToPNG();
-                File.WriteAllBytes(outputPath, bytes);
-                AssetDatabase.ImportAsset(outputPath);
-                m_CollisionObject.SetActive(false);
                 RegenerateMesh();
-                EditorUtility.ClearProgressBar();
             }
 
             DestroyImmediate(m_CollisionObject);
@@ -369,7 +367,6 @@ namespace UnityEditor.AdventureGame
 
             if (GUILayout.Button("Regenerate NavMesh"))
             {
-                m_CollisionObject.SetActive(false);
                 RegenerateMesh();
             }
 
@@ -411,6 +408,15 @@ namespace UnityEditor.AdventureGame
                     }
 
                     break;
+            }
+
+            if (m_Modified)
+            {
+                GUI.color = Color.cyan;
+                if (GUI.Button(new Rect(0, 25, 100, 25), "Bake"))
+                {
+                    RegenerateMesh();
+                }
             }
 
             GUI.color = Color.black;
@@ -603,6 +609,14 @@ namespace UnityEditor.AdventureGame
                 return;
             }
 
+            EditorUtility.DisplayProgressBar("Rebuilding Navmesh",
+                string.Format("Applying Changes to WalkableArea {0}", m_WalkableArea.name), 0.5f);
+            string outputPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
+            byte[] bytes = m_PaintTexture.EncodeToPNG();
+            File.WriteAllBytes(outputPath, bytes);
+            AssetDatabase.ImportAsset(outputPath);
+            m_CollisionObject.SetActive(false);
+
             TextureImporterSettings settings = new TextureImporterSettings();
             importer.ReadTextureSettings(settings);
             settings.spriteMeshType = SpriteMeshType.Tight;
@@ -636,10 +650,19 @@ namespace UnityEditor.AdventureGame
 
             mesh.triangles = triangles;
 
+            MeshRenderer toDelete = m_WalkableArea.gameObject.GetComponent<MeshRenderer>();
+            DestroyImmediate(toDelete);
+
+            MeshFilter toDelete2 = m_WalkableArea.gameObject.GetComponent<MeshFilter>();
+            DestroyImmediate(toDelete2);
+
             MeshFilter meshFilter = m_WalkableArea.gameObject.AddComponent<MeshFilter>();
             meshFilter.mesh = mesh;
 
             MeshRenderer meshRenderer = m_WalkableArea.gameObject.AddComponent<MeshRenderer>();
+
+            // set modified to false here so that OnDisable of the editor doesn't retrigger RegenerateMesh
+            m_Modified = false;
 
             string navmeshPath = Path.Combine(m_SceneManager.m_outputPath, PrefabUtility.FindPrefabRoot(m_WalkableArea.transform.parent.gameObject).name);
             string navmeshAssetPath = Path.Combine(navmeshPath, string.Format("{0}.asset", m_WalkableArea.name));
@@ -651,7 +674,6 @@ namespace UnityEditor.AdventureGame
                 {
                     navmeshAssetPath = walkableAreaNavMeshAssetPath;
                 }
-                AssetDatabase.DeleteAsset(walkableAreaNavMeshAssetPath);
             }
             else
             {
@@ -663,10 +685,19 @@ namespace UnityEditor.AdventureGame
             
             AssetDatabase.CreateAsset(m_WalkableArea.navMeshData, navmeshAssetPath);
 
-            EditorSceneManager.MarkSceneDirty(m_WalkableArea.gameObject.scene);
-
             DestroyImmediate(meshRenderer);
             DestroyImmediate(meshFilter);
+
+            if (EditorApplication.isPlayingOrWillChangePlaymode)
+            {
+                WalkableArea prefab = PrefabUtility.GetCorrespondingObjectFromSource(m_WalkableArea) as WalkableArea;
+                if (prefab != null)
+                {
+                    prefab.navMeshData = m_WalkableArea.navMeshData;
+                }
+            }
+
+            EditorUtility.ClearProgressBar();
         }
     }
 }

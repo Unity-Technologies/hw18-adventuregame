@@ -47,7 +47,10 @@ namespace UnityEditor.AdventureGame
                 {
                     AssetDatabase.LoadAssetAtPath<Object>(path);
                     SceneManager manager = Object.FindObjectOfType<SceneManager>();
-                    SceneManagerEditor.SaveAllScenePrefabs(manager);
+                    if (manager != null)
+                    {
+                        SceneManagerEditor.SaveAllScenePrefabs(manager);
+                    }
                 }
             }
 
@@ -59,6 +62,7 @@ namespace UnityEditor.AdventureGame
     public class SceneManagerEditor : Editor
     {
         SceneManager       m_SceneManager;
+        SerializedProperty m_Character;
         SerializedProperty m_OutputPath;
         SerializedProperty m_DefaultWidth;
         SerializedProperty m_DefaultHeight;
@@ -71,7 +75,7 @@ namespace UnityEditor.AdventureGame
             {
                 if (EditorApplication.isPlayingOrWillChangePlaymode && !EditorApplication.isPlaying)
                 {
-                    SceneManager manager = FindObjectOfType<SceneManager>();
+                    SceneManager manager = Object.FindObjectOfType<SceneManager>();
                     if (manager != null)
                     {
                         SaveAllScenePrefabs(manager);
@@ -83,7 +87,7 @@ namespace UnityEditor.AdventureGame
             // whenever a game object rename occurs
             EditorApplication.hierarchyChanged += () =>
             {
-                SceneManager manager = FindObjectOfType<SceneManager>();
+                SceneManager manager = Object.FindObjectOfType<SceneManager>();
                 if (manager != null)
                 {
                     EnsureProjectConsistency(manager);
@@ -93,10 +97,13 @@ namespace UnityEditor.AdventureGame
             // handle hiding other scenes when the selection has changed
             Selection.selectionChanged += () =>
             {
-                SceneManager manager = FindObjectOfType<SceneManager>();
-                if (manager != null && Selection.activeGameObject != null)
+                if (!EditorApplication.isPlayingOrWillChangePlaymode)
                 {
-                    SetSelectedScenePrefab(manager);
+                    SceneManager manager = Object.FindObjectOfType<SceneManager>();
+                    if (manager != null && Selection.activeGameObject != null)
+                    {
+                        SetSelectedScenePrefab(manager);
+                    }
                 }
             };
         }
@@ -105,6 +112,7 @@ namespace UnityEditor.AdventureGame
         {
             m_SceneManager = (SceneManager)target;
 
+            m_Character = serializedObject.FindProperty("m_Character");
             m_OutputPath = serializedObject.FindProperty("m_outputPath");
             m_DefaultWidth = serializedObject.FindProperty("m_defaultWidth");
             m_DefaultHeight = serializedObject.FindProperty("m_defaultHeight");
@@ -115,7 +123,8 @@ namespace UnityEditor.AdventureGame
             Color oldColor = GUI.color;
 
             GUILayout.Space(15);
-
+            
+            EditorGUILayout.PropertyField(m_Character, new GUIContent("Character"));
             EditorGUILayout.PropertyField(m_OutputPath, new GUIContent("Output Path"));
 
             EditorGUILayout.BeginHorizontal();
@@ -178,17 +187,20 @@ namespace UnityEditor.AdventureGame
 
             GameObject backgroundObject = new GameObject();
             backgroundObject.transform.SetParent(sceneRoot.transform, false);
-            backgroundObject.name = "BackgroundImage";
+            backgroundObject.name = "Background";
             SpriteRenderer backgroundRenderer = backgroundObject.AddComponent<SpriteRenderer>();
             backgroundRenderer.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
             float backgroundHeight = 2.0f * Camera.main.orthographicSize;
             backgroundRenderer.drawMode = SpriteDrawMode.Sliced;
             backgroundRenderer.color = Color.gray;
             backgroundRenderer.size = new Vector2(backgroundHeight * aspectRatio, backgroundHeight);
+            BoxCollider2D backgroundCollider = backgroundObject.AddComponent<BoxCollider2D>();
+            backgroundCollider.size = new Vector2(backgroundHeight * aspectRatio, backgroundHeight);
 
             GameObject walkableAreaGroup = new GameObject();
             walkableAreaGroup.transform.SetParent(sceneRoot.transform, false);
-            walkableAreaGroup.transform.Rotate(-90.0f, 0.0f, -10.0f);
+            walkableAreaGroup.transform.Rotate(-90.0f, 0.0f, 0.0f);
+            walkableAreaGroup.transform.localPosition = new Vector3(0.0f, 0.0f, -10.0f);
 
             float walkableScaleHeight = Camera.main.orthographicSize / WalkableAreaEditor.k_SpriteMeshSize;
             walkableAreaGroup.transform.localScale = new Vector3(walkableScaleHeight * aspectRatio, 1.0f, walkableScaleHeight);

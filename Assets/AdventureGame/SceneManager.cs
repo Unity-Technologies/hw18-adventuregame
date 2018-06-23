@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using UnityEngine.AI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -8,16 +9,44 @@ namespace UnityEngine.AdventureGame
 {
     public class SceneManager : MonoBehaviour
     {
+        [SerializeField]
+        Character m_Character;
+
+        public Character Character
+        {
+            get { return m_Character; }
+            set { m_Character = value; }
+        }
+
+        static SceneManager s_instance;
+        public static SceneManager Instance
+        {
+            get
+            {
 #if UNITY_EDITOR
-        public string m_outputPath = "Assets/ScenePrefabs";
-        public int    m_defaultWidth  = 1024;
-        public int    m_defaultHeight = 768;
+                // deal with script reloading and find scene manager again
+                if (s_instance == null)
+                {
+                    s_instance = FindObjectOfType<SceneManager>();
+                }
+ #endif
+                return s_instance;
+            }
+        }
 
         // Use this for initialization
         void Start()
         {
+            s_instance = this;
+#if UNITY_EDITOR
             ReloadScenePrefabs();
+#endif
         }
+
+#if UNITY_EDITOR
+        public string m_outputPath = "Assets/ScenePrefabs";
+        public int    m_defaultWidth  = 1024;
+        public int    m_defaultHeight = 768;
 
         // replace all children with the associated prefabs
         public void ReloadScenePrefabs()
