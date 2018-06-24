@@ -102,6 +102,7 @@ namespace UnityEditor.AdventureGame
 
             m_CollisionObject = new GameObject("__CollisionObject__");
             m_CollisionObject.transform.SetParent(m_WalkableArea.transform, false);
+            m_CollisionObject.transform.localPosition = new Vector3(0.0f, 10.0f, 0.0f);
             m_CollisionObject.hideFlags = HideFlags.HideAndDontSave;
 
             MeshFilter meshFilter = m_CollisionObject.AddComponent<MeshFilter>();

@@ -179,6 +179,7 @@ namespace UnityEditor.AdventureGame
 
         void AddNewScene()
         {
+            float backgroundHeight = 2.0f * Camera.main.orthographicSize;
             float aspectRatio = (float)m_SceneManager.m_defaultWidth / m_SceneManager.m_defaultHeight;
 
             GameObject sceneRoot = new GameObject();
@@ -190,17 +191,13 @@ namespace UnityEditor.AdventureGame
             backgroundObject.name = "Background";
             SpriteRenderer backgroundRenderer = backgroundObject.AddComponent<SpriteRenderer>();
             backgroundRenderer.sprite = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Background.psd");
-            float backgroundHeight = 2.0f * Camera.main.orthographicSize;
             backgroundRenderer.drawMode = SpriteDrawMode.Sliced;
             backgroundRenderer.color = Color.gray;
             backgroundRenderer.size = new Vector2(backgroundHeight * aspectRatio, backgroundHeight);
-            BoxCollider2D backgroundCollider = backgroundObject.AddComponent<BoxCollider2D>();
-            backgroundCollider.size = new Vector2(backgroundHeight * aspectRatio, backgroundHeight);
 
             GameObject walkableAreaGroup = new GameObject();
             walkableAreaGroup.transform.SetParent(sceneRoot.transform, false);
             walkableAreaGroup.transform.Rotate(-90.0f, 0.0f, 0.0f);
-            walkableAreaGroup.transform.localPosition = new Vector3(0.0f, 0.0f, -10.0f);
 
             float walkableScaleHeight = Camera.main.orthographicSize / WalkableAreaEditor.k_SpriteMeshSize;
             walkableAreaGroup.transform.localScale = new Vector3(walkableScaleHeight * aspectRatio, 1.0f, walkableScaleHeight);
