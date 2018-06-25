@@ -8,7 +8,8 @@ namespace UnityEngine.AdventureGame
     /// <summary>
     /// The type of the game. Currently supported options include VerbCoin and Sierra. 
     /// </summary>
-    public enum AdventureGameType {
+    public enum AdventureGameType
+    {
         SIERRA, // User selects an action before selecting the object to perform it on
         VERBCOIN, // User selects an object and then selects an action to perform on it
     }
@@ -19,7 +20,7 @@ namespace UnityEngine.AdventureGame
     /// </summary>
     public sealed class InputSystemManager : MonoBehaviour
     {
-#region Internal Classes
+        #region Nested Classes
         /// <summary>
         /// An action that a character can take.
         /// ex. Walk, Speak, Pick Up
@@ -33,16 +34,18 @@ namespace UnityEngine.AdventureGame
             public Sprite actionIcon;
             public CharacterActionType actionType;
         }
-#endregion
+        #endregion
 
-#region Public Variables
+        #region Public Variables
         // Static singleton
         public static InputSystemManager Instance
         {
             get
             {
-                if (instance == null){
-                    instance = new InputSystemManager();
+                if (instance == null)
+                {
+                    GameObject inputSystemManager = new GameObject();
+                    instance = inputSystemManager.AddComponent<InputSystemManager>();
                 }
                 return instance;
             }
@@ -55,17 +58,18 @@ namespace UnityEngine.AdventureGame
         // The potential actions that a user can take.
         public CharacterAction[] characterActions;
 
+        // The currently selected action (ACTION1, ACTION2, ..., NONE)
+        [HideInInspector]
+        public CharacterActionType currentlySelectedActionType = CharacterActionType.NONE;
         // Callback that returns the currently selected action (or the result of a menu selection)
         public delegate void ActionSelectionDelegate(CharacterActionType selectedType = CharacterActionType.NONE);
-#endregion
+        #endregion
 
-#region Private Variables
+        #region Private Variables
         private static InputSystemManager instance;
-        // The currently selected action (ACTION1, ACTION2, ..., NONE)
-        private CharacterActionType currentlySelectedActionType = CharacterActionType.NONE;
-#endregion
+        #endregion
 
-#region Public Methods
+        #region Public Methods
         /// <summary>
         /// Returns the result of the user selecting an action (either pre-selected or via a dynamic menu)
         /// in the actionSelectionDelegate. If the user has already selected an action (Sierra-style game) we
@@ -73,40 +77,57 @@ namespace UnityEngine.AdventureGame
         /// calling this method will trigger a menu UI, and once the user selects an option, the delegate 
         /// will be called with the resulting selection.
         /// </summary>
-        public void SelectAction(CharacterActionType[] allowedTypes, ActionSelectionDelegate actionSelectionDelegate) {
-            switch (adventureGameType) {
-                case AdventureGameType.SIERRA: {
-                    if (actionSelectionDelegate != null) {
-                        actionSelectionDelegate(currentlySelectedActionType);
+        public void SelectAction(CharacterActionType[] allowedTypes, ActionSelectionDelegate actionSelectionDelegate)
+        {
+            switch (adventureGameType)
+            {
+                case AdventureGameType.SIERRA:
+                    {
+                        if (actionSelectionDelegate != null)
+                        {
+                            actionSelectionDelegate(currentlySelectedActionType);
+                        }
+                        break;
                     }
-                    break;
-                }
-                case AdventureGameType.VERBCOIN: {
-                    // TODO: Display menu here with allowedTypes
-                    // Call delegate with result of action selection
+                case AdventureGameType.VERBCOIN:
+                    {
+                        // TODO: Display menu here with allowedTypes
+                        // Call delegate with result of action selection
 
-                    // Code to unblock Audrey, remove when real menu selection is done!
-                    if (actionSelectionDelegate != null) {
-                        actionSelectionDelegate(CharacterActionType.LOOKAT); // Pass result of menu selection as param here!
+                        // Code to unblock Audrey, remove when real menu selection is done!
+                        if (actionSelectionDelegate != null)
+                        {
+                            actionSelectionDelegate(CharacterActionType.LOOKAT); // Pass result of menu selection as param here!
+                        }
+                        break;
                     }
-                    break;
-                }
-                default: {
-                    if (actionSelectionDelegate != null) {
-                        actionSelectionDelegate();
+                default:
+                    {
+                        if (actionSelectionDelegate != null)
+                        {
+                            actionSelectionDelegate();
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
-#endregion
+        #endregion
 
-#region Private Methods
-        private InputSystemManager() {}
+        #region Private Methods
+        private InputSystemManager() { }
 
-        private void Awake () {
-            DontDestroyOnLoad(this);
+        private void Awake()
+        {
+            if (instance != null && instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                instance = this;
+                DontDestroyOnLoad(this);
+            }
         }
-#endregion
+        #endregion
     }
 }
