@@ -103,7 +103,7 @@ public class SampleGraphViewWindow : EditorWindow, ISearchWindowProvider
         var tree = new List<SearchTreeEntry>();
         tree.Add(new SearchTreeGroupEntry(new GUIContent("Create Node"), 0));
 
-        Texture2D icon = null;
+        Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
         tree.Add(new SearchTreeGroupEntry(new GUIContent("Test Category"), 1));
         tree.Add(new SearchTreeEntry(new GUIContent("Test Item1", icon)) { level = 2, userData = typeof(SampleGraphView) });
         tree.Add(new SearchTreeEntry(new GUIContent("Test Item2", icon)) { level = 2, userData = typeof(SampleGraphView) });
