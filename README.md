@@ -9,6 +9,7 @@ Slack channel is: [**#hw18-adventuregame**](https://unity.slack.com/?redir=%2Fme
 ## Reference Material
 
 - [**Official Adventure Game Studio**](http://www.adventuregamestudio.co.uk/)
+- [**Wintermute Engine**](http://dead-code.org/home/)
 - [**Unity Adventure Sample Game**](https://assetstore.unity.com/packages/essentials/tutorial-projects/adventure-sample-game-76216)
 - [**Adventure Creator**](https://assetstore.unity.com/packages/templates/systems/adventure-creator-11896)
 - [**Fungus**](https://assetstore.unity.com/packages/templates/systems/fungus-34184)
