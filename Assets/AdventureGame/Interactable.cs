@@ -37,7 +37,7 @@ public class Interactable : MonoBehaviour
     /// </summary>
     public void OnInteracted()
     {
-        InputSystemManager.Instance.BeginActionSelection(m_PossibleActions, PerformInteraction);
+        InputSystemManager.Instance.SelectAction(m_PossibleActions, PerformInteraction);
     }
 
     /// <summary>
