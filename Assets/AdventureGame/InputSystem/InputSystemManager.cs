@@ -66,7 +66,14 @@ namespace UnityEngine.AdventureGame
 #endregion
 
 #region Public Methods
-        public void BeginActionSelection(CharacterActionType[] allowedTypes, ActionSelectionDelegate actionSelectionDelegate) {
+        /// <summary>
+        /// Returns the result of the user selecting an action (either pre-selected or via a dynamic menu)
+        /// in the actionSelectionDelegate. If the user has already selected an action (Sierra-style game) we
+        /// return it immediately via the delegate. If we are using a dynamic menu (Verb Coin-style game), 
+        /// calling this method will trigger a menu UI, and once the user selects an option, the delegate 
+        /// will be called with the resulting selection.
+        /// </summary>
+        public void SelectAction(CharacterActionType[] allowedTypes, ActionSelectionDelegate actionSelectionDelegate) {
             switch (adventureGameType) {
                 case AdventureGameType.SIERRA: {
                     if (actionSelectionDelegate != null) {
