@@ -42,11 +42,11 @@ namespace UnityEditor.AdventureGame
 
             Handles.DrawAAPolyLine(3, 5, new[]
             {
-                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(-WalkableAreaEditor.k_SpriteMeshSize, -0.1f, -WalkableAreaEditor.k_SpriteMeshSize)),
-                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(WalkableAreaEditor.k_SpriteMeshSize, -0.1f, -WalkableAreaEditor.k_SpriteMeshSize)),
-                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(WalkableAreaEditor.k_SpriteMeshSize, -0.1f, WalkableAreaEditor.k_SpriteMeshSize)),
-                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(-WalkableAreaEditor.k_SpriteMeshSize, -0.1f, WalkableAreaEditor.k_SpriteMeshSize)),
-                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(-WalkableAreaEditor.k_SpriteMeshSize, -0.1f, -WalkableAreaEditor.k_SpriteMeshSize))
+                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(-1.0f, -0.1f, -1.0f)),
+                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(1.0f, -0.1f, -1.0f)),
+                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(1.0f, -0.1f, 1.0f)),
+                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(-1.0f, -0.1f, 1.0f)),
+                m_WalkableAreaGroup.transform.TransformPoint(new Vector3(-1.0f, -0.1f, -1.0f))
             });
         }
     }

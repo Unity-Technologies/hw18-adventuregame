@@ -199,7 +199,7 @@ namespace UnityEditor.AdventureGame
             walkableAreaGroup.transform.SetParent(sceneRoot.transform, false);
             walkableAreaGroup.transform.Rotate(-90.0f, 0.0f, 0.0f);
 
-            float walkableScaleHeight = Camera.main.orthographicSize / WalkableAreaEditor.k_SpriteMeshSize;
+            float walkableScaleHeight = Camera.main.orthographicSize;
             walkableAreaGroup.transform.localScale = new Vector3(walkableScaleHeight * aspectRatio, 1.0f, walkableScaleHeight);
             walkableAreaGroup.name = "WalkableAreas";
             walkableAreaGroup.AddComponent<WalkableAreaGroup>();

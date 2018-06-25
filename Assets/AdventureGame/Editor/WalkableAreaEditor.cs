@@ -10,7 +10,6 @@ namespace UnityEditor.AdventureGame
     [CustomEditor(typeof(WalkableArea))]
     public class WalkableAreaEditor : Editor
     {
-        public const float k_SpriteMeshSize = 2.56f;  // the sprite mesh size for a texture with dimension 512
         readonly Color k_TransparentWhite = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         readonly Vector2 k_DefaultTextureSize = new Vector2(512.0f, 512.0f);
 
@@ -72,10 +71,10 @@ namespace UnityEditor.AdventureGame
             Mesh collisionMesh = new Mesh();
             collisionMesh.vertices = new[]
             {
-                new Vector3(-k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize),
-                new Vector3(k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize),
-                new Vector3(-k_SpriteMeshSize, -0.1f, k_SpriteMeshSize),
-                new Vector3(k_SpriteMeshSize, -0.1f, k_SpriteMeshSize)
+                new Vector3(-1.0f, -0.1f, -1.0f),
+                new Vector3(1.0f, -0.1f, -1.0f),
+                new Vector3(-1.0f, -0.1f, 1.0f),
+                new Vector3(1.0f, -0.1f, 1.0f)
             };
             collisionMesh.triangles = new[]
             {
@@ -369,11 +368,11 @@ namespace UnityEditor.AdventureGame
             m_CollisionMeshMaterial.color = m_WalkableArea.m_color;
             Handles.DrawAAPolyLine(3, 5, new[]
             {
-                m_WalkableArea.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize)),
-                m_WalkableArea.transform.TransformPoint(new Vector3(k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize)),
-                m_WalkableArea.transform.TransformPoint(new Vector3(k_SpriteMeshSize, -0.1f, k_SpriteMeshSize)),
-                m_WalkableArea.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f, k_SpriteMeshSize)),
-                m_WalkableArea.transform.TransformPoint(new Vector3(-k_SpriteMeshSize, -0.1f, -k_SpriteMeshSize))
+                m_WalkableArea.transform.TransformPoint(new Vector3(-1.0f, -0.1f, -1.0f)),
+                m_WalkableArea.transform.TransformPoint(new Vector3(1.0f, -0.1f, -1.0f)),
+                m_WalkableArea.transform.TransformPoint(new Vector3(1.0f, -0.1f, 1.0f)),
+                m_WalkableArea.transform.TransformPoint(new Vector3(-1.0f, -0.1f, 1.0f)),
+                m_WalkableArea.transform.TransformPoint(new Vector3(-1.0f, -0.1f, -1.0f))
             });
 
             Handles.BeginGUI();
@@ -484,8 +483,8 @@ namespace UnityEditor.AdventureGame
         void DrawBrush(Vector2 texCoord)
         {
             // convert brush size to pixel size in texture
-            int pixelWidth = (int)(m_PaintTexture.width * s_BrushSize / m_WalkableArea.transform.lossyScale.x / k_SpriteMeshSize / 2.0f);
-            int pixelHeight = (int)(m_PaintTexture.height * s_BrushSize / m_WalkableArea.transform.lossyScale.z / k_SpriteMeshSize / 2.0f);
+            int pixelWidth = (int)(m_PaintTexture.width * s_BrushSize / m_WalkableArea.transform.lossyScale.x / 2.0f);
+            int pixelHeight = (int)(m_PaintTexture.height * s_BrushSize / m_WalkableArea.transform.lossyScale.z / 2.0f);
 
             int pixelHitX = (int)(texCoord.x * m_PaintTexture.width);
             int pixelHitY = (int)(texCoord.y * m_PaintTexture.height);
@@ -619,15 +618,13 @@ namespace UnityEditor.AdventureGame
             Vector3[] normals = new Vector3[m_WalkableArea.m_sprite.vertices.Length];
             Vector2[] uv = new Vector2[m_WalkableArea.m_sprite.vertices.Length];
 
-            float widthMultiplier = m_WalkableArea.m_sprite.texture.width / 512.0f;
-            float heightMultiplier = m_WalkableArea.m_sprite.texture.height / 512.0f;
-
+            // normalize the vertex data from -1.0f to 1.0f in x and z coordinates
             for (int i = 0; i < m_WalkableArea.m_sprite.vertices.Length; ++i)
             {
                 vertices[i] = new Vector3(
-                    m_WalkableArea.m_sprite.vertices[i].x / widthMultiplier,
+                    m_WalkableArea.m_sprite.vertices[i].x * 200.0f / m_WalkableArea.m_sprite.texture.width,
                     0.0f,
-                    m_WalkableArea.m_sprite.vertices[i].y / heightMultiplier);
+                    m_WalkableArea.m_sprite.vertices[i].y * 200.0f / m_WalkableArea.m_sprite.texture.height);
                 normals[i] = -Vector3.forward;
                 uv[i] = Vector2.zero;
             }
