@@ -35,9 +35,16 @@ public class SampleGraphViewWindow : EditorWindow, ISearchWindowProvider
 
         this.GetRootVisualContainer().Add(m_GraphView);
 
-	    CreateNode(8, new Vector2(10, 100));
-        CreateNode(12, new Vector2(100, 20));
-	    m_GraphView.nodeCreationRequest += OnRequestNodeCreation;
+
+	    Node node1 = CreateNode(8);
+        m_GraphView.AddElement(node1);
+        node1.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
+        
+	    Node node2 = CreateNode(4);
+        m_GraphView.AddElement(node2);
+        node1.SetPosition(new Rect(new Vector2(100, 20), Vector2.zero));
+
+        m_GraphView.nodeCreationRequest += OnRequestNodeCreation;
     }
 
     protected void OnRequestNodeCreation(NodeCreationContext context)
@@ -61,13 +68,11 @@ public class SampleGraphViewWindow : EditorWindow, ISearchWindowProvider
         return change;
     }
 
-    void CreateNode(int num, Vector2 pos)
+    Node CreateNode(int num)
     {
         Node node = new Node();
         node.title = "hello";
         node.capabilities |= Capabilities.Movable;
-        m_GraphView.AddElement(node);
-        node.SetPosition(new Rect(pos, Vector2.zero));
 
         var dataPort = new MyDataPort() { data = num + 4 };
         var dataPort1 = new MyDataPort() { data = num + 8 };
@@ -82,6 +87,8 @@ public class SampleGraphViewWindow : EditorWindow, ISearchWindowProvider
 
         node.inputContainer.Add(inputPort);
         node.outputContainer.Add(outputPort);
+
+        return node;
     }
 
     public List<SearchTreeEntry> CreateSearchTree(SearchWindowContext context)
@@ -104,6 +111,18 @@ public class SampleGraphViewWindow : EditorWindow, ISearchWindowProvider
     {
         if (!(entry is SearchTreeGroupEntry))
         {
+            Node node = CreateNode(8);
+            m_GraphView.AddElement(node);
+            node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
+
+            m_GraphView.AddElement(node);
+
+            Vector2 pointInWindow = context.screenMousePosition - position.position;
+            Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
+
+            node.SetPosition(new Rect(pointInGraph, Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
+
+            node.Select(m_GraphView, false);
             return true;
         }
         return false;
