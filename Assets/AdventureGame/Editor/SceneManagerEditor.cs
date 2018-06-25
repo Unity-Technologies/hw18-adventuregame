@@ -281,6 +281,23 @@ namespace UnityEditor.AdventureGame
 
         static void EnsureProjectConsistency(SceneManager manager)
         {
+            // check whether there is still an active scene and set one
+            // if there isn't (this can happen because a scene was deleted)
+            bool hasActiveScene = false;
+            foreach (Transform child in manager.transform)
+            {
+                if (child.gameObject.activeSelf)
+                {
+                    hasActiveScene = true;
+                }
+            }
+
+            if (!hasActiveScene && manager.transform.childCount > 0)
+            {
+                manager.transform.GetChild(0).gameObject.SetActive(true);
+            }
+
+            // make sure that all the project locations are consistent
             foreach (Transform child in manager.transform)
             {
                 // if the name changed or it is not a prefab yet then save it
