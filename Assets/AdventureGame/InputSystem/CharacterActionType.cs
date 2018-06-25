@@ -7,21 +7,18 @@ namespace UnityEngine.AdventureGame
 {
     /// <summary>
     /// The type of action. The user will define the name, but we will refer
-    /// to the opaque action type under the hood. Whenever possible, the actions
-    /// will be displayed in ascending order.
-    /// The max number of 10 actions is an arbitrary number.
+    /// to the opaque action type under the hood.
+    /// The max number of 8 actions is an arbitrary number and can be expanded.
     /// </summary>
     public enum CharacterActionType {
+        SPEAK,
+        PICKUP,
+        LOOKAT,
+        USE,
         ACTION1,
         ACTION2,
         ACTION3,
         ACTION4,
-        ACTION5,
-        ACTION6,
-        ACTION7,
-        ACTION8,
-        ACTION9,
-        ACTION10,
         NONE,
     }
 }

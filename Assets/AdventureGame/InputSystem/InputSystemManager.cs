@@ -50,28 +50,46 @@ namespace UnityEngine.AdventureGame
 
         // The type of adventure game. This will mostly impact the way the user
         // interacts with game object (ex. select object then action vs. select action then object)
-        public AdventureGameType adventureGameType;
+        public AdventureGameType adventureGameType = AdventureGameType.SIERRA;
 
         // The potential actions that a user can take.
         public CharacterAction[] characterActions;
 
-        // The currently selected action (ACTION1, ACTION2, ..., NONE)
-        [HideInInspector]
-        public CharacterActionType currentlySelectedActionType;
+        // Callback that returns the currently selected action (or the result of a menu selection)
         public delegate void ActionSelectionDelegate(CharacterActionType selectedType = CharacterActionType.NONE);
 #endregion
 
 #region Private Variables
         private static InputSystemManager instance;
+        // The currently selected action (ACTION1, ACTION2, ..., NONE)
+        private CharacterActionType currentlySelectedActionType = CharacterActionType.NONE;
 #endregion
 
 #region Public Methods
         public void BeginActionSelection(CharacterActionType[] allowedTypes, ActionSelectionDelegate actionSelectionDelegate) {
-            // Display menu here with allowedTypes
+            switch (adventureGameType) {
+                case AdventureGameType.SIERRA: {
+                    if (actionSelectionDelegate != null) {
+                        actionSelectionDelegate(currentlySelectedActionType);
+                    }
+                    break;
+                }
+                case AdventureGameType.VERBCOIN: {
+                    // TODO: Display menu here with allowedTypes
+                    // Call delegate with result of action selection
 
-            // Call delegate with result of action selection
-            if (actionSelectionDelegate != null) {
-                actionSelectionDelegate(); // Pass result of menu selection as param here!
+                    // Code to unblock Audrey, remove when real menu selection is done!
+                    if (actionSelectionDelegate != null) {
+                        actionSelectionDelegate(CharacterActionType.LOOKAT); // Pass result of menu selection as param here!
+                    }
+                    break;
+                }
+                default: {
+                    if (actionSelectionDelegate != null) {
+                        actionSelectionDelegate();
+                    }
+                    break;
+                }
             }
         }
 #endregion

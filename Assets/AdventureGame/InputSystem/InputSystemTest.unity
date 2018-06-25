@@ -155,18 +155,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adventureGameType: 1
   characterActions:
-  - actionName: Walk
-    actionDescription: Go somewhere
+  - actionName: Speak
+    actionDescription: Speak with someone
     actionIcon: {fileID: 0}
     actionType: 0
-  - actionName: Speak
-    actionDescription: 
+  - actionName: Pick Up
+    actionDescription: Pick up an object
     actionIcon: {fileID: 0}
     actionType: 1
-  - actionName: Look
-    actionDescription: 
+  - actionName: Look At
+    actionDescription: Look at an object
     actionIcon: {fileID: 0}
     actionType: 2
+  - actionName: Tap Dance
+    actionDescription: Tap dance on an object?
+    actionIcon: {fileID: 0}
+    actionType: 4
 --- !u!1 &501512073
 GameObject:
   m_ObjectHideFlags: 0
