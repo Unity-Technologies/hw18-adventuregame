@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEditor;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
 
-public class SimpleGraphView : GraphView
+public class SampleGraphView : GraphView
 {
-    public SimpleGraphView()
+    public SampleGraphView()
     {
         SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
         // FIXME: add a coordinator so that ContentDragger and SelectionDragger cannot be active at the same time.
