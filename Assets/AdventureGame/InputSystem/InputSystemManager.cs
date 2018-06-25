@@ -17,7 +17,6 @@ namespace UnityEngine.AdventureGame
     /// Handles user selections of objects and menu actions
     /// ex. Walk, Speak, Pick Up
     /// </summary>
-    []
     public sealed class InputSystemManager : MonoBehaviour
     {
 #region Internal Classes
@@ -67,12 +66,12 @@ namespace UnityEngine.AdventureGame
 #endregion
 
 #region Public Methods
-        public void BeginActionSelection(ActionSelectionDelegate actionSelectionDelegate) {
-            // Display menu here
+        public void BeginActionSelection(CharacterActionType[] allowedTypes, ActionSelectionDelegate actionSelectionDelegate) {
+            // Display menu here with allowedTypes
 
             // Call delegate with result of action selection
-            if(actionSelectionDelegate != null) {
-                actionSelectionDelegate();
+            if (actionSelectionDelegate != null) {
+                actionSelectionDelegate(); // Pass result of menu selection as param here!
             }
         }
 #endregion
