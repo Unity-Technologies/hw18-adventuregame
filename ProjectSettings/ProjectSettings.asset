@@ -620,5 +620,5 @@ PlayerSettings:
   projectName: AdventureGameStudio
   organizationId: laurenfr
   cloudEnabled: 0
-  enableNativePlatformBackendsForNewInputSystem: 1
+  enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
