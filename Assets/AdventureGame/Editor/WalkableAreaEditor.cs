@@ -10,7 +10,7 @@ namespace UnityEditor.AdventureGame
     [CustomEditor(typeof(WalkableArea))]
     public class WalkableAreaEditor : Editor
     {
-        public const float k_SpriteMeshSize = 2.6f;
+        public const float k_SpriteMeshSize = 2.56f;  // the sprite mesh size for a texture with dimension 512
         readonly Color k_TransparentWhite = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         readonly Vector2 k_DefaultTextureSize = new Vector2(512.0f, 512.0f);
 
@@ -32,7 +32,6 @@ namespace UnityEditor.AdventureGame
         SerializedProperty m_VoxelSize;
 
         WalkableArea m_WalkableArea;
-        SceneManager m_SceneManager;
         bool m_Modified = false;
         bool m_Painting = false;
         Texture2D m_PaintTexture;
@@ -112,20 +111,8 @@ namespace UnityEditor.AdventureGame
             meshFilter.mesh = collisionMesh;
             meshCollider.sharedMesh = collisionMesh;
             meshRenderer.material = m_CollisionMeshMaterial;
-            
-            Transform parent = m_WalkableArea.transform.parent;
-            while (parent != null)
-            {
-                m_SceneManager = parent.GetComponent<SceneManager>();
-                if (m_SceneManager != null)
-                {
-                    break;
-                }
 
-                parent = parent.parent;
-            }
-
-            if (m_SceneManager == null)
+            if (SceneManager.Instance == null)
             {
                 Debug.LogError("Could not find SceneManager as parent of SpriteMesh!");
                 return;
@@ -133,7 +120,7 @@ namespace UnityEditor.AdventureGame
 
             if (m_WalkableArea.m_sprite == null)
             {
-                string spritePath = Path.Combine(Path.Combine(m_SceneManager.m_outputPath, PrefabUtility.FindPrefabRoot(m_WalkableArea.transform.parent.gameObject).name), "Editor");
+                string spritePath = Path.Combine(Path.Combine(SceneManager.Instance.m_outputPath, PrefabUtility.FindPrefabRoot(m_WalkableArea.transform.parent.gameObject).name), "Editor");
                 Directory.CreateDirectory(spritePath);
                 string spriteAssetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(spritePath, string.Format("{0}.png", m_WalkableArea.name)));
 
@@ -632,9 +619,15 @@ namespace UnityEditor.AdventureGame
             Vector3[] normals = new Vector3[m_WalkableArea.m_sprite.vertices.Length];
             Vector2[] uv = new Vector2[m_WalkableArea.m_sprite.vertices.Length];
 
+            float widthMultiplier = m_WalkableArea.m_sprite.texture.width / 512.0f;
+            float heightMultiplier = m_WalkableArea.m_sprite.texture.height / 512.0f;
+
             for (int i = 0; i < m_WalkableArea.m_sprite.vertices.Length; ++i)
             {
-                vertices[i] = new Vector3(m_WalkableArea.m_sprite.vertices[i].x, 0.0f, m_WalkableArea.m_sprite.vertices[i].y);
+                vertices[i] = new Vector3(
+                    m_WalkableArea.m_sprite.vertices[i].x / widthMultiplier,
+                    0.0f,
+                    m_WalkableArea.m_sprite.vertices[i].y / heightMultiplier);
                 normals[i] = -Vector3.forward;
                 uv[i] = Vector2.zero;
             }
@@ -651,12 +644,6 @@ namespace UnityEditor.AdventureGame
 
             mesh.triangles = triangles;
 
-            MeshRenderer toDelete = m_WalkableArea.gameObject.GetComponent<MeshRenderer>();
-            DestroyImmediate(toDelete);
-
-            MeshFilter toDelete2 = m_WalkableArea.gameObject.GetComponent<MeshFilter>();
-            DestroyImmediate(toDelete2);
-
             MeshFilter meshFilter = m_WalkableArea.gameObject.AddComponent<MeshFilter>();
             meshFilter.mesh = mesh;
 
@@ -665,7 +652,7 @@ namespace UnityEditor.AdventureGame
             // set modified to false here so that OnDisable of the editor doesn't retrigger RegenerateMesh
             m_Modified = false;
 
-            string navmeshPath = Path.Combine(m_SceneManager.m_outputPath, PrefabUtility.FindPrefabRoot(m_WalkableArea.transform.parent.gameObject).name);
+            string navmeshPath = Path.Combine(SceneManager.Instance.m_outputPath, PrefabUtility.FindPrefabRoot(m_WalkableArea.transform.parent.gameObject).name);
             string navmeshAssetPath = Path.Combine(navmeshPath, string.Format("{0}.asset", m_WalkableArea.name));
 
             if (m_WalkableArea.navMeshData != null)
