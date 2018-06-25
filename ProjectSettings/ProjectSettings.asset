@@ -638,5 +638,5 @@ PlayerSettings:
   projectName: AdventureGameStudio
   organizationId: tedh-unity3d-com
   cloudEnabled: 0
-  enableNativePlatformBackendsForNewInputSystem: 1
+  enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0
