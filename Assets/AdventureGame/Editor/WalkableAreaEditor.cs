@@ -622,9 +622,9 @@ namespace UnityEditor.AdventureGame
             for (int i = 0; i < m_WalkableArea.m_sprite.vertices.Length; ++i)
             {
                 vertices[i] = new Vector3(
-                    m_WalkableArea.m_sprite.vertices[i].x * 200.0f / m_WalkableArea.m_sprite.texture.width,
+                    m_WalkableArea.m_sprite.vertices[i].x * 2.0f * m_WalkableArea.m_sprite.pixelsPerUnit / m_WalkableArea.m_sprite.texture.width,
                     0.0f,
-                    m_WalkableArea.m_sprite.vertices[i].y * 200.0f / m_WalkableArea.m_sprite.texture.height);
+                    m_WalkableArea.m_sprite.vertices[i].y * 2.0f * m_WalkableArea.m_sprite.pixelsPerUnit / m_WalkableArea.m_sprite.texture.height);
                 normals[i] = -Vector3.forward;
                 uv[i] = Vector2.zero;
             }
