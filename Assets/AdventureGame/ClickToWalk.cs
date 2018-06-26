@@ -9,14 +9,22 @@
             Collider2D[] hits = Physics2D.OverlapPointAll(ray);
             if (hits.Length > 0)
 	        {
-	            if (hits[0].gameObject.GetInstanceID() == gameObject.GetInstanceID())
-	            {
-                    Debug.LogFormat("Walk Command Triggered!");
-	                if (SceneManager.Instance.Character != null)
-	                {
-	                    SceneManager.Instance.Character.WalkToPosition(ray);
-	                }
-	            }
+                foreach (var hit in hits)
+                {
+                    if (hit.gameObject.tag == "ClickableAction")
+                    {
+                        var clickableAction = gameObject.GetComponent<ClickableAction>();
+                        clickableAction.ItemClicked();
+                    }
+                    else if (hit.gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                    {
+                        Debug.LogFormat("Walk Command Triggered!");
+                        if (SceneManager.Instance.Character != null)
+                        {
+                            SceneManager.Instance.Character.WalkToPosition(ray);
+                        }
+                    }
+                }
 	        }
         }
     }
