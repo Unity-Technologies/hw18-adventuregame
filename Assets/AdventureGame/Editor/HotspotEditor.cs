@@ -1,14 +1,15 @@
-﻿using System.IO;
-using UnityEditor.AI;
-using UnityEditor.SceneManagement;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AdventureGame;
-using UnityEngine.AI;
+using UnityEngine.Windows.Speech;
 
 namespace UnityEditor.AdventureGame
 {
-    [CustomEditor(typeof(WalkableArea))]
-    public class WalkableAreaEditor : Editor
+    [CustomEditor(typeof(Hotspot))]
+    public class HotspotEditor : Editor
     {
         readonly Color k_TransparentWhite = new Color(1.0f, 1.0f, 1.0f, 0.0f);
 
@@ -16,21 +17,10 @@ namespace UnityEditor.AdventureGame
         GameObject m_CollisionObject;
 
         SerializedProperty m_Sprite;
-        SerializedProperty m_NavMeshData;
         SerializedProperty m_Detail;
         SerializedProperty m_Color;
 
-        SerializedProperty m_AgentTypeID;
-        SerializedProperty m_BuildHeightMesh;
-        SerializedProperty m_DefaultArea;
-        SerializedProperty m_LayerMask;
-        SerializedProperty m_OverrideTileSize;
-        SerializedProperty m_OverrideVoxelSize;
-        SerializedProperty m_TileSize;
-        SerializedProperty m_VoxelSize;
-
-        WalkableArea m_WalkableArea;
-        bool m_Modified = false;
+        Hotspot m_Hotspot;
         bool m_Painting = false;
         Texture2D m_PaintTexture;
 
@@ -51,28 +41,19 @@ namespace UnityEditor.AdventureGame
                 sceneViewWindow.Focus();
             }
 
-            m_WalkableArea = (WalkableArea)target;
+            m_Hotspot = (Hotspot)target;
 
             m_Sprite = serializedObject.FindProperty("m_sprite");
-            m_NavMeshData = serializedObject.FindProperty("m_NavMeshData");
             m_Detail = serializedObject.FindProperty("m_detail");
             m_Color = serializedObject.FindProperty("m_color");
-            m_AgentTypeID = serializedObject.FindProperty("m_AgentTypeID");
-            m_BuildHeightMesh = serializedObject.FindProperty("m_BuildHeightMesh");
-            m_DefaultArea = serializedObject.FindProperty("m_DefaultArea");
-            m_LayerMask = serializedObject.FindProperty("m_LayerMask");
-            m_OverrideTileSize = serializedObject.FindProperty("m_OverrideTileSize");
-            m_OverrideVoxelSize = serializedObject.FindProperty("m_OverrideVoxelSize");
-            m_TileSize = serializedObject.FindProperty("m_TileSize");
-            m_VoxelSize = serializedObject.FindProperty("m_VoxelSize");
 
             Mesh collisionMesh = new Mesh();
             collisionMesh.vertices = new[]
             {
-                new Vector3(-1.0f, -0.1f, -1.0f),
-                new Vector3(1.0f, -0.1f, -1.0f),
-                new Vector3(-1.0f, -0.1f, 1.0f),
-                new Vector3(1.0f, -0.1f, 1.0f)
+                new Vector3(-1.0f, -1.0f, -0.1f),
+                new Vector3( 1.0f, -1.0f, -0.1f),
+                new Vector3(-1.0f,  1.0f, -0.1f),
+                new Vector3( 1.0f,  1.0f, -0.1f)
             };
             collisionMesh.triangles = new[]
             {
@@ -97,8 +78,8 @@ namespace UnityEditor.AdventureGame
             m_CollisionMeshMaterial = new Material(Shader.Find("UI/Default"));
 
             m_CollisionObject = new GameObject("__CollisionObject__");
-            m_CollisionObject.transform.SetParent(m_WalkableArea.transform, false);
-            m_CollisionObject.transform.localPosition = new Vector3(0.0f, 10.0f, 0.0f);
+            m_CollisionObject.transform.SetParent(m_Hotspot.transform, false);
+            m_CollisionObject.transform.localPosition = new Vector3(0.0f, 0.0f, -10.0f);
             m_CollisionObject.hideFlags = HideFlags.HideAndDontSave;
 
             MeshFilter meshFilter = m_CollisionObject.AddComponent<MeshFilter>();
@@ -115,16 +96,16 @@ namespace UnityEditor.AdventureGame
                 return;
             }
 
-            if (m_WalkableArea.m_sprite == null)
+            if (m_Hotspot.m_sprite == null)
             {
-                GameObject root = PrefabUtility.FindValidUploadPrefabInstanceRoot(m_WalkableArea.transform.parent.gameObject);
+                GameObject root = PrefabUtility.FindValidUploadPrefabInstanceRoot(m_Hotspot.transform.parent.gameObject);
                 string spritePath = Path.Combine(Path.Combine(SceneManager.Instance.m_outputPath, root.name), "Editor");
                 Directory.CreateDirectory(spritePath);
-                string spriteAssetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(spritePath, string.Format("{0}.png", m_WalkableArea.name)));
+                string spriteAssetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(spritePath, string.Format("{0}.png", m_Hotspot.name)));
 
                 // load the sprite or create it if it doesn't exist
-                m_WalkableArea.m_sprite = AssetDatabase.LoadAssetAtPath<Sprite>(spriteAssetPath);
-                if (m_WalkableArea.m_sprite == null)
+                m_Hotspot.m_sprite = AssetDatabase.LoadAssetAtPath<Sprite>(spriteAssetPath);
+                if (m_Hotspot.m_sprite == null)
                 {
                     // create the texture if it doesn't exist
                     Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(spriteAssetPath);
@@ -132,7 +113,7 @@ namespace UnityEditor.AdventureGame
                     {
                         Directory.CreateDirectory(spritePath);
 
-                        WalkableAreaGroup group = m_WalkableArea.transform.parent.gameObject.GetComponent<WalkableAreaGroup>();
+                        HotspotGroup group = m_Hotspot.transform.parent.gameObject.GetComponent<HotspotGroup>();
 
                         m_PaintTexture = new Texture2D(group.m_textureWidth, group.m_textureHeight, TextureFormat.RGBA32, false);
                         Color[] colors = m_PaintTexture.GetPixels();
@@ -151,23 +132,23 @@ namespace UnityEditor.AdventureGame
                     AssetDatabase.AddObjectToAsset(sprite, spriteAssetPath);
                     AssetDatabase.SaveAssets();
                     
-                    m_WalkableArea.m_sprite = AssetDatabase.LoadAssetAtPath<Sprite>(spriteAssetPath);
+                    m_Hotspot.m_sprite = AssetDatabase.LoadAssetAtPath<Sprite>(spriteAssetPath);
                 }
             }
 
-            m_PaintTexture = new Texture2D(m_WalkableArea.m_sprite.texture.width, m_WalkableArea.m_sprite.texture.height, TextureFormat.RGBA32, false);
+            m_PaintTexture = new Texture2D(m_Hotspot.m_sprite.texture.width, m_Hotspot.m_sprite.texture.height, TextureFormat.RGBA32, false);
 
-            string texturePath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
+            string texturePath = AssetDatabase.GetAssetPath(m_Hotspot.m_sprite);
             TextureImporter importer = AssetImporter.GetAtPath(texturePath) as TextureImporter;
             if (importer != null)
             {
                 if (importer.DoesSourceTextureHaveAlpha())
                 {
-                    Graphics.CopyTexture(m_WalkableArea.m_sprite.texture, m_PaintTexture);
+                    Graphics.CopyTexture(m_Hotspot.m_sprite.texture, m_PaintTexture);
                 }
                 else
                 {
-                    Graphics.ConvertTexture(m_WalkableArea.m_sprite.texture, m_PaintTexture);
+                    Graphics.ConvertTexture(m_Hotspot.m_sprite.texture, m_PaintTexture);
                 }
             }
 
@@ -176,11 +157,6 @@ namespace UnityEditor.AdventureGame
 
         void OnDisable()
         {
-            if (m_Modified)
-            {
-                RegenerateMesh();
-            }
-
             DestroyImmediate(m_CollisionObject);
             Tools.hidden = false;
         }
@@ -257,96 +233,11 @@ namespace UnityEditor.AdventureGame
         {
             serializedObject.Update();
 
-            var bs = NavMesh.GetSettingsByID(m_AgentTypeID.intValue);
-
-            if (bs.agentTypeID != -1)
-            {
-                // Draw image
-                const float diagramHeight = 80.0f;
-                Rect agentDiagramRect = EditorGUILayout.GetControlRect(false, diagramHeight);
-                NavMeshEditorHelpers.DrawAgentDiagram(agentDiagramRect, bs.agentRadius, bs.agentHeight, bs.agentClimb, bs.agentSlope);
-            }
-            AgentTypePopup("Agent Type", m_AgentTypeID);
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.PropertyField(m_LayerMask);
-
-            EditorGUILayout.Space();
-
-            EditorGUILayout.Space();
-
-            m_OverrideVoxelSize.isExpanded = EditorGUILayout.Foldout(m_OverrideVoxelSize.isExpanded, "Advanced");
-            if (m_OverrideVoxelSize.isExpanded)
-            {
-                EditorGUI.indentLevel++;
-
-                AreaPopup("Default Area", m_DefaultArea);
-
-                // Override voxel size.
-                EditorGUILayout.PropertyField(m_OverrideVoxelSize);
-
-                using (new EditorGUI.DisabledScope(!m_OverrideVoxelSize.boolValue || m_OverrideVoxelSize.hasMultipleDifferentValues))
-                {
-                    EditorGUI.indentLevel++;
-
-                    EditorGUILayout.PropertyField(m_VoxelSize);
-
-                    if (!m_OverrideVoxelSize.hasMultipleDifferentValues)
-                    {
-                        if (!m_AgentTypeID.hasMultipleDifferentValues)
-                        {
-                            float voxelsPerRadius = m_VoxelSize.floatValue > 0.0f ? (bs.agentRadius / m_VoxelSize.floatValue) : 0.0f;
-                            EditorGUILayout.LabelField(" ", voxelsPerRadius.ToString("0.00") + " voxels per agent radius", EditorStyles.miniLabel);
-                        }
-                        if (m_OverrideVoxelSize.boolValue)
-                            EditorGUILayout.HelpBox("Voxel size controls how accurately the navigation mesh is generated from the level geometry. A good voxel size is 2-4 voxels per agent radius. Making voxel size smaller will increase build time.", MessageType.None);
-                    }
-                    EditorGUI.indentLevel--;
-                }
-
-                // Override tile size
-                EditorGUILayout.PropertyField(m_OverrideTileSize);
-
-                using (new EditorGUI.DisabledScope(!m_OverrideTileSize.boolValue || m_OverrideTileSize.hasMultipleDifferentValues))
-                {
-                    EditorGUI.indentLevel++;
-
-                    EditorGUILayout.PropertyField(m_TileSize);
-
-                    if (!m_TileSize.hasMultipleDifferentValues && !m_VoxelSize.hasMultipleDifferentValues)
-                    {
-                        float tileWorldSize = m_TileSize.intValue * m_VoxelSize.floatValue;
-                        EditorGUILayout.LabelField(" ", tileWorldSize.ToString("0.00") + " world units", EditorStyles.miniLabel);
-                    }
-
-                    if (!m_OverrideTileSize.hasMultipleDifferentValues)
-                    {
-                        if (m_OverrideTileSize.boolValue)
-                            EditorGUILayout.HelpBox("Tile size controls the how local the changes to the world are (rebuild or carve). Small tile size allows more local changes, while potentially generating more data in overal.", MessageType.None);
-                    }
-                    EditorGUI.indentLevel--;
-                }
-
-
-                // Height mesh
-                using (new EditorGUI.DisabledScope(true))
-                {
-                    EditorGUILayout.PropertyField(m_BuildHeightMesh);
-                }
-
-                EditorGUILayout.Space();
-                EditorGUI.indentLevel--;
-            }
-
-            EditorGUILayout.Space();
-
             EditorGUILayout.PropertyField(m_Sprite);
-            EditorGUILayout.PropertyField(m_NavMeshData);
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
 
-            if (GUILayout.Button("Regenerate Collision"))
+            if (GUILayout.Button("Regenerate NavMesh"))
             {
                 RegenerateMesh();
             }
@@ -359,14 +250,14 @@ namespace UnityEditor.AdventureGame
             Color oldColor = Handles.color;
 
             m_CollisionMeshMaterial.mainTexture = m_PaintTexture;
-            m_CollisionMeshMaterial.color = m_WalkableArea.m_color;
+            m_CollisionMeshMaterial.color = m_Hotspot.m_color;
             Handles.DrawAAPolyLine(3, 5, new[]
             {
-                m_WalkableArea.transform.TransformPoint(new Vector3(-1.0f, -0.1f, -1.0f)),
-                m_WalkableArea.transform.TransformPoint(new Vector3(1.0f, -0.1f, -1.0f)),
-                m_WalkableArea.transform.TransformPoint(new Vector3(1.0f, -0.1f, 1.0f)),
-                m_WalkableArea.transform.TransformPoint(new Vector3(-1.0f, -0.1f, 1.0f)),
-                m_WalkableArea.transform.TransformPoint(new Vector3(-1.0f, -0.1f, -1.0f))
+                m_Hotspot.transform.TransformPoint(new Vector3(-1.0f, -1.0f, -0.1f)),
+                m_Hotspot.transform.TransformPoint(new Vector3( 1.0f, -1.0f, -0.1f)),
+                m_Hotspot.transform.TransformPoint(new Vector3( 1.0f,  1.0f, -0.1f)),
+                m_Hotspot.transform.TransformPoint(new Vector3(-1.0f,  1.0f, -0.1f)),
+                m_Hotspot.transform.TransformPoint(new Vector3(-1.0f, -1.0f, -0.1f))
             });
 
             Handles.BeginGUI();
@@ -391,15 +282,6 @@ namespace UnityEditor.AdventureGame
                     break;
             }
 
-            if (m_Modified)
-            {
-                GUI.color = Color.cyan;
-                if (GUI.Button(new Rect(0, 25, 100, 25), "Bake"))
-                {
-                    RegenerateMesh();
-                }
-            }
-
             GUI.color = Color.black;
             GUI.Label(new Rect(110, 0, 150, 25), string.Format("Brush Size: {0}", s_BrushSize));
             GUI.color = oldGuiColor;
@@ -419,7 +301,7 @@ namespace UnityEditor.AdventureGame
             bool isHit = Physics.Raycast(ray, out hit);
             if (isHit)
             {
-                Handles.color = new Color(m_WalkableArea.m_color.r, m_WalkableArea.m_color.g, m_WalkableArea.m_color.b);
+                Handles.color = new Color(m_Hotspot.m_color.r, m_Hotspot.m_color.g, m_Hotspot.m_color.b);
                 Handles.DrawWireDisc(hit.point, hit.normal, s_BrushSize);
                 Handles.DrawSolidDisc(hit.point, hit.normal, 0.5f);
             }
@@ -452,7 +334,7 @@ namespace UnityEditor.AdventureGame
                             Event.current.Use();
                         }
 
-                        m_Modified = true;
+                        RegenerateMesh();
                         m_Painting = false;
                     }
 
@@ -477,8 +359,8 @@ namespace UnityEditor.AdventureGame
         void DrawBrush(Vector2 texCoord)
         {
             // convert brush size to pixel size in texture
-            int pixelWidth = (int)(m_PaintTexture.width * s_BrushSize / m_WalkableArea.transform.lossyScale.x / 2.0f);
-            int pixelHeight = (int)(m_PaintTexture.height * s_BrushSize / m_WalkableArea.transform.lossyScale.z / 2.0f);
+            int pixelWidth = (int)(m_PaintTexture.width * s_BrushSize / m_Hotspot.transform.lossyScale.x / 2.0f);
+            int pixelHeight = (int)(m_PaintTexture.height * s_BrushSize / m_Hotspot.transform.lossyScale.y / 2.0f);
 
             int pixelHitX = (int)(texCoord.x * m_PaintTexture.width);
             int pixelHitY = (int)(texCoord.y * m_PaintTexture.height);
@@ -505,87 +387,45 @@ namespace UnityEditor.AdventureGame
             m_PaintTexture.Apply();
         }
 
-        static void AgentTypePopup(string labelName, SerializedProperty agentTypeID)
+        void IncrementIndex(int idx1, int idx2, Dictionary<int, Dictionary<int, int>> foundEdges)
         {
-            var index = -1;
-            var count = NavMesh.GetSettingsCount();
-            var agentTypeNames = new string[count + 2];
-            for (var i = 0; i < count; i++)
+            if (!foundEdges.ContainsKey(idx1))
             {
-                var id = NavMesh.GetSettingsByIndex(i).agentTypeID;
-                var name = NavMesh.GetSettingsNameFromID(id);
-                agentTypeNames[i] = name;
-                if (id == agentTypeID.intValue)
-                    index = i;
+                foundEdges[idx1] = new Dictionary<int, int>();
+                foundEdges[idx1][idx2] = 1;
             }
-            agentTypeNames[count] = "";
-            agentTypeNames[count + 1] = "Open Agent Settings...";
-
-            bool validAgentType = index != -1;
-            if (!validAgentType)
+            else if (foundEdges[idx1].ContainsKey(idx2))
             {
-                EditorGUILayout.HelpBox("Agent Type invalid.", MessageType.Warning);
+                ++foundEdges[idx1][idx2];
+            }
+            else
+            {
+                foundEdges[idx1][idx2] = 1;
             }
 
-            var rect = EditorGUILayout.GetControlRect(true, EditorGUIUtility.singleLineHeight);
-            EditorGUI.BeginProperty(rect, GUIContent.none, agentTypeID);
-
-            EditorGUI.BeginChangeCheck();
-            index = EditorGUI.Popup(rect, labelName, index, agentTypeNames);
-            if (EditorGUI.EndChangeCheck())
+            if (!foundEdges.ContainsKey(idx2))
             {
-                if (index >= 0 && index < count)
-                {
-                    var id = NavMesh.GetSettingsByIndex(index).agentTypeID;
-                    agentTypeID.intValue = id;
-                }
-                else if (index == count + 1)
-                {
-                    NavMeshEditorHelpers.OpenAgentSettings(-1);
-                }
+                foundEdges[idx2] = new Dictionary<int, int>();
+                foundEdges[idx2][idx1] = 1;
             }
-
-            EditorGUI.EndProperty();
-        }
-
-        static void AreaPopup(string labelName, SerializedProperty areaProperty)
-        {
-            var areaIndex = -1;
-            var areaNames = GameObjectUtility.GetNavMeshAreaNames();
-            for (var i = 0; i < areaNames.Length; i++)
+            else if (foundEdges[idx2].ContainsKey(idx1))
             {
-                var areaValue = GameObjectUtility.GetNavMeshAreaFromName(areaNames[i]);
-                if (areaValue == areaProperty.intValue)
-                    areaIndex = i;
+                ++foundEdges[idx2][idx1];
             }
-            ArrayUtility.Add(ref areaNames, "");
-            ArrayUtility.Add(ref areaNames, "Open Area Settings...");
-
-            var rect = EditorGUILayout.GetControlRect(true, EditorGUIUtility.singleLineHeight);
-            EditorGUI.BeginProperty(rect, GUIContent.none, areaProperty);
-
-            EditorGUI.BeginChangeCheck();
-            areaIndex = EditorGUI.Popup(rect, labelName, areaIndex, areaNames);
-
-            if (EditorGUI.EndChangeCheck())
+            else
             {
-                if (areaIndex >= 0 && areaIndex < areaNames.Length - 2)
-                    areaProperty.intValue = GameObjectUtility.GetNavMeshAreaFromName(areaNames[areaIndex]);
-                else if (areaIndex == areaNames.Length - 1)
-                    NavMeshEditorHelpers.OpenAreaSettings();
+                foundEdges[idx2][idx1] = 1;
             }
-
-            EditorGUI.EndProperty();
         }
 
         void RegenerateMesh()
         {
-            if (m_WalkableArea == null)
+            if (m_Hotspot == null)
             {
                 return;
             }
 
-            string assetPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
+            string assetPath = AssetDatabase.GetAssetPath(m_Hotspot.m_sprite);
             TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
             if (importer == null)
             {
@@ -593,90 +433,112 @@ namespace UnityEditor.AdventureGame
                 return;
             }
 
-            EditorUtility.DisplayProgressBar("Rebuilding Navmesh",
-                string.Format("Applying Changes to WalkableArea {0}", m_WalkableArea.name), 0.5f);
-            string outputPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
+            EditorUtility.DisplayProgressBar("Rebuilding Collision Mesh",
+                string.Format("Applying Changes to HotSpot {0}", m_Hotspot.name), 0.5f);
+            string outputPath = AssetDatabase.GetAssetPath(m_Hotspot.m_sprite);
             byte[] bytes = m_PaintTexture.EncodeToPNG();
             File.WriteAllBytes(outputPath, bytes);
             AssetDatabase.ImportAsset(outputPath);
-            m_CollisionObject.SetActive(false);
 
             TextureImporterSettings settings = new TextureImporterSettings();
             importer.ReadTextureSettings(settings);
             settings.spriteMeshType = SpriteMeshType.Tight;
-            settings.spriteTessellationDetail = m_WalkableArea.m_detail;
+            settings.spriteTessellationDetail = m_Hotspot.m_detail;
             importer.SetTextureSettings(settings);
             importer.SaveAndReimport();
 
             EditorUtility.SetDirty(importer);
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
 
-            Vector3[] vertices = new Vector3[m_WalkableArea.m_sprite.vertices.Length];
-            Vector3[] normals = new Vector3[m_WalkableArea.m_sprite.vertices.Length];
-            Vector2[] uv = new Vector2[m_WalkableArea.m_sprite.vertices.Length];
+            Sprite reloadedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+
+            Vector2[] vertices = new Vector2[m_Hotspot.m_sprite.vertices.Length];
 
             // normalize the vertex data from -1.0f to 1.0f in x and z coordinates
-            for (int i = 0; i < m_WalkableArea.m_sprite.vertices.Length; ++i)
+            for (int i = 0; i < m_Hotspot.m_sprite.vertices.Length; ++i)
             {
                 vertices[i] = new Vector3(
-                    m_WalkableArea.m_sprite.vertices[i].x * 2.0f * m_WalkableArea.m_sprite.pixelsPerUnit / m_WalkableArea.m_sprite.texture.width,
-                    0.0f,
-                    m_WalkableArea.m_sprite.vertices[i].y * 2.0f * m_WalkableArea.m_sprite.pixelsPerUnit / m_WalkableArea.m_sprite.texture.height);
-                normals[i] = -Vector3.forward;
-                uv[i] = Vector2.zero;
+                    m_Hotspot.m_sprite.vertices[i].x * 2.0f * m_Hotspot.m_sprite.pixelsPerUnit / m_Hotspot.m_sprite.texture.width,
+                    m_Hotspot.m_sprite.vertices[i].y * 2.0f * m_Hotspot.m_sprite.pixelsPerUnit / m_Hotspot.m_sprite.texture.height);
+            }
+            
+            Dictionary<int, Dictionary<int, int>> foundEdges = new Dictionary<int, Dictionary<int, int>>();
+            for (int i = 0; i < m_Hotspot.m_sprite.triangles.Length / 3; ++i)
+            {
+                int idx1 = m_Hotspot.m_sprite.triangles[i * 3];
+                int idx2 = m_Hotspot.m_sprite.triangles[i * 3 + 1];
+                int idx3 = m_Hotspot.m_sprite.triangles[i * 3 + 2];
+
+                IncrementIndex(idx1, idx2, foundEdges);
+                IncrementIndex(idx2, idx3, foundEdges);
+                IncrementIndex(idx3, idx1, foundEdges);
             }
 
-            Mesh mesh = new Mesh();
-            mesh.vertices = vertices;
-            mesh.normals = normals;
-            mesh.uv = uv;
-
-            int[] triangles = new int[m_WalkableArea.m_sprite.triangles.Length];
-            for (int i = 0; i < m_WalkableArea.m_sprite.triangles.Length; ++i)
+            foreach (KeyValuePair<int, Dictionary<int, int>> pair in foundEdges)
             {
-                triangles[i] = m_WalkableArea.m_sprite.triangles[i];
-            }
-
-            mesh.triangles = triangles;
-
-            MeshFilter meshFilter = m_WalkableArea.gameObject.AddComponent<MeshFilter>();
-            meshFilter.mesh = mesh;
-
-            MeshRenderer meshRenderer = m_WalkableArea.gameObject.AddComponent<MeshRenderer>();
-
-            // set modified to false here so that OnDisable of the editor doesn't retrigger RegenerateMesh
-            m_Modified = false;
-
-            string navmeshPath = Path.Combine(SceneManager.Instance.m_outputPath, PrefabUtility.FindPrefabRoot(m_WalkableArea.transform.parent.gameObject).name);
-            string navmeshAssetPath = Path.Combine(navmeshPath, string.Format("{0}.asset", m_WalkableArea.name));
-
-            if (m_WalkableArea.navMeshData != null)
-            {
-                string walkableAreaNavMeshAssetPath = AssetDatabase.GetAssetPath(m_WalkableArea.navMeshData);
-                if (!string.IsNullOrEmpty(walkableAreaNavMeshAssetPath))
+                List<int> eraseList = new List<int>();
+                foreach (KeyValuePair<int, int> pair2 in pair.Value)
                 {
-                    navmeshAssetPath = walkableAreaNavMeshAssetPath;
+                    if (pair2.Value > 1)
+                    {
+                        eraseList.Add(pair2.Key);
+                    }
+                }
+
+                // erase edges that are duplicated
+                foreach (int erase in eraseList)
+                {
+                    pair.Value.Remove(erase);
                 }
             }
-            else
-            {
-                Directory.CreateDirectory(navmeshPath);
-                navmeshAssetPath = AssetDatabase.GenerateUniqueAssetPath(navmeshAssetPath);
-            }
-            
-            m_WalkableArea.BuildNavMesh();
-            
-            AssetDatabase.CreateAsset(m_WalkableArea.navMeshData, navmeshAssetPath);
 
-            DestroyImmediate(meshRenderer);
-            DestroyImmediate(meshFilter);
+            List<List<int>> edgeList = new List<List<int>>();
+            foreach (KeyValuePair<int, Dictionary<int, int>> pair in foundEdges)
+            {
+                if (pair.Value.Count > 0)
+                {
+                    List<int> newList = new List<int>();
+                    edgeList.Add(newList);
+                    int vert1 = pair.Key;
+                    int vert2 = pair.Value.Keys.First();
+                    newList.Add(vert1);
+                    newList.Add(vert2);
+
+                    foundEdges[vert1].Remove(vert2);
+                    foundEdges[vert2].Remove(vert1);
+
+                    int vertBegin = vert1;
+                    while (!foundEdges[vert2].Keys.Contains(vertBegin) && foundEdges[vert2].Keys.Count > 0)
+                    {
+                        vert1 = foundEdges[vert2].Keys.First();
+                        newList.Add(vert1);
+                        foundEdges[vert1].Remove(vert2);
+                        foundEdges[vert2].Remove(vert1);
+                        vert2 = vert1;
+                    }
+                    foundEdges[vert2].Remove(vertBegin);
+                }
+            }
+
+
+            PolygonCollider2D collider = m_Hotspot.GetComponent<PolygonCollider2D>();
+            collider.pathCount = edgeList.Count;
+            for (int i = 0; i < edgeList.Count; ++i)
+            {
+                Vector2[] edgeVerts = new Vector2[edgeList[i].Count];
+                for (int iEdge = 0; iEdge < edgeList[i].Count; ++iEdge)
+                {
+                    edgeVerts[iEdge] = vertices[edgeList[i][iEdge]];
+                }
+                collider.SetPath(i, edgeVerts);
+            }
 
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
-                WalkableArea prefab = PrefabUtility.GetCorrespondingObjectFromSource(m_WalkableArea) as WalkableArea;
+                Hotspot prefab = PrefabUtility.GetCorrespondingObjectFromSource(m_Hotspot) as Hotspot;
                 if (prefab != null)
                 {
-                    prefab.navMeshData = m_WalkableArea.navMeshData;
+                    prefab.GetComponent<PolygonCollider2D>();
                 }
             }
 

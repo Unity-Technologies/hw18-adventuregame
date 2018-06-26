@@ -195,12 +195,16 @@ namespace UnityEditor.AdventureGame
             backgroundRenderer.color = Color.gray;
             backgroundRenderer.size = new Vector2(backgroundHeight * aspectRatio, backgroundHeight);
 
+            GameObject hotspotGroup = new GameObject();
+            hotspotGroup.transform.SetParent(sceneRoot.transform, false);
+            hotspotGroup.transform.localScale = new Vector3(Camera.main.orthographicSize * aspectRatio, Camera.main.orthographicSize, 1.0f);
+            hotspotGroup.name = "Hotspots";
+            hotspotGroup.AddComponent<HotspotGroup>();
+
             GameObject walkableAreaGroup = new GameObject();
             walkableAreaGroup.transform.SetParent(sceneRoot.transform, false);
             walkableAreaGroup.transform.Rotate(-90.0f, 0.0f, 0.0f);
-
-            float walkableScaleHeight = Camera.main.orthographicSize;
-            walkableAreaGroup.transform.localScale = new Vector3(walkableScaleHeight * aspectRatio, 1.0f, walkableScaleHeight);
+            walkableAreaGroup.transform.localScale = new Vector3(Camera.main.orthographicSize * aspectRatio, 1.0f, Camera.main.orthographicSize);
             walkableAreaGroup.name = "WalkableAreas";
             walkableAreaGroup.AddComponent<WalkableAreaGroup>();
 
