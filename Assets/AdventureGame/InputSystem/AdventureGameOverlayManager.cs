@@ -13,6 +13,13 @@ namespace UnityEngine.AdventureGame
     /// </summary>
     public class AdventureGameOverlayManager : MonoBehaviour
     {
+        /// <summary>
+        /// The type of menu
+        /// </summary>
+        public enum MenuType
+        {
+        }
+
         #region Public Variables
         // Static singleton
         public static AdventureGameOverlayManager Instance
@@ -28,15 +35,21 @@ namespace UnityEngine.AdventureGame
             }
         }
 
-        // UIs for different types of UI. Enable/disable based on game type.
-        [Header("Top Level UIs")]
+        // UIs for different adventure game types. Enable/disable based on game type.
+        [HideInInspector]
         public GameObject sierraActionUI;
+        [HideInInspector]
         public GameObject verbCoinActionUI;
 
         // Prefabs for action menu buttons
-        [Header("Button Prefabs")]
+        [Header("Action Button Prefabs")]
         public Button sierraActionButton;
         public Button verbCoinActionButton;
+
+        // Settings for Dialogue Menus
+        [Header("Settings for Dialogue Menus")]
+        public
+
         #endregion
 
         #region Private Variables
@@ -51,10 +64,12 @@ namespace UnityEngine.AdventureGame
         private void Start()
         {
             // Set all menus to false and selectively enable
-            if (sierraActionUI != null) {
+            if (sierraActionUI != null)
+            {
                 sierraActionUI.SetActive(false);
             }
-            if (verbCoinActionUI != null) {
+            if (verbCoinActionUI != null)
+            {
                 verbCoinActionUI.SetActive(false);
             }
 
@@ -70,7 +85,8 @@ namespace UnityEngine.AdventureGame
             {
                 case AdventureGameType.SIERRA:
                     {
-                        if (sierraActionUI != null) {
+                        if (sierraActionUI != null)
+                        {
                             SetUpSierraActionUI();
                         }
                         break;
