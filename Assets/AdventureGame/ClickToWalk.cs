@@ -14,9 +14,9 @@
                 {
                     foreach (var hit in hits)
                     {
-                        if (hit.gameObject.tag == "ClickableAction")
+                        var clickableAction = hit.gameObject.GetComponent<ClickableAction>();
+                        if (clickableAction != null)
                         {
-                            var clickableAction = gameObject.GetComponent<ClickableAction>();
                             clickableAction.ItemClicked();
                         }
                         else if (hit.gameObject.GetInstanceID() == gameObject.GetInstanceID())
