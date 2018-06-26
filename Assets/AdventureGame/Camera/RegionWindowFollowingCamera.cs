@@ -1,45 +1,46 @@
 using UnityEngine;
 
-public class RegionWindowFollowingCamera : FollowingCamera
+namespace UnityEngine.AdventureGame
 {
-    public Vector2 m_RegionDimension;
-
-    Vector3 m_TargetPosition;
-
-    public Rect GetRegionWindow()
+    public class RegionWindowFollowingCamera : FollowingCamera
     {
-        return new Rect(GetComponent<Camera>().pixelRect.center - (m_RegionDimension / 2), m_RegionDimension);
-    }
+        public Vector2 m_RegionDimension;
 
-    override public Vector3 GetStartPosition()
-    {
-        Vector3 position = new Vector3(
-            (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
-            (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
-            transform.position.z
-        );
+        Vector3 m_TargetPosition;
 
-        m_TargetPosition = position;
-        return m_TargetPosition;
-    }
-
-    override public Vector3 GetUpdatedPosition()
-    {
-        if (m_RegionDimension.x > 0 && m_RegionDimension.y > 0)
+        public Rect GetRegionWindow()
         {
-            Vector3 targetScreenPosition = GetComponent<Camera>().WorldToScreenPoint(m_Target.transform.position);
+            Camera camera = GetComponent<Camera>();
+            Vector3 origin = camera.ViewportToScreenPoint(camera.rect.center - (m_RegionDimension * 0.5f));
+            Vector3 extent = camera.ViewportToScreenPoint(m_RegionDimension);
+            return new Rect(origin, extent);
+        }
+
+        override protected Vector3 GetStartPosition()
+        {
+            m_TargetPosition = new Vector3(
+                (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
+                (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
+                transform.position.z
+            );
+
+            return m_TargetPosition;
+        }
+
+        override protected Vector3 GetTargetPosition()
+        {
+            Camera camera = GetComponent<Camera>();
+            Vector3 targetScreenPosition = camera.WorldToScreenPoint(m_Target.transform.position);
             if (!GetRegionWindow().Contains(targetScreenPosition))
             {
-                Vector3 position = new Vector3(
+                m_TargetPosition = new Vector3(
                     (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
                     (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
                     transform.position.z
                 );
-
-                m_TargetPosition = position;
             }
-        }
 
-        return m_TargetPosition;
+            return m_TargetPosition;
+        }
     }
 }
