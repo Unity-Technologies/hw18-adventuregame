@@ -17,11 +17,13 @@ namespace UnityEngine.AdventureGame
         }
 
         public void PickedUp(){
+            spriteRenderer.enabled = false;
             inventoryManager.AddItem(this);
         }
 
 		public void Dropped()
 		{
+            spriteRenderer.enabled = true;
 			inventoryManager.RemoveItem(this);
 		}
     }
