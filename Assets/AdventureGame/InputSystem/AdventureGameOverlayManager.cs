@@ -48,7 +48,7 @@ namespace UnityEngine.AdventureGame
 
         // Settings for Dialogue Menus
         [Header("Settings for Dialogue Menus")]
-        public
+        
 
         #endregion
 

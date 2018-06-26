@@ -18,7 +18,6 @@ public class SampleGraphView : GraphView
 
         focusIndex = 0;
     }
-
     
 
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
