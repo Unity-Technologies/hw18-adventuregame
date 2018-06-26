@@ -7,7 +7,7 @@ namespace UnityEngine.AdventureGame
     {
         NavMeshAgent m_NavMeshAgent;
         Animator     m_Animator;
-        void Start()
+        void Awake()
         {
             m_NavMeshAgent = GetComponent<NavMeshAgent>();
             m_NavMeshAgent.updateRotation = false;
@@ -41,6 +41,11 @@ namespace UnityEngine.AdventureGame
         public void WalkToPosition(Vector2 position)
         {
             m_NavMeshAgent.SetDestination(new Vector3(position.x, position.y, 0.0f));
+        }
+
+        public void WarpToPosition(Vector2 position)
+        {
+            m_NavMeshAgent.Warp(new Vector3(position.x, position.y, 0.0f));
         }
     }
 }
