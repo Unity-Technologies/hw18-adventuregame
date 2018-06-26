@@ -11,6 +11,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 773b05af7f3ef1545bed8f915c36067a, type: 3}
   m_Name: StoryEventsDatabase
   m_EditorClassIdentifier: 
-  events:
-  - 1
-  - 1
+  events: []
