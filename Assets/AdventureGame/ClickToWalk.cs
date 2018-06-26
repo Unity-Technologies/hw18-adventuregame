@@ -2,29 +2,33 @@
 {
     public class ClickToWalk : MonoBehaviour
     {
-        void OnMouseUp()
+        void Update()
         {
-            Vector2 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            Collider2D[] hits = Physics2D.OverlapPointAll(ray);
-
-            if (UnityEngine.EventSystems.EventSystem.current == null || !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButtonUp(0))
             {
-                if (hits.Length > 0)
+                Vector2 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                Collider2D[] hits = Physics2D.OverlapPointAll(ray);
+
+                if (UnityEngine.EventSystems.EventSystem.current == null || !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
                 {
-                    foreach (var hit in hits)
+                    if (hits.Length > 0)
                     {
-                        if (hit.gameObject.tag == "ClickableAction")
+                        foreach (var hit in hits)
                         {
-                            var clickableAction = gameObject.GetComponent<ClickableAction>();
-                            clickableAction.ItemClicked();
-                        }
-                        else if (hit.gameObject.GetInstanceID() == gameObject.GetInstanceID())
-                        {
-                            Debug.LogFormat("Walk Command Triggered!");
-                            if (SceneManager.Instance.Character != null)
+                            var interactableAction = hit.gameObject.GetComponent<Interactable>();
+                            if (interactableAction != null)
                             {
-                                SceneManager.Instance.Character.WalkToPosition(ray);
+                                interactableAction.OnInteracted();
+                                break;
+                            }
+                            else
+                            {
+                                Debug.LogFormat("Walk Command Triggered!");
+                                if (SceneManager.Instance.Character != null)
+                                {
+                                    SceneManager.Instance.Character.WalkToPosition(ray);
+                                }
                             }
                         }
                     }

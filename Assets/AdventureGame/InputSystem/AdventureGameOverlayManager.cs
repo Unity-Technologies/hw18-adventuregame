@@ -48,21 +48,34 @@ namespace UnityEngine.AdventureGame
 
         // Settings for Dialogue Menus
         [Header("Settings for Dialogue Menus")]
-        
+        [Tooltip("Use the Sprite Editor to set the slicing on the sprite.")]
+        public Sprite borderSprite;
 
         #endregion
 
         #region Private Variables
         private static AdventureGameOverlayManager instance;
+        private GameObject dialogueBoxPrefab;
+        private Canvas canvas;
+        private GameObject currentlyDisplayedDialogueBox;
         #endregion
 
         #region Public Methods
-
+        public void CreateDialogueBox() {
+            GameObject dialogueBox = Instantiate(dialogueBoxPrefab);
+            if (borderSprite != null) {
+                dialogueBox.GetComponent<Image>().sprite = borderSprite;
+            }
+            dialogueBox.transform.SetParent(canvas.transform, false);
+            currentlyDisplayedDialogueBox = dialogueBox;
+        }
         #endregion
 
         #region Private Methods
         private void Start()
         {
+            canvas = GetComponentInChildren<Canvas>();
+
             // Set all menus to false and selectively enable
             if (sierraActionUI != null)
             {
@@ -74,6 +87,12 @@ namespace UnityEngine.AdventureGame
             }
 
             SetUpGameTypeUI();
+
+            // Set up Dialogue Box prefab
+            dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
+
+            // test
+            //CreateDialogueBox();
         }
 
         /// <summary>
@@ -126,6 +145,7 @@ namespace UnityEngine.AdventureGame
             InputSystemManager.Instance.currentlySelectedActionType = characterActionType;
             Debug.Log(characterActionType);
         }
+
         #endregion
     }
 }
