@@ -191,6 +191,7 @@ MonoBehaviour:
     type: 2}
   verbCoinActionButton: {fileID: 114658828030331548, guid: c060e3ec85fee4d3f854fb786cfcdfcf,
     type: 2}
+  borderSprite: {fileID: 21300000, guid: 8b9823ecf0c774858b03c9259b956275, type: 3}
 --- !u!114 &114805847185324396
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -263,9 +264,9 @@ RectTransform:
   m_Father: {fileID: 224477515842236408}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75, y: -782}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 75, y: 50}
   m_SizeDelta: {x: 150, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224477515842236408
