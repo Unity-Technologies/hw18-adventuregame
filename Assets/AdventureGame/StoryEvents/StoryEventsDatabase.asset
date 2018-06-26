@@ -8,8 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1b88a8d2d22b4e6f9fc6f77ae23e99b, type: 3}
-  m_Name: Coin
+  m_Script: {fileID: 11500000, guid: 773b05af7f3ef1545bed8f915c36067a, type: 3}
+  m_Name: StoryEventsDatabase
   m_EditorClassIdentifier: 
-  Id: coin
-  sprite: {fileID: 21300000, guid: cf5381e9e429c456eba77d91f9416d9a, type: 3}
+  events:
+  - talked_to_tom
+  - picked_up_pot
