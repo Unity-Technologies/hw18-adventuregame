@@ -26,7 +26,6 @@ namespace UnityEngine.AdventureGame
         void ConfigureSlots(){
 			for (int i = 0; i < InventoryManager.INVENTORY_SLOTS; i++)
 			{
-                Debug.Log(i);
                 UpdateSlot(i);
                 SetSlotClickHandler(i);
 			}

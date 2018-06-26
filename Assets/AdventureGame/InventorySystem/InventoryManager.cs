@@ -22,6 +22,16 @@ namespace UnityEngine.AdventureGame
 			inventoryUI.UpdateSlot(index);
 		}
 
+        public void DropItem(Vector3 dropPosition){
+            if(Selected == null){
+                Debug.Log("Called DropItem with nothing selected!");
+                return;
+            }
+
+            Selected.transform.position = new Vector3(dropPosition.x - 0.1f, dropPosition.y + 0.1f, dropPosition.z);
+            RemoveItem(Selected);
+        }
+
         public bool AddItem(InventoryItem itemToAdd)
         {
             //find the first empty inventory slot
