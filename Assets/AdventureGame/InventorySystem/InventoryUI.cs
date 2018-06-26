@@ -14,16 +14,30 @@ namespace UnityEngine.AdventureGame
         {
             inventoryManager = FindObjectOfType<InventoryManager>();
             inventorySlots = GetComponentsInChildren<InventorySlot>();
-            Debug.Log(inventorySlots.Length);
-
-            for (int i = 0; i < InventoryManager.INVENTORY_SLOTS; i++)
-            {
-                inventorySlots[i].index = i;
-                if(inventoryManager.items[i] != null){
-                    inventorySlots[i].GetComponent<Image>().sprite = inventoryManager.items[i].sprite;
-                }
+            if(InventoryManager.INVENTORY_SLOTS != inventorySlots.Length){
+                Debug.Log("WARNING: Number of Inventory Slots does not match max inventory size!");
             }
+            //let the Inventory Manager know what UI needs to be updated when inventory changes
+            inventoryManager.RegisterInventoryUI(this);
+            UpdateSlots();
         }
+
+        void UpdateSlots(){
+			for (int i = 0; i < InventoryManager.INVENTORY_SLOTS; i++)
+			{
+				inventorySlots[i].index = i;
+                UpdateSlot(i);
+			}
+        }
+
+        public void UpdateSlot(int index){
+            if(inventoryManager.items[index] != null){
+				inventorySlots[index].GetComponent<Image>().sprite = inventoryManager.items[index].sprite;
+			}
+            else {
+                inventorySlots[index].GetComponent<Image>().sprite = null;
+            }
+		}
 
     }
 }

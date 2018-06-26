@@ -11,6 +11,17 @@ namespace UnityEngine.AdventureGame
         public InventoryItem[] items = new InventoryItem[INVENTORY_SLOTS];
         public InventoryItem Selected = null;
 
+        InventoryUI inventoryUI = null;
+
+        public void RegisterInventoryUI(InventoryUI newInventoryUI) {
+            inventoryUI = newInventoryUI;
+        }
+
+		public void UpdateUI(int index)
+		{
+			inventoryUI.UpdateSlot(index);
+		}
+
         public bool AddItem(InventoryItem itemToAdd)
         {
             //find the first empty inventory slot
@@ -21,6 +32,7 @@ namespace UnityEngine.AdventureGame
                     items[i] = itemToAdd;
                     itemImages[i].sprite = itemToAdd.sprite;
                     itemImages[i].enabled = true;
+                    UpdateUI(i);
                     return true;
                 }
             }
@@ -38,6 +50,7 @@ namespace UnityEngine.AdventureGame
                     items[i] = null;
                     itemImages[i].sprite = null;
                     itemImages[i].enabled = false;
+                    UpdateUI(i);
                     return true;
                 }
             }
@@ -84,8 +97,7 @@ namespace UnityEngine.AdventureGame
 			}
             //clicking an item when nothing is currently selected
             else {
-                Selected = itemInSlot;
-                //TODO update the cursor to the selected item's image
+                SelectItem(index);
             }
 		}
 
