@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio for Mac
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hw18-adventuregame", "Assembly-CSharp.csproj", "{5C53242D-6869-95F5-03C2-15B5036E5831}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hw18-adventuregame", "Unity.InputSystem.csproj", "{A57DB33F-D18D-6ABA-D979-680F98A9A8BD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hw18-adventuregame", "Assembly-CSharp-Editor.csproj", "{EBC80B23-ED08-6163-C496-94D56195024C}"
 EndProject
 Global
@@ -17,10 +15,6 @@ Global
 		{5C53242D-6869-95F5-03C2-15B5036E5831}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C53242D-6869-95F5-03C2-15B5036E5831}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C53242D-6869-95F5-03C2-15B5036E5831}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A57DB33F-D18D-6ABA-D979-680F98A9A8BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A57DB33F-D18D-6ABA-D979-680F98A9A8BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A57DB33F-D18D-6ABA-D979-680F98A9A8BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A57DB33F-D18D-6ABA-D979-680F98A9A8BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EBC80B23-ED08-6163-C496-94D56195024C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBC80B23-ED08-6163-C496-94D56195024C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBC80B23-ED08-6163-C496-94D56195024C}.Release|Any CPU.ActiveCfg = Release|Any CPU
