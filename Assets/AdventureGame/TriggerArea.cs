@@ -1,7 +1,7 @@
 ﻿namespace UnityEngine.AdventureGame
 {
     [RequireComponent(typeof(PolygonCollider2D))]
-    public class Hotspot : Interactable, IBaseArea
+    public class TriggerArea : MonoBehaviour, IBaseArea
     {
 #if UNITY_EDITOR
         public Sprite m_sprite;

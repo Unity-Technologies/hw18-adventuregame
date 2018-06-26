@@ -1,6 +1,6 @@
 ﻿namespace UnityEngine.AdventureGame
 {
-    public class HotspotGroup : BaseAreaGroup
+    public class TriggerAreaGroup : BaseAreaGroup
     {
     }
 }

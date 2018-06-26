@@ -201,6 +201,12 @@ namespace UnityEditor.AdventureGame
             hotspotGroup.name = "Hotspots";
             hotspotGroup.AddComponent<HotspotGroup>();
 
+            GameObject triggerAreaGroup = new GameObject();
+            triggerAreaGroup.transform.SetParent(sceneRoot.transform, false);
+            triggerAreaGroup.transform.localScale = new Vector3(Camera.main.orthographicSize * aspectRatio, Camera.main.orthographicSize, 1.0f);
+            triggerAreaGroup.name = "TriggerArea";
+            triggerAreaGroup.AddComponent<TriggerAreaGroup>();
+
             GameObject walkableAreaGroup = new GameObject();
             walkableAreaGroup.transform.SetParent(sceneRoot.transform, false);
             walkableAreaGroup.transform.Rotate(-90.0f, 0.0f, 0.0f);
