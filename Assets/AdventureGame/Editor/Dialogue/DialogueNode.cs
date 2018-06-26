@@ -11,7 +11,7 @@ namespace Unity.Adventuregame {
 
         void addOutput()
         {
-            Port output = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+            Port output = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
             outputContainer.Add(output);
         }
 
