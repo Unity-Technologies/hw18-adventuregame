@@ -16,10 +16,10 @@
                     {
                         foreach (var hit in hits)
                         {
-                            var interactableAction = hit.gameObject.GetComponent<Interactable>();
-                            if (interactableAction != null)
+                            var interactableObject = hit.gameObject.GetComponent<Interactable>();
+                            if (interactableObject != null)
                             {
-                                interactableAction.OnInteracted();
+                                interactableObject.OnInteracted();
                                 break;
                             }
                             else
