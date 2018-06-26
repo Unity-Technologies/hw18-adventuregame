@@ -6,11 +6,16 @@ namespace UnityEditor.AdventureGame
     [CustomEditor(typeof(WalkableAreaGroup))]
     public class WalkableAreaGroupEditor : Editor
     {
-        WalkableAreaGroup m_WalkableAreaGroup;
+        WalkableAreaGroup  m_WalkableAreaGroup;
+        SerializedProperty m_TextureWidth;
+        SerializedProperty m_TextureHeight;
 
         void OnEnable()
         {
             m_WalkableAreaGroup = (WalkableAreaGroup)target;
+
+            m_TextureWidth = serializedObject.FindProperty("m_textureWidth");
+            m_TextureHeight = serializedObject.FindProperty("m_textureHeight");
         }
 
         public override void OnInspectorGUI()
@@ -18,6 +23,14 @@ namespace UnityEditor.AdventureGame
             Color oldColor = GUI.color;
 
             GUILayout.Space(15);
+
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Texture Resolution", GUILayout.Width(EditorGUIUtility.labelWidth));
+            EditorGUILayout.PropertyField(m_TextureWidth, GUIContent.none, GUILayout.MaxWidth(75.0f));
+            EditorGUILayout.LabelField(" x ", GUILayout.Width(20.0f));
+            EditorGUILayout.PropertyField(m_TextureHeight, GUIContent.none, GUILayout.MaxWidth(75.0f));
+            EditorGUILayout.EndHorizontal();
+
             GUI.color = Color.green;
             GUILayout.BeginHorizontal();
             GUILayout.Space(15);
@@ -34,6 +47,8 @@ namespace UnityEditor.AdventureGame
             GUILayout.Space(15);
             GUILayout.EndHorizontal();
             GUILayout.Space(15);
+
+            serializedObject.ApplyModifiedProperties();
         }
 
         void OnSceneGUI()

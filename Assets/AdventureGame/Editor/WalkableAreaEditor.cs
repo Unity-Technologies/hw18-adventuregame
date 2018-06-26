@@ -11,7 +11,6 @@ namespace UnityEditor.AdventureGame
     public class WalkableAreaEditor : Editor
     {
         readonly Color k_TransparentWhite = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        readonly Vector2 k_DefaultTextureSize = new Vector2(512.0f, 512.0f);
 
         Material m_CollisionMeshMaterial;
         GameObject m_CollisionObject;
@@ -133,7 +132,9 @@ namespace UnityEditor.AdventureGame
                     {
                         Directory.CreateDirectory(spritePath);
 
-                        m_PaintTexture = new Texture2D((int)k_DefaultTextureSize.x, (int)k_DefaultTextureSize.y, TextureFormat.RGBA32, false);
+                        WalkableAreaGroup group = m_WalkableArea.transform.parent.gameObject.GetComponent<WalkableAreaGroup>();
+
+                        m_PaintTexture = new Texture2D(group.m_textureWidth, group.m_textureHeight, TextureFormat.RGBA32, false);
                         Color[] colors = m_PaintTexture.GetPixels();
                         for (int i = 0; i < colors.Length; ++i)
                         {
@@ -586,6 +587,11 @@ namespace UnityEditor.AdventureGame
 
         void RegenerateMesh()
         {
+            if (m_WalkableArea == null)
+            {
+                return;
+            }
+
             Mesh mesh = new Mesh();
 
             string assetPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);

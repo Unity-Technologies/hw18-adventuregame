@@ -1,6 +1,6 @@
 ﻿namespace UnityEngine.AdventureGame
 {
-    public class ClickToWalk : MonoBehaviour
+    public class ScreenClickHandler : MonoBehaviour
     {
         void Update()
         {
@@ -16,12 +16,13 @@
                     {
                         foreach (var hit in hits)
                         {
-                            var interactableAction = hit.gameObject.GetComponent<Interactable>();
-                            if (interactableAction != null)
+                            var interactableObject = hit.gameObject.GetComponent<Interactable>();
+                            if (interactableObject != null)
                             {
-                                interactableAction.OnInteracted();
+                                interactableObject.OnInteracted();
+                                break;
                             }
-                            else //if (hit.gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                            else
                             {
                                 Debug.LogFormat("Walk Command Triggered!");
                                 if (SceneManager.Instance.Character != null)

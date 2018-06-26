@@ -205,7 +205,7 @@ namespace UnityEngine.AdventureGame
                 menuFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
             }
             // test
-            CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
+            //CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
         }
 
         /// <summary>
@@ -225,6 +225,7 @@ namespace UnityEngine.AdventureGame
                     }
                 case AdventureGameType.CONTEXTUAL:
                     {
+                        // TODO(laurenfrazier): Set up Contextual UI
                         //contextualActionUI.SetActive(true);
                         break;
                     }
