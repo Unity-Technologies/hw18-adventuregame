@@ -1,53 +1,70 @@
 using UnityEngine;
 
-public class FollowingCamera : MonoBehaviour
+namespace UnityEngine.AdventureGame
 {
-    public Transform m_Target;
-
-    public Vector2 m_Speed = new Vector2(1.0f, 1.0f);
-
-    public bool m_LockAxisX;
-
-    public bool m_LockAxisY;
-
-    public virtual Vector3 GetStartPosition()
+    public class FollowingCamera : MonoBehaviour
     {
-        return new Vector3(
-            (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
-            (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
-            transform.position.z
-        );
-    }
+        public Transform m_Target;
 
-    public virtual Vector3 GetUpdatedPosition()
-    {
-        return new Vector3(
-            (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
-            (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
-            transform.position.z
-        );
-    }
+        public float m_Speed;
 
-    void Start()
-    {
-        if (m_Target)
+        public bool m_LockAxisX;
+
+        public bool m_LockAxisY;
+
+        protected virtual Vector3 GetStartPosition()
         {
-            transform.position = GetStartPosition();
-        }
-    }
-
-    void LateUpdate()
-    {
-        if (!m_Target || (m_LockAxisX && m_LockAxisY))
-        {
-            return;
+            return new Vector3(
+                (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
+                (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
+                transform.position.z
+            );
         }
 
-        Vector3 position = GetUpdatedPosition();
+        protected virtual Vector3 GetTargetPosition()
+        {
+            return new Vector3(
+                (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
+                (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
+                transform.position.z
+            );
+        }
 
-        position.x = Mathf.Lerp(transform.position.x, position.x, m_Speed.x * Time.deltaTime);
-        position.y = Mathf.Lerp(transform.position.y, position.y, m_Speed.y * Time.deltaTime);
+        void Start()
+        {
+            if (m_Target)
+            {
+                transform.position = GetStartPosition();
+            }
+        }
 
-        transform.position = position;
+        void LateUpdate()
+        {
+            if (!m_Target || (m_LockAxisX && m_LockAxisY))
+            {
+                return;
+            }
+
+            Vector3 position = GetTargetPosition();
+
+            float elapsed = Time.deltaTime;
+            float delta = m_Speed * elapsed;
+            float dx = position.x - transform.position.x;
+            float dy = position.y - transform.position.y;
+            float dist = Mathf.Sqrt(dx * dx + dy * dy);
+
+            if (dist > delta) 
+            {
+                dx /= dist;
+                dy /= dist;
+                position.x = transform.position.x + (dx * delta);
+                position.y = transform.position.y + (dy * delta);
+            }
+
+            //position.x = Mathf.Lerp(transform.position.x, position.x, m_Speed * elapsed);
+            //position.y = Mathf.Lerp(transform.position.y, position.y, m_Speed * elapsed);
+
+            transform.position = position;
+        }
     }
 }
