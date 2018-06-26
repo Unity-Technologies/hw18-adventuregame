@@ -10,8 +10,8 @@ namespace UnityEngine.AdventureGame
     /// </summary>
     public enum AdventureGameType
     {
-        SIERRA, // User selects an action before selecting the object to perform it on
-        VERBCOIN, // User selects an object and then selects an action to perform on it
+        NAIVE, // User selects an action before selecting the object to perform it on
+        CONTEXTUAL, // User selects an object and then selects an action to perform on it
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ namespace UnityEngine.AdventureGame
 
         // The type of adventure game. This will mostly impact the way the user
         // interacts with game object (ex. select object then action vs. select action then object)
-        public AdventureGameType adventureGameType = AdventureGameType.SIERRA;
+        public AdventureGameType adventureGameType = AdventureGameType.NAIVE;
 
         // The potential actions that a user can take.
         public CharacterAction[] characterActions;
@@ -72,8 +72,8 @@ namespace UnityEngine.AdventureGame
         #region Public Methods
         /// <summary>
         /// Returns the result of the user selecting an action (either pre-selected or via a dynamic menu)
-        /// in the actionSelectionDelegate. If the user has already selected an action (Sierra-style game) we
-        /// return it immediately via the delegate. If we are using a dynamic menu (Verb Coin-style game), 
+        /// in the actionSelectionDelegate. If the user has already selected an action (Naive-style game) we
+        /// return it immediately via the delegate. If we are using a dynamic menu (Contextual-style game), 
         /// calling this method will trigger a menu UI, and once the user selects an option, the delegate 
         /// will be called with the resulting selection.
         /// </summary>
@@ -81,7 +81,7 @@ namespace UnityEngine.AdventureGame
         {
             switch (adventureGameType)
             {
-                case AdventureGameType.SIERRA:
+                case AdventureGameType.NAIVE:
                     {
                         if (actionSelectionDelegate != null)
                         {
@@ -89,7 +89,7 @@ namespace UnityEngine.AdventureGame
                         }
                         break;
                     }
-                case AdventureGameType.VERBCOIN:
+                case AdventureGameType.CONTEXTUAL:
                     {
                         // TODO: Display menu here with allowedTypes
                         // Call delegate with result of action selection

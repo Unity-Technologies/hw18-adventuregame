@@ -50,16 +50,10 @@ namespace UnityEngine.AdventureGame
             }
         }
 
-        // UIs for different adventure game types. Enable/disable based on game type.
-        [HideInInspector]
-        public GameObject sierraActionUI;
-        [HideInInspector]
-        public GameObject verbCoinActionUI;
-
         // Prefabs for action menu buttons
         [Header("Action Button Prefabs")]
-        public Button sierraActionButton;
-        public Button verbCoinActionButton;
+        public Button naiveActionButton;
+        public Button contextualActionButton;
 
         // Settings for Dialogue Menus
         [Header("Settings for Dialogue Menus")]
@@ -74,6 +68,8 @@ namespace UnityEngine.AdventureGame
 
         #region Private Variables
         private static AdventureGameOverlayManager instance;
+        private GameObject naiveActionUI;
+        private GameObject contextualActionUI;
         private GameObject dialogueBoxPrefab;
         private Canvas canvas;
         private GameObject currentlyDisplayedDialogueBox;
@@ -172,7 +168,7 @@ namespace UnityEngine.AdventureGame
 
             // Set up dialogue selections
             foreach (string dialogueOption in dialogueOptions) {
-                Button dialogueOptionButton = Instantiate(sierraActionButton);
+                Button dialogueOptionButton = Instantiate(naiveActionButton);
                 Text buttonText = dialogueOptionButton.GetComponentInChildren<Text>();
                 buttonText.text = dialogueOption;
                 buttonText.font = menuFont;
@@ -188,15 +184,16 @@ namespace UnityEngine.AdventureGame
         private void Start()
         {
             canvas = GetComponentInChildren<Canvas>();
-
+            naiveActionUI = GameObject.Find("NaiveActionUI");
+            contextualActionUI = GameObject.Find("ContextualActionUI");
             // Set all menus to false and selectively enable
-            if (sierraActionUI != null)
+            if (naiveActionUI != null)
             {
-                sierraActionUI.SetActive(false);
+                naiveActionUI.SetActive(false);
             }
-            if (verbCoinActionUI != null)
+            if (contextualActionUI != null)
             {
-                verbCoinActionUI.SetActive(false);
+                contextualActionUI.SetActive(false);
             }
 
             SetUpGameTypeUI();
@@ -218,17 +215,17 @@ namespace UnityEngine.AdventureGame
         {
             switch (InputSystemManager.Instance.adventureGameType)
             {
-                case AdventureGameType.SIERRA:
+                case AdventureGameType.NAIVE:
                     {
-                        if (sierraActionUI != null)
+                        if (naiveActionUI != null)
                         {
-                            SetUpSierraActionUI();
+                            SetUpNaiveActionUI();
                         }
                         break;
                     }
-                case AdventureGameType.VERBCOIN:
+                case AdventureGameType.CONTEXTUAL:
                     {
-                        //verbCoinActionUI.SetActive(true);
+                        //contextualActionUI.SetActive(true);
                         break;
                     }
                 default:
@@ -239,24 +236,24 @@ namespace UnityEngine.AdventureGame
         }
 
 
-        private void SetUpSierraActionUI()
+        private void SetUpNaiveActionUI()
         {
-            sierraActionUI.SetActive(true);
+            naiveActionUI.SetActive(true);
             foreach (InputSystemManager.CharacterAction characterAction in InputSystemManager.Instance.characterActions)
             {
-                if (sierraActionButton != null)
+                if (naiveActionButton != null)
                 {
-                    Button characterActionButton = Instantiate(sierraActionButton);
+                    Button characterActionButton = Instantiate(naiveActionButton);
                     characterActionButton.GetComponentInChildren<Text>().text = characterAction.actionName;
                     characterActionButton.name = characterAction.actionName;
 
-                    characterActionButton.transform.SetParent(sierraActionUI.transform, false);
-                    characterActionButton.onClick.AddListener(delegate { HandleSierraActionButtonClick(characterAction.actionType); });
+                    characterActionButton.transform.SetParent(naiveActionUI.transform, false);
+                    characterActionButton.onClick.AddListener(delegate { HandleNaiveActionButtonClick(characterAction.actionType); });
                 }
             }
         }
 
-        private void HandleSierraActionButtonClick(CharacterActionType characterActionType)
+        private void HandleNaiveActionButtonClick(CharacterActionType characterActionType)
         {
             InputSystemManager.Instance.currentlySelectedActionType = characterActionType;
             Debug.Log(characterActionType);
