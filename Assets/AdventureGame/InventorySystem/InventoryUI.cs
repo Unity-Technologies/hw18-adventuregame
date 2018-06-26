@@ -20,13 +20,15 @@ namespace UnityEngine.AdventureGame
             }
             //let the Inventory Manager know what UI needs to be updated when inventory changes
             inventoryManager.RegisterInventoryUI(this);
-            UpdateSlots();
+            ConfigureSlots();
         }
 
-        void UpdateSlots(){
+        void ConfigureSlots(){
 			for (int i = 0; i < InventoryManager.INVENTORY_SLOTS; i++)
 			{
+                Debug.Log(i);
                 UpdateSlot(i);
+                SetSlotClickHandler(i);
 			}
         }
 
@@ -35,10 +37,13 @@ namespace UnityEngine.AdventureGame
 				inventorySlots[index].GetComponent<Image>().sprite = inventoryManager.items[index].sprite;
 			}
             else {
-                inventorySlots[index].onClick = null;
                 inventorySlots[index].GetComponent<Image>().sprite = null;
             }
 		}
+
+        private void SetSlotClickHandler(int index){
+			inventorySlots[index].GetComponent<Button>().onClick.AddListener(() => { inventoryManager.SlotClicked(index); });
+        }
 
     }
 }

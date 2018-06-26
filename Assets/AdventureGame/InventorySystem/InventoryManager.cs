@@ -58,13 +58,14 @@ namespace UnityEngine.AdventureGame
 			return false;
         }
 
-		public void SelectItem(int index)
+		private void selectItem(int index)
 		{
 			if (items[index] == null)
 			{
 				Debug.Log("Nothing to select here!");
 				return;
 			}
+            Debug.Log("Selected " + items[index].Id);
 			this.Selected = items[index];
 		}
 
@@ -75,6 +76,7 @@ namespace UnityEngine.AdventureGame
 
 		public void SlotClicked(int index)
 		{
+            Debug.Log("Clicked slot "+index);
             if(items[index] == null){
                 //nothing to do here
                 return;
@@ -97,7 +99,7 @@ namespace UnityEngine.AdventureGame
 			}
             //clicking an item when nothing is currently selected
             else {
-                SelectItem(index);
+                selectItem(index);
             }
 		}
 
