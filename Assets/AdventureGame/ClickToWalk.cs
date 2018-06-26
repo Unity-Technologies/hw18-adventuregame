@@ -7,16 +7,25 @@
             Vector2 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             Collider2D[] hits = Physics2D.OverlapPointAll(ray);
-            if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+
+            if (UnityEngine.EventSystems.EventSystem.current == null || !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             {
                 if (hits.Length > 0)
                 {
-                    if (hits[0].gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                    foreach (var hit in hits)
                     {
-                        Debug.LogFormat("Walk Command Triggered!");
-                        if (SceneManager.Instance.Character != null)
+                        if (hit.gameObject.tag == "ClickableAction")
                         {
-                            SceneManager.Instance.Character.WalkToPosition(ray);
+                            var clickableAction = gameObject.GetComponent<ClickableAction>();
+                            clickableAction.ItemClicked();
+                        }
+                        else if (hit.gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                        {
+                            Debug.LogFormat("Walk Command Triggered!");
+                            if (SceneManager.Instance.Character != null)
+                            {
+                                SceneManager.Instance.Character.WalkToPosition(ray);
+                            }
                         }
                     }
                 }
