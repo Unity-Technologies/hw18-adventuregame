@@ -192,6 +192,9 @@ MonoBehaviour:
   verbCoinActionButton: {fileID: 114658828030331548, guid: c060e3ec85fee4d3f854fb786cfcdfcf,
     type: 2}
   borderSprite: {fileID: 21300000, guid: 8b9823ecf0c774858b03c9259b956275, type: 3}
+  dialogueOptionMenuSize: 1
+  dialogueOptionMenuPlacement: 0
+  menuFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &114805847185324396
 MonoBehaviour:
   m_ObjectHideFlags: 1

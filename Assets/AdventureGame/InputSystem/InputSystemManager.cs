@@ -6,7 +6,7 @@ using UnityEngine;
 namespace UnityEngine.AdventureGame
 {
     /// <summary>
-    /// The type of the game. Currently supported options include VerbCoin and Sierra. 
+    /// The interaction type of the game. Currently supported options include Naive and Contextual. 
     /// </summary>
     public enum AdventureGameType
     {
