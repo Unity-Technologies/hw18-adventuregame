@@ -20,8 +20,9 @@
                             if (interactableAction != null)
                             {
                                 interactableAction.OnInteracted();
+                                break;
                             }
-                            else //if (hit.gameObject.GetInstanceID() == gameObject.GetInstanceID())
+                            else
                             {
                                 Debug.LogFormat("Walk Command Triggered!");
                                 if (SceneManager.Instance.Character != null)
