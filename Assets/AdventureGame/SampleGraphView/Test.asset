@@ -30,3 +30,21 @@ MonoBehaviour:
   - m_title: Default
     m_position: {x: 270.23346, y: -188.8664}
     m_outputs: []
+  - m_title: 
+    m_position: {x: -56.30883, y: -229.8647}
+    m_outputs: []
+  - m_title: Default
+    m_position: {x: -296.42883, y: -135.84073}
+    m_outputs: []
+  - m_title: 
+    m_position: {x: -356.04492, y: -394.40677}
+    m_outputs: []
+  - m_title: 
+    m_position: {x: -178.94478, y: -455.63272}
+    m_outputs: []
+  - m_title: Default
+    m_position: {x: 112.00524, y: -405.03278}
+    m_outputs: []
+  - m_title: 
+    m_position: {x: -482.1768, y: -612.8149}
+    m_outputs: []
