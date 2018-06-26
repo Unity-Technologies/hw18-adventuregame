@@ -53,7 +53,7 @@ public class SampleGraphViewWindow : EditorWindow, ISearchWindowProvider
     void DelayedSaveGraphData()
     {
         EditorApplication.update -= DelayedSaveGraphData;
-        SaveGraphData(m_GraphView.nodes.ToList(), k_TestGraphDataPath);
+        SaveGraphData(k_TestGraphDataPath);
     }
 
     Node CreateRootNode()
@@ -120,23 +120,21 @@ public class SampleGraphViewWindow : EditorWindow, ISearchWindowProvider
         {
             Node node = CreateNode("Default");
             m_GraphView.AddElement(node);
-            node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
-
-            m_GraphView.AddElement(node);
 
             Vector2 pointInWindow = context.screenMousePosition - position.position;
             Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
-
-            node.SetPosition(new Rect(pointInGraph, Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
-
+            node.SetPosition(new Rect(pointInGraph, Vector2.zero));
             node.Select(m_GraphView, false);
+
+            SaveGraphData(k_TestGraphDataPath);
             return true;
         }
         return false;
     }
 
-    public void SaveGraphData(List<Node> nodes, string outputPath)
+    public void SaveGraphData(string outputPath)
     {
+        List<Node> nodes = m_GraphView.nodes.ToList();
         SerializableGraphData graphData = ScriptableObject.CreateInstance<SerializableGraphData>();
         graphData.m_graphNodes = new List<SerializableGraphData.SerializableGraphNode>();
         for (int i = 0; i < nodes.Count; ++i)
