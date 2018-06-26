@@ -7,7 +7,7 @@
             Vector2 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             Collider2D[] hits = Physics2D.OverlapPointAll(ray);
-            if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            if (UnityEngine.EventSystems.EventSystem.current == null || !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
             {
                 if (hits.Length > 0)
                 {
