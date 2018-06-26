@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace UnityEngine.AdventureGame
 {
@@ -25,7 +26,6 @@ namespace UnityEngine.AdventureGame
         void UpdateSlots(){
 			for (int i = 0; i < InventoryManager.INVENTORY_SLOTS; i++)
 			{
-				inventorySlots[i].index = i;
                 UpdateSlot(i);
 			}
         }
@@ -35,6 +35,7 @@ namespace UnityEngine.AdventureGame
 				inventorySlots[index].GetComponent<Image>().sprite = inventoryManager.items[index].sprite;
 			}
             else {
+                inventorySlots[index].onClick = null;
                 inventorySlots[index].GetComponent<Image>().sprite = null;
             }
 		}
