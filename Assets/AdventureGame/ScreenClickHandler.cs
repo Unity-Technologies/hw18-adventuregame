@@ -1,6 +1,6 @@
 ﻿namespace UnityEngine.AdventureGame
 {
-    public class ClickToWalk : MonoBehaviour
+    public class ScreenClickHandler : MonoBehaviour
     {
         void Update()
         {
