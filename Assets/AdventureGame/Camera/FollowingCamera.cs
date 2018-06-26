@@ -12,12 +12,20 @@ public class FollowingCamera : MonoBehaviour
 
     public virtual Vector3 GetStartPosition()
     {
-        return m_Target.transform.position;
+        return new Vector3(
+            (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
+            (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
+            transform.position.z
+        );
     }
 
     public virtual Vector3 GetUpdatedPosition()
     {
-        return m_Target.transform.position;
+        return new Vector3(
+            (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
+            (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
+            transform.position.z
+        );
     }
 
     void Start()
