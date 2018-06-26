@@ -14,8 +14,8 @@ public class RegionWindowFollowingCamera : FollowingCamera
     override public Vector3 GetStartPosition()
     {
         Vector3 position = new Vector3(
-            m_Target.transform.position.x,
-            m_Target.transform.position.y,
+            (!m_LockAxisX ? m_Target.transform.position.x : transform.position.x),
+            (!m_LockAxisY ? m_Target.transform.position.y : transform.position.y),
             transform.position.z
         );
 
