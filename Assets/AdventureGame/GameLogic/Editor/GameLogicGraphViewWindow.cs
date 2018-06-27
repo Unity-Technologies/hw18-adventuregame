@@ -13,7 +13,7 @@ namespace UnityEditor.AdventureGame
         GameLogicGraphView m_GraphView;
         GameLogicData m_GameLogicData;
 
-        [MenuItem("Adventure Game/Game Logic Open")]
+        [MenuItem("Adventure Game/Game Logic Window %g")]
         public static void OpenWindow()
         {
             GetWindow<GameLogicGraphViewWindow>();
