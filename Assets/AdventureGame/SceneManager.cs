@@ -58,6 +58,27 @@ namespace UnityEngine.AdventureGame
             PersistentDataManager.Instance.Load();
         }
 
+        public Transform GetLocator(string name)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.activeInHierarchy)
+                {
+                    Scene scene = child.gameObject.GetComponent<Scene>();
+                    for (int i = 0; i < scene.m_LocatorRoot.transform.childCount; ++i)
+                    {
+                        Transform locator = scene.m_LocatorRoot.transform.GetChild(i);
+                        if (locator.name == name)
+                        {
+                            return locator.transform;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
 #if UNITY_EDITOR
         public string m_outputPath = "Assets/ScenePrefabs";
         public int    m_defaultWidth  = 1024;

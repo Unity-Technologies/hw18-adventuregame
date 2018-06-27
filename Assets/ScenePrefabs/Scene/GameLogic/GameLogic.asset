@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: GameLogic
+  m_Name: 
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -21,23 +21,31 @@ MonoBehaviour:
       m_targetNode: 1
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
-    m_typeData: xsgsdfsdf
+    m_typeData: talked_to_tom
     m_title: StoryEventCondition
-    m_position: {x: 201.05673, y: -70.96871}
+    m_position: {x: 122.05673, y: -68.96872}
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 2
+      m_targetNode: 3
       m_targetPort: 0
     - m_sourcePort: 1
-      m_targetNode: 3
+      m_targetNode: 4
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: True123
     m_title: Print
-    m_position: {x: 455.80695, y: -146.15488}
+    m_position: {x: 512.75226, y: -120.10497}
     m_outputs: []
+  - m_type: UnityEngine.AdventureGame.WalkToNode
+    m_typeData: NextToRock
+    m_title: Walk To
+    m_position: {x: 349.83237, y: -120.73323}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 2
+      m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: False
     m_title: Print
-    m_position: {x: 452.93173, y: 50.19616}
+    m_position: {x: 357.53183, y: 14.846142}
     m_outputs: []

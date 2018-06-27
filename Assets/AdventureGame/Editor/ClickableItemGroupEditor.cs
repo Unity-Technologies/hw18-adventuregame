@@ -6,12 +6,8 @@ namespace UnityEditor.AdventureGame
     [CustomEditor(typeof(ClickableItemGroup))]
     public class ClickableItemGroupEditor : Editor
     {
-        ClickableItemGroup  m_ClickableItemGroup;
-
-
         void OnEnable()
         {
-            m_ClickableItemGroup = (ClickableItemGroup)target;
         }
 
         public override void OnInspectorGUI()

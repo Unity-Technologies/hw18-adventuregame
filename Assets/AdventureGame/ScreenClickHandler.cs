@@ -39,7 +39,7 @@
 							else
 							{
 								Debug.LogFormat("Walk Command Triggered!");
-								if (SceneManager.Instance.Character != null)
+								if (SceneManager.Instance.Character != null && SceneManager.Instance.Character.Controllable)
 								{
 									SceneManager.Instance.Character.WalkToPosition(ray);
 								}

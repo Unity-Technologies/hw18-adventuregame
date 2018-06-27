@@ -153,7 +153,7 @@ namespace UnityEditor.AdventureGame
 
         SearchTreeEntry CreateSearchTreeEntry(Texture2D icon, int level, Type type)
         {
-            return new SearchTreeEntry(new GUIContent(type.Name, icon)) { level = level, userData = type };
+            return new SearchTreeEntry(new GUIContent(type.Name.Substring(0, type.Name.LastIndexOf("Node")), icon)) { level = level, userData = type };
         }
 
         public List<SearchTreeEntry> CreateSearchTree(SearchWindowContext context)
@@ -162,9 +162,11 @@ namespace UnityEditor.AdventureGame
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Create Node"), 0));
 
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
-            tree.Add(new SearchTreeGroupEntry(new GUIContent("Category"), 1));
+            tree.Add(new SearchTreeGroupEntry(new GUIContent("Conditionals"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
+            tree.Add(new SearchTreeGroupEntry(new GUIContent("Actions"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WalkToNode)));
 
             return tree;
         }

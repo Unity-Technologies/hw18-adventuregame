@@ -68,6 +68,7 @@ namespace UnityEditor.AdventureGame
         SerializedProperty m_DefaultHeight;
         SerializedProperty m_TransitionObject;
         SerializedProperty m_TransitionTime;
+        SerializedProperty m_LocatorRoot;
 
         [InitializeOnLoadMethod]
         static void InitializeOnLoad()
@@ -120,6 +121,7 @@ namespace UnityEditor.AdventureGame
             m_DefaultHeight = serializedObject.FindProperty("m_defaultHeight");
             m_TransitionObject = serializedObject.FindProperty("m_transitionTransform");
             m_TransitionTime = serializedObject.FindProperty("m_transitionTime");
+            m_LocatorRoot = serializedObject.FindProperty("m_LocatorRoot");
         }
 
         public override void OnInspectorGUI()
@@ -137,6 +139,8 @@ namespace UnityEditor.AdventureGame
             EditorGUILayout.LabelField(" x ", GUILayout.Width(20.0f));
             EditorGUILayout.PropertyField(m_DefaultHeight, GUIContent.none, GUILayout.MaxWidth(75.0f));
             EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.PropertyField(m_LocatorRoot);
 
             EditorGUILayout.PropertyField(m_TransitionObject);
             EditorGUILayout.PropertyField(m_TransitionTime, new GUIContent("Transition Time"));

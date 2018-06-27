@@ -19,7 +19,7 @@ namespace UnityEngine.AdventureGame
 
             public int GetReturnValue(int index)
             {
-                return m_outputs[index].m_targetNode;
+                return (index < m_outputs.Count) ? m_outputs[index].m_targetNode : -1;
             }
         }
 

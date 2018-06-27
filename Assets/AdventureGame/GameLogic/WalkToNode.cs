@@ -4,21 +4,36 @@ using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
-    public static class PrintNode
+    public static class WalkToNode
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            Debug.LogFormat("Output is: {0}", currentNode.m_typeData);
-            yield break;
+            Transform trans = SceneManager.Instance.GetLocator(currentNode.m_typeData);
+            if (trans == null)
+            {
+                Debug.LogErrorFormat("Could not find locator: {0}", currentNode.m_typeData);
+                yield break;
+            }
+
+            SceneManager.Instance.Character.Controllable = false;
+            SceneManager.Instance.Character.WalkToPosition(trans.position);
+
+            while (!SceneManager.Instance.Character.IsAtDestination())
+            {
+                yield return null;
+            }
+            SceneManager.Instance.Character.Controllable = true;
+
+            yield return currentNode.GetReturnValue(0);
         }
 
 #if UNITY_EDITOR
         public static Node CreateNode(string typeData)
         {
             Node node = new Node();
-            node.title = "Print";
+            node.title = "Walk To";
 
-            node.mainContainer.style.backgroundColor = Color.magenta;
+            node.mainContainer.style.backgroundColor = Color.blue;
 
             node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
