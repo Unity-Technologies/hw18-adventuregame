@@ -37,23 +37,6 @@ public class SampleGraphViewWindow : GraphViewWindow
         m_GraphView.nodeCreationRequest += OnRequestNodeCreation;
     }
 
-    protected void OnRequestNodeCreation(NodeCreationContext context)
-    {
-        SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), this);
-    }
-
-    public GraphViewChange OnGraphViewChanged(GraphViewChange change)
-    {
-        EditorApplication.update += DelayedSaveGraphData;
-        return change;
-    }
-
-    void DelayedSaveGraphData()
-    {
-        EditorApplication.update -= DelayedSaveGraphData;
-        SaveGraphData(k_TestGraphDataPath);
-    }
-
     Node CreateRootNode()
     {
         Node node = new Node();
