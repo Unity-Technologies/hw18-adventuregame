@@ -5,6 +5,8 @@ namespace UnityEngine.AdventureGame
     [RequireComponent(typeof(NavMeshAgent), typeof(Animator))]
     public class Character : MonoBehaviour
     {
+        public string characterName;
+
         NavMeshAgent m_NavMeshAgent;
         Animator     m_Animator;
         void Awake()

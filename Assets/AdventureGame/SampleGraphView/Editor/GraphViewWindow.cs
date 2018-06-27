@@ -1,19 +1,17 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
+using Unity.Adventuregame;
 
-public class SampleGraphViewWindow : GraphViewWindow
+public class GraphViewWindow : EditorWindow, ISearchWindowProvider
 {
     const string k_TestGraphDataPath = "Assets/AdventureGame/SampleGraphView/Test.asset";
 
-    [MenuItem("SampleGraphView/Open Window")]
-    public static void OpenWindow()
-    {
-        GetWindow<SampleGraphViewWindow>();
-    }
+    protected SampleGraphView m_GraphView;
+
 
 	// Use this for initialization
 	void OnEnable()
@@ -51,7 +49,7 @@ public class SampleGraphViewWindow : GraphViewWindow
     void DelayedSaveGraphData()
     {
         EditorApplication.update -= DelayedSaveGraphData;
-        SaveGraphData(k_TestGraphDataPath);
+        SaveGraphData(m_GraphView.nodes.ToList(), k_TestGraphDataPath);
     }
 
     Node CreateRootNode()
@@ -67,31 +65,32 @@ public class SampleGraphViewWindow : GraphViewWindow
         outputPort.userData = null;
         
         node.outputContainer.Add(outputPort);
+
         return node;
     }
 
     Node DeserializeNode(SerializableGraphData.SerializableGraphNode graphNode)
     {
-        Node node = graphNode.m_title == "Start" ? CreateRootNode() : CreateNode(graphNode.m_title);
+        Node node = graphNode.m_title == "Start" ? CreateRootNode() : CreateNode(graphNode.m_title, 1, 1);
         node.SetPosition(new Rect(graphNode.m_position, Vector2.zero));
         return node;
     }
 
-    Node CreateNode(string title)
+    protected Node CreateNode(string title, int inNodes, int outNodes) 
     {
         Node node = new Node();
         node.title = title;
         
         node.capabilities |= Capabilities.Movable;
-        Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
-        inputPort.portName = "in port";
-        inputPort.userData = null;
-        node.inputContainer.Add(inputPort);
+        for (int i = 0; i < inNodes; i++) {
+            Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
+            node.inputContainer.Add(inputPort);
+        }
 
-        Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-        outputPort.portName = "out port";
-        outputPort.userData = null;
-        node.outputContainer.Add(outputPort);
+        for (int i = 0; i < outNodes; i++) {
+            Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+            node.outputContainer.Add(outputPort);
+        }
 
         return node;
     }
@@ -107,7 +106,7 @@ public class SampleGraphViewWindow : GraphViewWindow
         tree.Add(new SearchTreeEntry(new GUIContent("Test Item2", icon)) { level = 2, userData = typeof(SampleGraphView) });
         tree.Add(new SearchTreeEntry(new GUIContent("Test Item3", icon)) { level = 2, userData = typeof(SampleGraphView) });
         tree.Add(new SearchTreeEntry(new GUIContent("Test Item4", icon)) { level = 2, userData = typeof(SampleGraphView) });
-        tree.Add(new SearchTreeEntry(new GUIContent("Test Item5", icon)) { level = 2, userData = typeof(SampleGraphView) });
+        tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue", icon)) { level = 2 });
 
         return tree;
     }
@@ -116,23 +115,25 @@ public class SampleGraphViewWindow : GraphViewWindow
     {
         if (!(entry is SearchTreeGroupEntry))
         {
-            Node node = CreateNode("Default");
+            Node node = CreateNode("Default", 1, 1);
+            m_GraphView.AddElement(node);
+            node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
+
             m_GraphView.AddElement(node);
 
             Vector2 pointInWindow = context.screenMousePosition - position.position;
             Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
-            node.SetPosition(new Rect(pointInGraph, Vector2.zero));
-            node.Select(m_GraphView, false);
 
-            SaveGraphData(k_TestGraphDataPath);
+            node.SetPosition(new Rect(pointInGraph, Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
+
+            node.Select(m_GraphView, false);
             return true;
         }
         return false;
     }
 
-    public void SaveGraphData(string outputPath)
+    public virtual void SaveGraphData(List<Node> nodes, string outputPath)
     {
-        List<Node> nodes = m_GraphView.nodes.ToList();
         SerializableGraphData graphData = ScriptableObject.CreateInstance<SerializableGraphData>();
         graphData.m_graphNodes = new List<SerializableGraphData.SerializableGraphNode>();
         for (int i = 0; i < nodes.Count; ++i)
@@ -162,7 +163,7 @@ public class SampleGraphViewWindow : GraphViewWindow
         AssetDatabase.SaveAssets();
     }
 
-    public bool LoadGraphData(string inputPath)
+    public virtual bool LoadGraphData(string inputPath)
     {
         SerializableGraphData graphData = AssetDatabase.LoadAssetAtPath<SerializableGraphData>(inputPath);
         if (graphData == null)
