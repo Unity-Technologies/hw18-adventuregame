@@ -192,6 +192,7 @@ namespace UnityEditor.AdventureGame
             GameObject sceneRoot = new GameObject();
             sceneRoot.transform.SetParent(m_SceneManager.transform, false);
             sceneRoot.name = GameObjectUtility.GetUniqueNameForSibling(m_SceneManager.transform, "Scene");
+            Scene sceneComponent = sceneRoot.AddComponent<Scene>();
 
             GameObject backgroundObject = new GameObject();
             backgroundObject.transform.SetParent(sceneRoot.transform, false);
@@ -201,6 +202,11 @@ namespace UnityEditor.AdventureGame
             backgroundRenderer.drawMode = SpriteDrawMode.Sliced;
             backgroundRenderer.color = Color.gray;
             backgroundRenderer.size = new Vector2(backgroundHeight * aspectRatio, backgroundHeight);
+
+            GameObject locatorsGroup = new GameObject();
+            locatorsGroup.transform.SetParent(sceneRoot.transform, false);
+            locatorsGroup.name = "Locators";
+            sceneComponent.m_LocatorRoot = locatorsGroup;
 
             GameObject hotspotGroup = new GameObject();
             hotspotGroup.transform.SetParent(sceneRoot.transform, false);

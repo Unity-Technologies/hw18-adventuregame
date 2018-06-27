@@ -9,16 +9,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: GameLogic
+  m_Name: 
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
     m_typeData: 
     m_title: Start
     m_position: {x: -50, y: -50}
-    m_outputs: []
-  - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
-    m_typeData: element
-    m_title: StoryEventCondition
-    m_position: {x: 251.31165, y: -174.12381}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 245.18233, y: -57.483112}
     m_outputs: []

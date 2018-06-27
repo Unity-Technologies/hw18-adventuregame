@@ -7,6 +7,21 @@ using UnityEngine;
 
 public class StoryEventsDatabase : ScriptableObject
 {
+	private static StoryEventsDatabase instance;
+
+	public static StoryEventsDatabase StoryEventDatabase
+	{
+		get
+		{
+			if (instance == null)
+			{
+				instance = AssetDatabase.LoadAssetAtPath<StoryEventsDatabase>(storyEventDatabasePath);
+			}
+
+			return instance;
+		}
+	}
+
 	public List<string> events;
 	
 	public static string storyEventDatabasePath = "Assets/AdventureGame/StoryEvents/StoryEventsDatabase.asset";

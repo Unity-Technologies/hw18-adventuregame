@@ -13,17 +13,7 @@ namespace UnityEditor.AdventureGame
 
         public List<InventoryItem> playerInventory = new List<InventoryItem>();
 
-        public List<string> intKeys = new List<string>();
-        public List<int> intValues = new List<int>();
-
-        public List<string> floatKeys = new List<string>();
-        public List<float> floatValues = new List<float>();
-
-        public List<string> boolKeys = new List<string>();
-        public List<bool> boolValues = new List<bool>();
-        
-        public List<string> stringKeys = new List<string>();
-        public List<string> stringValues = new List<string>();
+        public HashSet<string> finishedStoryEvents = new HashSet<string>();
     }
 
     public class PersistentDataManager : MonoBehaviour
@@ -76,103 +66,14 @@ namespace UnityEditor.AdventureGame
             File.WriteAllText(Application.persistentDataPath + "save.json", json);
         }
 
-        public int GetValue(string key, int defaultValue = 0)
+        public bool IsStoryEventFinished(string storyEvent)
         {
-            int index = m_GameData.intKeys.IndexOf(key);
-            if (index > 0)
-            {
-                return m_GameData.intValues[index];
-            }
-
-            return defaultValue;
+            return m_GameData.finishedStoryEvents.Contains(storyEvent);
         }
 
-        public void SetValue(string key, int value)
+        public void AddFinishedStoryEvent(string storyEvent)
         {
-            int index = m_GameData.intKeys.IndexOf(key);
-            if (index > 0)
-            {
-                m_GameData.intValues[index] = value;
-            }
-            else
-            {
-                m_GameData.intKeys.Add(key);
-                m_GameData.intValues.Add(value);
-            }
-        }
-
-        public float GetValue(string key, float defaultValue = 0f)
-        {
-            int index = m_GameData.floatKeys.IndexOf(key);
-            if (index > 0)
-            {
-                return m_GameData.floatValues[index];
-            }
-
-            return defaultValue;
-        }
-
-        public void SetValue(string key, float value)
-        {
-            int index = m_GameData.floatKeys.IndexOf(key);
-            if (index > 0)
-            {
-                m_GameData.floatValues[index] = value;
-            }
-            else
-            {
-                m_GameData.floatKeys.Add(key);
-                m_GameData.floatValues.Add(value);
-            }
-        }
-
-        public bool GetValue(string key, bool defaultValue = false)
-        {
-            int index = m_GameData.boolKeys.IndexOf(key);
-            if (index > 0)
-            {
-                return m_GameData.boolValues[index];
-            }
-
-            return defaultValue;
-        }
-        public void SetValue(string key, bool value)
-        {
-            int index = m_GameData.boolKeys.IndexOf(key);
-            if (index > 0)
-            {
-                m_GameData.boolValues[index] = value;
-            }
-            else
-            {
-                m_GameData.boolKeys.Add(key);
-                m_GameData.boolValues.Add(value);
-            }
-        }
-
-        public string GetValue(string key, string defaultValue = "")
-        {
-            int index = m_GameData.stringKeys.IndexOf(key);
-            if (index > 0)
-            {
-                return m_GameData.stringValues[index];
-            }
-
-            return defaultValue;
-        }
-
-        public void SetValue(string key, string value)
-        {
-            int index = m_GameData.stringKeys.IndexOf(key);
-            if (index > 0)
-            {
-                m_GameData.stringValues[index] = value;
-            }
-            else
-            {
-                m_GameData.stringKeys.Add(key);
-                m_GameData.stringValues.Add(value);
-            }
+            m_GameData.finishedStoryEvents.Add(storyEvent);
         }
 
 #if UNITY_EDITOR

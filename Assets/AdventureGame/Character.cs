@@ -9,6 +9,14 @@ namespace UnityEngine.AdventureGame
 
         NavMeshAgent m_NavMeshAgent;
         Animator     m_Animator;
+
+        bool m_Controllable = true;
+        public bool Controllable
+        {
+            get { return m_Controllable;}
+            set { m_Controllable = value; }
+        }
+
         void Awake()
         {
             m_NavMeshAgent = GetComponent<NavMeshAgent>();
@@ -19,7 +27,7 @@ namespace UnityEngine.AdventureGame
 
         void Update()
         {
-            if (m_NavMeshAgent.remainingDistance == 0.0f)
+            if (IsAtDestination())
             {
                 m_Animator.SetBool("WalkLeft", false);
                 m_Animator.SetBool("WalkRight", false);
@@ -45,9 +53,23 @@ namespace UnityEngine.AdventureGame
             m_NavMeshAgent.SetDestination(new Vector3(position.x, position.y, 0.0f));
         }
 
+        public bool IsAtDestination()
+        {
+            return m_NavMeshAgent.remainingDistance == 0.0f;
+        }
+
         public void WarpToPosition(Vector2 position)
         {
             m_NavMeshAgent.Warp(new Vector3(position.x, position.y, 0.0f));
+        }
+
+        void OnCollisionEnter2D(Collision2D collision)
+        {
+            var triggerableArea = collision.gameObject.GetComponent<TriggerArea>();
+            if (triggerableArea != null)
+            {
+                triggerableArea.OnTriggered();
+            }    
         }
     }
 }

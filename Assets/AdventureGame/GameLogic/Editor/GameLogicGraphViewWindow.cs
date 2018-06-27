@@ -85,6 +85,11 @@ namespace UnityEditor.AdventureGame
             return change;
         }
 
+        public void OnGraphNodeChanged()
+        {
+            EditorApplication.update += DelayedSaveGraphData;
+        }
+
         void DelayedSaveGraphData()
         {
             EditorApplication.update -= DelayedSaveGraphData;
@@ -100,7 +105,7 @@ namespace UnityEditor.AdventureGame
             node.SetPosition(new Rect(new Vector2(-50, -50), new Vector2(100, 100)));
 
             Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-            outputPort.portName = "start";
+            outputPort.portName = "";
             outputPort.userData = null;
 
             node.outputContainer.Add(outputPort);
@@ -113,6 +118,7 @@ namespace UnityEditor.AdventureGame
             if (string.IsNullOrEmpty(graphNode.m_type))
             {
                 node = CreateRootNode();
+                node.userData = null;
             }
             else
             {
@@ -122,7 +128,8 @@ namespace UnityEditor.AdventureGame
                     Debug.LogErrorFormat("Failed to find type: {0}", graphNode.m_type);
                     return null;
                 }
-                node = CreateNodeFromType(type);
+                node = CreateNodeFromType(type, graphNode.m_typeData);
+                node.userData = type;
             }
 
             node.title = graphNode.m_title;
@@ -130,7 +137,7 @@ namespace UnityEditor.AdventureGame
             return node;
         }
 
-        Node CreateNodeFromType(Type type)
+        Node CreateNodeFromType(Type type, string typedata)
         {
             MethodInfo method = type.GetMethod("CreateNode", BindingFlags.Static | BindingFlags.Public);
             if (method == null)
@@ -139,7 +146,8 @@ namespace UnityEditor.AdventureGame
                 return null;
             }
 
-            Node node = method.Invoke(null, null) as Node;
+            Action action = OnGraphNodeChanged;
+            Node node = method.Invoke(null, new object[] {typedata, action}) as Node;
             if (node == null)
             {
                 Debug.LogError("Failed to create node!");
@@ -151,7 +159,7 @@ namespace UnityEditor.AdventureGame
 
         SearchTreeEntry CreateSearchTreeEntry(Texture2D icon, int level, Type type)
         {
-            return new SearchTreeEntry(new GUIContent(type.Name, icon)) { level = level, userData = type };
+            return new SearchTreeEntry(new GUIContent(type.Name.Substring(0, type.Name.LastIndexOf("Node")), icon)) { level = level, userData = type };
         }
 
         public List<SearchTreeEntry> CreateSearchTree(SearchWindowContext context)
@@ -160,8 +168,14 @@ namespace UnityEditor.AdventureGame
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Create Node"), 0));
 
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
-            tree.Add(new SearchTreeGroupEntry(new GUIContent("Category"), 1));
+            tree.Add(new SearchTreeGroupEntry(new GUIContent("Conditionals"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
+            tree.Add(new SearchTreeGroupEntry(new GUIContent("Actions"), 1));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WalkToNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetStoryEventNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSceneNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerDialogNode)));
 
             return tree;
         }
@@ -171,7 +185,7 @@ namespace UnityEditor.AdventureGame
             if (!(entry is SearchTreeGroupEntry))
             {
                 Type createType = entry.userData as Type;
-                Node node = CreateNodeFromType(createType);
+                Node node = CreateNodeFromType(createType, null);
                 if (node == null)
                 {
                     return false;
@@ -246,7 +260,7 @@ namespace UnityEditor.AdventureGame
                 graphData.m_graphNodes.Add(graphNode);
             }
 
-            AssetDatabase.CreateAsset(graphData, assetPath);
+            EditorUtility.CopySerialized(graphData, m_GameLogicData);
             AssetDatabase.SaveAssets();
 
             m_GameLogicData = AssetDatabase.LoadAssetAtPath<GameLogicData>(assetPath);

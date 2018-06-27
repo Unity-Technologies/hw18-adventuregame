@@ -13,13 +13,13 @@ namespace UnityEditor.AdventureGame
 
         Material m_CollisionMeshMaterial;
         GameObject m_CollisionObject;
-
+        
         SerializedProperty m_Sprite;
         SerializedProperty m_Detail;
         SerializedProperty m_Color;
 
-        IBaseArea m_BaseArea;
-        MonoBehaviour m_Behavior;
+        protected IBaseArea m_BaseArea;
+        protected MonoBehaviour m_Behavior;
         bool m_Painting = false;
         Texture2D m_PaintTexture;
 
@@ -32,17 +32,11 @@ namespace UnityEditor.AdventureGame
         static float s_BrushSize = 5.0f;
         static PaintMode s_PaintMode = PaintMode.Painting;
 
-        void OnEnable()
+        public virtual void OnEnable()
         {
-            SceneView sceneViewWindow = EditorWindow.GetWindow<SceneView>();
-            if (sceneViewWindow != null)
-            {
-                sceneViewWindow.Focus();
-            }
-
             m_BaseArea = (IBaseArea)target;
             m_Behavior = (MonoBehaviour)target;
-
+            
             m_Sprite = serializedObject.FindProperty("m_sprite");
             m_Detail = serializedObject.FindProperty("m_detail");
             m_Color = serializedObject.FindProperty("m_color");
@@ -155,7 +149,7 @@ namespace UnityEditor.AdventureGame
             Tools.hidden = true;
         }
 
-        void OnDisable()
+        public virtual void OnDisable()
         {
             DestroyImmediate(m_CollisionObject);
             Tools.hidden = false;
@@ -231,16 +225,18 @@ namespace UnityEditor.AdventureGame
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
+            GUILayout.Space(10);
 
             EditorGUILayout.PropertyField(m_Sprite);
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
 
-            if (GUILayout.Button("Regenerate NavMesh"))
+            if (GUILayout.Button("Regenerate NavMesh", GUILayout.Height(50)))
             {
                 RegenerateMesh();
             }
+
+            GUILayout.Space(10);
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -449,8 +445,6 @@ namespace UnityEditor.AdventureGame
 
             EditorUtility.SetDirty(importer);
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
-
-            Sprite reloadedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
 
             Vector2[] vertices = new Vector2[m_BaseArea.Sprite.vertices.Length];
 
