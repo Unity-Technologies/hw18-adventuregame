@@ -15,7 +15,6 @@ namespace UnityEngine.AdventureGame
         SETTINGS,
 		CLOSEMENU,
         LOAD,
-        OTHER,
     }
 
     public class SystemMenuButton : MonoBehaviour
