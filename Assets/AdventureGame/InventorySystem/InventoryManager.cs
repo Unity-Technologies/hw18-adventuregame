@@ -10,7 +10,6 @@ namespace UnityEngine.AdventureGame
     {
         public const int INVENTORY_SLOTS = 8;
 
-        public Image[] itemImages = new Image[INVENTORY_SLOTS];
         public InventoryItem[] items = new InventoryItem[INVENTORY_SLOTS];
         public InventoryItem Selected = null;
 
@@ -49,7 +48,9 @@ namespace UnityEngine.AdventureGame
             }
 
             Selected.transform.position = new Vector3(position.x, position.y, 0.0f);
+            Debug.Log("Dropping " + Selected.Id + " at " + Selected.transform.position);
             Selected.Dropped();
+            ClearSelected();
         }
 
         public bool AddItem(InventoryItem itemToAdd)
@@ -60,8 +61,6 @@ namespace UnityEngine.AdventureGame
                 if (items[i] == null)
                 {
                     items[i] = itemToAdd;
-                    itemImages[i].sprite = itemToAdd.sprite;
-                    itemImages[i].enabled = true;
                     UpdateUI(i);
                     return true;
                 }
@@ -77,10 +76,8 @@ namespace UnityEngine.AdventureGame
             {
                 if (items[i] == itemToRemove)
                 {
-                    items[i] = null;
-                    itemImages[i].sprite = null;
-                    itemImages[i].enabled = false;
-                    UpdateUI(i);
+					items[i] = null;
+					UpdateUI(i);
                     return true;
                 }
             }

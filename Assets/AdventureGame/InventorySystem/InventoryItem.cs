@@ -15,15 +15,17 @@ namespace UnityEngine.AdventureGame
         }
 
         public void PickedUp(){
-            Debug.Log(Id + " picked up.");
-            spriteRenderer.enabled = false;
-            InventoryManager.Instance.AddItem(this);
+			//spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            //spriteRenderer.enabled = false;
+			Debug.Log(Id + " picked up.");
+			InventoryManager.Instance.AddItem(this);
         }
 
 		public void Dropped()
 		{
-            Debug.Log(Id + " dropped.");
-            spriteRenderer.enabled = true;
+			//spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+			//spriteRenderer.enabled = true;
+			Debug.Log(Id + " dropped.");
 			InventoryManager.Instance.RemoveItem(this);
 		}
     }
