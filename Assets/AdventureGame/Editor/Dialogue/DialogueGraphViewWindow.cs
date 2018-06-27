@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
@@ -17,13 +19,13 @@ namespace Unity.Adventuregame {
             if (entry.name == "Create Dialogue") {
                 var node = new DialogueNode();
 
-                var characterGameObject = new ObjectField
+                var characterName = new TextField()
                 {
-                    objectType = typeof(GameObject),
-                    allowSceneObjects = true
+                    multiline = false,
+                    value = "<CharacerName Here>"
                 };
 
-                node.mainContainer.Insert(1, characterGameObject);        
+                node.mainContainer.Insert(1, characterName);        
                 m_GraphView.AddElement(node);
                 node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
 
@@ -38,6 +40,87 @@ namespace Unity.Adventuregame {
                 return true;
             }
             return base.OnSelectEntry(entry, context);
+        }
+
+        public override void SaveGraphData(List<Node> nodes, string outputPath)
+        {
+            SerializableDialogData dialogGraphData = ScriptableObject.CreateInstance<SerializableDialogData>();
+            dialogGraphData.m_dialogNodes = new List<SerializableDialogData.SerializableDialogNode>();
+
+                            string inputString = string.Empty;
+                string outPutString = string.Empty;
+
+            for (int i = 0; i < nodes.Count; ++i)
+            {
+                SerializableDialogData.SerializableDialogNode dialogGraphNode = new SerializableDialogData.SerializableDialogNode();
+                Node currentNode = nodes[i];
+
+                dialogGraphNode.m_title = currentNode.title;
+                dialogGraphNode.m_position = currentNode.GetPosition().position;
+                dialogGraphNode.m_outputs = new List<SerializableDialogData.SerializableDialogEdge>();
+
+                foreach (VisualElement element in currentNode.mainContainer)
+                {
+                    if (element is TextField)
+                    {
+                        dialogGraphNode.m_speakingCharacterName = ((TextField) element).value;
+                    }
+                }
+
+                foreach (VisualElement element in currentNode.inputContainer)
+                {
+                    if (element is TextField)
+                    {
+                        inputString = ((TextField)element).value;
+                    }
+                }
+
+                foreach (VisualElement element in currentNode.outputContainer)
+                {
+                    if (element is TextField)
+                    {
+
+                        outPutString = ((TextField) element).value;
+                    }
+                    if (element is Port)
+                    {
+                        foreach (Edge edge in ((Port)element).connections)
+                        {
+                            SerializableDialogData.SerializableDialogEdge serializedEdge =
+                                new SerializableDialogData.SerializableDialogEdge();
+                            if (dialogGraphNode.m_title == "Start")
+                            {
+                                serializedEdge.m_sourcePort = currentNode.outputContainer.IndexOf(edge.output);
+                                serializedEdge.m_targetNode = nodes.IndexOf(edge.input.node);
+                            }
+                            else
+                            {
+                                serializedEdge.m_sourcePort = currentNode.outputContainer.IndexOf(edge.output);
+                                serializedEdge.m_targetPort = edge.input.node.inputContainer.IndexOf(edge.input);
+
+                                serializedEdge.m_outputDialog = outPutString;
+                                if (serializedEdge.m_outputDialog != string.Empty)
+                                {
+                                    outPutString = string.Empty;
+                                }
+                                serializedEdge.m_targetNode = nodes.IndexOf(edge.input.node);
+
+                                serializedEdge.m_inputDialog = inputString;
+                                if (serializedEdge.m_inputDialog != string.Empty)
+                                {
+                                    inputString = string.Empty;
+                                }                                                       
+                            }
+
+                            dialogGraphNode.m_outputs.Add(serializedEdge);
+                        }
+                    }
+                }
+                dialogGraphData.m_dialogNodes.Add(dialogGraphNode);
+            }
+
+            AssetDatabase.CreateAsset(dialogGraphData, outputPath);
+            AssetDatabase.SaveAssets();
         }
     }
 }

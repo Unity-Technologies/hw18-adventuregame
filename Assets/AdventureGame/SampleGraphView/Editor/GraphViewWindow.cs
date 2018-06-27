@@ -65,6 +65,7 @@ public class GraphViewWindow : EditorWindow, ISearchWindowProvider
         outputPort.userData = null;
         
         node.outputContainer.Add(outputPort);
+
         return node;
     }
 
@@ -131,7 +132,7 @@ public class GraphViewWindow : EditorWindow, ISearchWindowProvider
         return false;
     }
 
-    public void SaveGraphData(List<Node> nodes, string outputPath)
+    public virtual void SaveGraphData(List<Node> nodes, string outputPath)
     {
         SerializableGraphData graphData = ScriptableObject.CreateInstance<SerializableGraphData>();
         graphData.m_graphNodes = new List<SerializableGraphData.SerializableGraphNode>();
@@ -162,7 +163,7 @@ public class GraphViewWindow : EditorWindow, ISearchWindowProvider
         AssetDatabase.SaveAssets();
     }
 
-    public bool LoadGraphData(string inputPath)
+    public virtual bool LoadGraphData(string inputPath)
     {
         SerializableGraphData graphData = AssetDatabase.LoadAssetAtPath<SerializableGraphData>(inputPath);
         if (graphData == null)
