@@ -152,60 +152,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114934918996863116, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_Spacing.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114934918996863116, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_Spacing.y
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114934918996863116, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_CellSize.x
-      value: 96
-      objectReference: {fileID: 0}
-    - target: {fileID: 114934918996863116, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_CellSize.y
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 114934918996863116, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_Padding.m_Left
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114934918996863116, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_Padding.m_Right
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114934918996863116, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_Padding.m_Top
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114934918996863116, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_Padding.m_Bottom
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1879380530240922, guid: 57b63706ffb9b4bbf9b3a3c59d891eca, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114642557834360634, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: autoCreateButtons
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114793844419864668, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57b63706ffb9b4bbf9b3a3c59d891eca, type: 2}
   m_IsPrefabAsset: 0
