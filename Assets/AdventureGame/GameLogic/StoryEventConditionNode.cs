@@ -40,7 +40,9 @@ namespace UnityEngine.AdventureGame
 										: new List<string>();
 
 	        var storyEventsDropdown =
-		        new PopupField<string>(storyEvents, string.IsNullOrEmpty(typeData) ? 0 : storyEvents.FindIndex((x) => string.Equals(x, typeData)));
+		        new PopupField<string>(storyEvents,
+										string.IsNullOrEmpty(typeData) || !storyEvents.Exists((x) => string.Equals(x, typeData)) ? 0
+											: storyEvents.FindIndex((x) => string.Equals(x, typeData)));
 			node.mainContainer.Insert(1, storyEventsDropdown);
 
             return node;
