@@ -49,5 +49,14 @@ namespace UnityEngine.AdventureGame
         {
             m_NavMeshAgent.Warp(new Vector3(position.x, position.y, 0.0f));
         }
+
+        void OnCollisionEnter2D(Collision2D collision)
+        {
+            var triggerableArea = collision.gameObject.GetComponent<Triggerable>();
+            if (triggerableArea != null)
+            {
+                triggerableArea.OnTriggered();
+            }    
+        }
     }
 }
