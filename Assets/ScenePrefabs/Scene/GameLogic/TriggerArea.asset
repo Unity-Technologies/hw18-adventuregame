@@ -9,27 +9,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: Hotspot
+  m_Name: TriggerArea
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
     m_typeData: 
     m_title: Start
     m_position: {x: -50, y: -50}
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 1
-      m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.WalkToNode
-    m_typeData: NextToRock
-    m_title: Walk To
-    m_position: {x: 196.88231, y: -51.7331}
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 2
-      m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.PrintNode
-    m_typeData: asdads
-    m_title: Print
-    m_position: {x: 476.33234, y: -81.63308}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.SetStoryEventNode
+    m_typeData: talked_to_tom
+    m_title: Set Story Event
+    m_position: {x: 171.5823, y: -70.1331}
     m_outputs: []

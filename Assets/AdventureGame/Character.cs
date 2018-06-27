@@ -65,10 +65,9 @@ namespace UnityEngine.AdventureGame
 
         void OnCollisionEnter2D(Collision2D collision)
         {
-            var triggerableArea = collision.gameObject.GetComponent<Triggerable>();
+            var triggerableArea = collision.gameObject.GetComponent<TriggerArea>();
             if (triggerableArea != null)
             {
-                triggerableArea.OnTriggered();
             }    
         }
     }

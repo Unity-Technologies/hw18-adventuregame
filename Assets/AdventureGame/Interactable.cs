@@ -40,7 +40,7 @@ public class Interactable : MonoBehaviour
 	public void OnInteracted()
 	{
 		Debug.Log("Clickable Item Clicked");
-		//InputSystemManager.Instance.SelectAction(m_PossibleActions, PerformInteraction);
+		InputSystemManager.Instance.SelectAction(m_PossibleActions, PerformInteraction);
 
 	    if (m_gameLogicData != null)
 	    {
