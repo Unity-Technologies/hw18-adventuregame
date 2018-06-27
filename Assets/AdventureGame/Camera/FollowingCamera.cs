@@ -30,6 +30,12 @@ namespace UnityEngine.AdventureGame
             );
         }
 
+        public void WarpToTargetPosition() {
+            if (m_Target)
+                transform.position = GetTargetPosition();
+            return;
+        }
+
         void Start()
         {
             if (m_Target)

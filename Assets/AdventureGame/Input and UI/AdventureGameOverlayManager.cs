@@ -78,7 +78,7 @@ namespace UnityEngine.AdventureGame
         public Sprite defaultMouseCursor;
 
         // Callback that returns the currently selected action (or the result of a menu selection)
-        public delegate void DialogueSelectionDelegate(string result);
+        public delegate void DialogueSelectionDelegate(int result);
         #endregion
 
         #region Private Variables
@@ -255,7 +255,7 @@ namespace UnityEngine.AdventureGame
                 buttonText.fontSize = boxFontSize;
                 dialogueOptionButton.name = dialogueOption;
                 dialogueOptionButton.transform.SetParent(dialogueBox.transform, false);
-                dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(dialogueOption, dialogueSelectionDelegate); });
+                //dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(dialogueOption, dialogueSelectionDelegate); });
             }
         }
 
@@ -357,7 +357,7 @@ namespace UnityEngine.AdventureGame
             }
         }
 
-        private void HandleDialogueOptionClick(string dialogueOption, DialogueSelectionDelegate dialogueSelectionDelegate = null)
+        private void HandleDialogueOptionClick(int dialogueOption, DialogueSelectionDelegate dialogueSelectionDelegate = null)
         {
             if (dialogueSelectionDelegate != null) {
                 dialogueSelectionDelegate(dialogueOption);

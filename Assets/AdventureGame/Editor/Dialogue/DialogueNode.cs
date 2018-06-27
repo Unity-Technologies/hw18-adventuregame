@@ -32,13 +32,6 @@ namespace Unity.Adventuregame {
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(string));
             inputPort.portName = string.Empty;
             inputContainer.Add(inputPort);
-
-            TextField inText = new TextField
-            {
-                multiline = true
-            };
-            inputContainer.Add(inText);
-            inText.PlaceBehind(inputPort);
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)

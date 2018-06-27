@@ -20,5 +20,5 @@ MonoBehaviour:
   - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
     m_typeData: element
     m_title: StoryEventCondition
-    m_position: {x: 279.08414, y: -168.83385}
+    m_position: {x: 251.31165, y: -174.12381}
     m_outputs: []
