@@ -152,10 +152,10 @@ namespace Unity.Adventuregame {
 
                 foreach (VisualElement element in currentNode.outputContainer)
                 {
-                    if (element is TextField)
+                    if (element.childCount > 1 && element[0] is TextField)
                     {
 
-                        outPutString = ((TextField) element).value;
+                        outPutString = ((TextField) element[0]).value;
                     }
 
                     if (element.childCount > 1 && element[1] is Port)
