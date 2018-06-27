@@ -45,7 +45,7 @@ public class Interactable : MonoBehaviour
 	{
 		Debug.Log("Used " + item.Id);
 		//TODO use game logic to determine if interaction is valid
-		InventoryManager.RemoveItem(item);
+		InventoryManager.Instance.RemoveItem(item);
 	}
 
 	/// <summary>
