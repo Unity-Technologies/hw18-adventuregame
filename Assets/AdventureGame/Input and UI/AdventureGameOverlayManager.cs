@@ -73,6 +73,10 @@ namespace UnityEngine.AdventureGame
         [Header("Settings for System Menus")]
         public GameObject systemMenuPrefab;
 
+        // Settings for Mouse Cursor
+        [Header("Settings for Mouse Cursor")]
+        public Sprite defaultMouseCursor;
+
         // Callback that returns the currently selected action (or the result of a menu selection)
         public delegate void DialogueSelectionDelegate(string result);
         #endregion
@@ -108,6 +112,7 @@ namespace UnityEngine.AdventureGame
             }
 
             SetUpGameTypeUI();
+            SetUpCursor();
 
             // Set up Dialogue Box prefab
             dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
@@ -118,7 +123,7 @@ namespace UnityEngine.AdventureGame
             }
             // testing only!
             //DisplaySystemMenu();
-            //CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
+            CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
         }
 
         public void DisplaySystemMenu () {
@@ -139,8 +144,7 @@ namespace UnityEngine.AdventureGame
             // If we are only showing a dialogue box, get rid of it before we display the next one.
             if (currentlyDisplayedDialogueBox != null)
             {
-                // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
-                Destroy(currentlyDisplayedDialogueBox);
+                DestroyDialogueBox();
             }
 
             // Create fresh dialogue box and add to screen
@@ -251,10 +255,14 @@ namespace UnityEngine.AdventureGame
                 buttonText.fontSize = boxFontSize;
                 dialogueOptionButton.name = dialogueOption;
                 dialogueOptionButton.transform.SetParent(dialogueBox.transform, false);
+                dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(dialogueOption, dialogueSelectionDelegate); });
             }
-            // Return dialogue selection
         }
 
+        public void DestroyDialogueBox () {
+            // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
+            Destroy(currentlyDisplayedDialogueBox);
+        }
         /// <summary>
         /// Changes the cursor to the given sprite, or back to the default sprite if null.
         /// </summary>
@@ -349,9 +357,18 @@ namespace UnityEngine.AdventureGame
             }
         }
 
-        private void HandleDialogueOptionClick()
+        private void HandleDialogueOptionClick(string dialogueOption, DialogueSelectionDelegate dialogueSelectionDelegate = null)
         {
+            if (dialogueSelectionDelegate != null) {
+                dialogueSelectionDelegate(dialogueOption);
+            }
+            DestroyDialogueBox();
+        }
 
+        private void SetUpCursor () {
+            if (defaultMouseCursor != null) {
+                // TODO(laurenfrazier): Set up cursor
+            }
         }
         #endregion
     }
