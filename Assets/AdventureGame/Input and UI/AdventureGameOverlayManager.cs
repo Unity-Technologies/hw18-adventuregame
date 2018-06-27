@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.AdventureGame;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -115,8 +116,8 @@ namespace UnityEngine.AdventureGame
             {
                 menuFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
             }
-            // test
-            DisplaySystemMenu();
+            // testing only!
+            //DisplaySystemMenu();
             //CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
         }
 
@@ -272,7 +273,7 @@ namespace UnityEngine.AdventureGame
             Debug.Log(buttonAction);
             switch (buttonAction) {
                 case SystemMenuButtonOptions.SAVE: {
-                    
+                    PersistentDataManager.Instance.Save();
                     break;
                 }
                 case SystemMenuButtonOptions.QUIT: {
@@ -287,6 +288,10 @@ namespace UnityEngine.AdventureGame
                 }
                 case SystemMenuButtonOptions.CLOSEMENU: {
                     CloseSystemMenu();
+                    break;
+                }
+                case SystemMenuButtonOptions.LOAD: {
+                    // TODO(laurenfrazier): Show load saved game screen!
                     break;
                 }
                 default: {
