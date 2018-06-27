@@ -12,30 +12,13 @@ MonoBehaviour:
   m_Name: GameLogic
   m_EditorClassIdentifier: 
   m_graphNodes:
-  - m_title: Start
+  - m_type: 
+    m_typeData: 
+    m_title: Start
     m_position: {x: -50, y: -50}
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 1
-      m_targetPort: 0
-  - m_title: Default
-    m_position: {x: 216.11511, y: -262.25757}
     m_outputs: []
-  - m_title: Start
-    m_position: {x: -50, y: -50}
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 5
-      m_targetPort: 0
-  - m_title: Start
-    m_position: {x: -50, y: -50}
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 4
-      m_targetPort: 0
-  - m_title: Default
-    m_position: {x: 214.11511, y: -110.25757}
-    m_outputs: []
-  - m_title: Default
-    m_position: {x: 398.1151, y: -168.25757}
+  - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
+    m_typeData: element
+    m_title: StoryEventCondition
+    m_position: {x: 279.08414, y: -168.83385}
     m_outputs: []

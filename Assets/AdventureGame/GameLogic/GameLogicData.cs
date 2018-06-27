@@ -9,6 +9,8 @@ namespace UnityEngine.AdventureGame
         [Serializable]
         public class GameLogicGraphNode
         {
+            public string m_type;
+            public string m_typeData;
             public string m_title;
             public Vector2 m_position;
             public List<GameLogicGraphEdge> m_outputs;

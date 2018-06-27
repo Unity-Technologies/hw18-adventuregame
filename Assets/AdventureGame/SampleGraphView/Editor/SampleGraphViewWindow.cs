@@ -59,7 +59,7 @@ public class SampleGraphViewWindow : GraphViewWindow
         Node node = new Node();
         node.title = "Start";
         node.capabilities &= ~(Capabilities.Movable | Capabilities.Deletable);
-        node.mainContainer.style.backgroundColor = Color.green;
+        node.style.backgroundColor = Color.green;
         node.SetPosition(new Rect(new Vector2(-50, -50), new Vector2(100, 100)));
 
         Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
