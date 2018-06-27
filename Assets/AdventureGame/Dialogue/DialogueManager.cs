@@ -31,30 +31,40 @@ namespace UnityEngine.AdventureGame
 
         public void StartDialogue(SerializableDialogData dialogue)
         {
-            if (m_CurrentDialogue != null)
+            if (m_CurrentDialogue == null)
             {
+                Debug.Log("Dialogue Start");
                 m_CurrentDialogue = dialogue;
                 m_CurrentDialogueNode = dialogue.m_dialogNodes[0];
-                ContinueDialogue(0);
+                ContinueDialogue();
             }
+        }
+
+        void ContinueDialogue()
+        {
+            ContinueDialogue(0);
         }
 
         void ContinueDialogue(int selection)
         {
+            Debug.Log("Dialogue Advance");
             int outputsCount = m_CurrentDialogueNode.m_outputs.Count;
             if (outputsCount > 0 && selection < outputsCount)
             {
                 m_CurrentDialogueNode = m_CurrentDialogue.m_dialogNodes[m_CurrentDialogueNode.m_outputs[selection].m_targetNode];
-                string[] dialogueChoices = null;
                 if (outputsCount > 1)
                 {
-                    dialogueChoices = new string[outputsCount];
+                    var dialogueChoices = new string[outputsCount];
                     for (int i = 0; i < outputsCount; i++)
                     {
                         dialogueChoices[i] = m_CurrentDialogueNode.m_outputs[i].m_outputDialog;
                     }
+                    AdventureGameOverlayManager.Instance.DisplayDialogueOptions(dialogueChoices, m_CurrentDialogueNode.m_characterDialogue, ContinueDialogue);
                 }
-                AdventureGameOverlayManager.Instance.DisplayDialogueOptions(dialogueChoices, m_CurrentDialogueNode.m_characterDialogue, ContinueDialogue);
+                else
+                {
+                    AdventureGameOverlayManager.Instance.DisplayCharacterDialogue(m_CurrentDialogueNode.m_characterDialogue, m_CurrentDialogueNode.m_speakingCharacterName, ContinueDialogue);
+                }
             }
             else
             {
@@ -64,6 +74,7 @@ namespace UnityEngine.AdventureGame
 
         void EndDialogue()
         {
+            Debug.Log("Dialogue End");
             m_CurrentDialogue = null;
             m_CurrentDialogueNode = null;
         }

@@ -8,7 +8,9 @@ using UnityEngine.AdventureGame;
 /// </summary>
 public class Interactable : MonoBehaviour
 {
-	[SerializeField]
+    public GameLogicData m_gameLogicData;
+
+    [SerializeField]
 	Interaction[] m_Interactions;
 
 	CharacterActionType[] m_PossibleActions;
@@ -39,9 +41,14 @@ public class Interactable : MonoBehaviour
 	{
 		Debug.Log("Clickable Item Clicked");
 		InputSystemManager.Instance.SelectAction(m_PossibleActions, PerformInteraction);
+
+	    if (m_gameLogicData != null)
+	    {
+	        StartCoroutine(m_gameLogicData.Execute());
+	    }
 	}
 
-	public void OnInteracted(InventoryItem item)
+    public void OnInteracted(InventoryItem item)
 	{
 		Debug.Log("Used " + item.Id);
 		//TODO use game logic to determine if interaction is valid
@@ -58,8 +65,12 @@ public class Interactable : MonoBehaviour
 		{
 			if (m_Interactions[i].Action == action)
 			{
+                Debug.Log("Interaction " + action);
 				m_Interactions[i].Reaction.Invoke();
+			    return;
 			}
 		}
+
+        AdventureGameOverlayManager.Instance.DisplayCharacterDialogue("I can't do that.", "Character");
 	}
 }

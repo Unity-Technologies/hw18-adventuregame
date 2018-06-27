@@ -4,7 +4,7 @@
 	{
 		void Update()
 		{
-			if (Input.GetMouseButtonUp(0))
+			if (Input.GetMouseButtonDown(0))
 			{
 				Vector2 ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 

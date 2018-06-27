@@ -11,7 +11,7 @@ namespace UnityEngine.AdventureGame
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
             //if true return first return value if false return second
-            yield return currentNode.GetReturnValue(true ? 0 : 1);
+	        yield return currentNode.GetReturnValue(GameStateInfo.IsStoryEventFinished(currentNode.m_typeData) ? 0 : 1);
         }
 
 #if UNITY_EDITOR
@@ -20,7 +20,9 @@ namespace UnityEngine.AdventureGame
             Node node = new Node();
             node.title = "StoryEventCondition";
 
-            node.capabilities |= Capabilities.Movable;
+	        node.mainContainer.style.backgroundColor = Color.yellow;
+
+			node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
             inputPort.portName = "";
             inputPort.userData = null;
@@ -40,7 +42,9 @@ namespace UnityEngine.AdventureGame
 										: new List<string>();
 
 	        var storyEventsDropdown =
-		        new PopupField<string>(storyEvents, string.IsNullOrEmpty(typeData) ? 0 : storyEvents.FindIndex((x) => string.Equals(x, typeData)));
+		        new PopupField<string>(storyEvents,
+										string.IsNullOrEmpty(typeData) || !storyEvents.Exists((x) => string.Equals(x, typeData)) ? 0
+											: storyEvents.FindIndex((x) => string.Equals(x, typeData)));
 			node.mainContainer.Insert(1, storyEventsDropdown);
 
             return node;
