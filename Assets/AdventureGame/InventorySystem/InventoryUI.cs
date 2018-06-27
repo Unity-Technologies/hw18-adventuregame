@@ -25,7 +25,8 @@ namespace UnityEngine.AdventureGame
 					}
 					else
 					{
-                        GameObject inventoryUI = new GameObject();
+						Debug.Log("Inventory UI was automatically added - it may not be in the correct place!");
+						GameObject inventoryUI = new GameObject();
 						instance = inventoryUI.AddComponent<InventoryUI>();
 					}
 				}
