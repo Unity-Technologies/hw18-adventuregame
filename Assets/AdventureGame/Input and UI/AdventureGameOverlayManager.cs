@@ -79,6 +79,8 @@ namespace UnityEngine.AdventureGame
 
         // Callback that returns the currently selected action (or the result of a menu selection)
         public delegate void DialogueSelectionDelegate(int result);
+        // Callback that returns when the user advances dialogue
+        public delegate void DialogueAdvanceDelegate();
         #endregion
 
         #region Private Variables
@@ -137,6 +139,13 @@ namespace UnityEngine.AdventureGame
         public void CloseSystemMenu() {
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
             Destroy(currentlyDisplayedSystemMenu);
+        }
+
+        public void DisplayCharacterDialogue(string dialogue, string characterName = null, DialogueAdvanceDelegate dialogueAdvanceDelegate = null)
+        {
+            // Display dialogue over character
+
+            // When user dismisses, call callback
         }
 
         public void CreateDialogueBox(string[] dialogueOptions, string description = null, DialogueSelectionDelegate dialogueSelectionDelegate = null)
