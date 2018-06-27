@@ -13,7 +13,7 @@ public class GameLogicGraphViewWindow : EditorWindow, ISearchWindowProvider
 
 	GameLogicGraphView m_GraphView;
 
-	[MenuItem("Adventure Game/Game Logic/Open")]
+	[MenuItem("Adventure Game/Game Logic Open")]
 	public static void OpenWindow()
 	{
 		GetWindow<GameLogicGraphViewWindow>();
