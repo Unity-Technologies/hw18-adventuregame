@@ -101,7 +101,7 @@ namespace UnityEngine.AdventureGame
 
         void UnloadScenePrefab() {
             Debug.Log("Unloading : " + m_scenePrefabCurrent);
-            DestroyImmediate(transform.GetChild(0).gameObject);
+            Destroy(transform.GetChild(0).gameObject);
             Debug.Log("Unloaded : " + m_scenePrefabCurrent);
         }
 
