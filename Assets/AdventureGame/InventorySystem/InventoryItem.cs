@@ -7,24 +7,24 @@ namespace UnityEngine.AdventureGame
         public string Id;
         public Sprite sprite;
         SpriteRenderer spriteRenderer;
-        InventoryManager inventoryManager;
 
         void Start()
         {
-            inventoryManager = FindObjectOfType<InventoryManager>();
             spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = sprite;
         }
 
         public void PickedUp(){
+            Debug.Log(Id + " picked up.");
             spriteRenderer.enabled = false;
-            inventoryManager.AddItem(this);
+            InventoryManager.Instance.AddItem(this);
         }
 
 		public void Dropped()
 		{
+            Debug.Log(Id + " dropped.");
             spriteRenderer.enabled = true;
-			inventoryManager.RemoveItem(this);
+			InventoryManager.Instance.RemoveItem(this);
 		}
     }
 }

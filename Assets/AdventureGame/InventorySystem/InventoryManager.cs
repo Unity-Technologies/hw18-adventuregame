@@ -40,18 +40,16 @@ namespace UnityEngine.AdventureGame
             InventoryUI.Instance.UpdateSlot(index);
         }
 
-        //TODO should be called by screen click area if an item is selected when a noninteractable part of
-        //the world is clicked on
-        public void DropItem(Vector3 dropPosition)
+        public void DropSelectedItem(Vector2 position)
         {
             if (Selected == null)
             {
-                Debug.Log("Called DropItem with nothing selected!");
+                Debug.Log("Called DropSelectedItem with nothing selected!");
                 return;
             }
 
-            Selected.transform.position = new Vector3(dropPosition.x - 0.1f, dropPosition.y + 0.1f, dropPosition.z);
-            RemoveItem(Selected);
+            Selected.transform.position = new Vector3(position.x, position.y, 0.0f);
+            Selected.Dropped();
         }
 
         public bool AddItem(InventoryItem itemToAdd)

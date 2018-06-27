@@ -22,8 +22,11 @@
                                 interactableObject.OnInteracted();
                                 break;
                             }
-                            else
+                            else if (InventoryManager.Instance.Selected != null)
                             {
+                                InventoryManager.Instance.DropSelectedItem(ray);
+                            }
+                            else {
                                 Debug.LogFormat("Walk Command Triggered!");
                                 if (SceneManager.Instance.Character != null)
                                 {
