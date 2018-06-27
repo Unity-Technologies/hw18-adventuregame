@@ -3,9 +3,6 @@ using UnityEngine.UI;
 
 namespace UnityEngine.AdventureGame
 {
-    //TODO - "picking up" should call AddItem
-    //TODO - clicking in the world with an item selected should drop the item
-
     public class InventoryManager : MonoBehaviour
     {
         public const int INVENTORY_SLOTS = 8;
