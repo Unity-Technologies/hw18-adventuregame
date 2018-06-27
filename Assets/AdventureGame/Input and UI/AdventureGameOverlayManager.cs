@@ -289,9 +289,6 @@ namespace UnityEngine.AdventureGame
                     CloseSystemMenu();
                     break;
                 }
-                case SystemMenuButtonOptions.OTHER: {
-                    break;
-                }
                 default: {
                     break;
                 }
