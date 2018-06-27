@@ -20,8 +20,8 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.PrintNode
-    m_typeData: Testing
-    m_title: Print
-    m_position: {x: 220.84834, y: -78.18311}
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 149.9623, y: -50.58311}
     m_outputs: []

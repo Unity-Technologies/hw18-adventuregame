@@ -1,6 +1,7 @@
 ﻿namespace UnityEngine.AdventureGame
 {
-    [RequireComponent(typeof(PolygonCollider2D), typeof(Interactable))]
+    [RequireComponent(typeof(PolygonCollider2D))]
+    [RequireComponent(typeof(Interactable))]
     public class Hotspot : Interactable, IBaseArea
     {
 #if UNITY_EDITOR
