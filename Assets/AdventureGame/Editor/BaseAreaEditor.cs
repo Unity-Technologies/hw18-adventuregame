@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AdventureGame;
 
@@ -519,7 +520,6 @@ namespace UnityEditor.AdventureGame
                 }
             }
 
-
             PolygonCollider2D collider = m_Behavior.GetComponent<PolygonCollider2D>();
             collider.pathCount = edgeList.Count;
             for (int i = 0; i < edgeList.Count; ++i)
@@ -531,6 +531,7 @@ namespace UnityEditor.AdventureGame
                 }
                 collider.SetPath(i, edgeVerts);
             }
+            EditorSceneManager.MarkSceneDirty(collider.gameObject.scene);
 
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
