@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
@@ -13,7 +14,7 @@ namespace UnityEditor.AdventureGame
         GameLogicGraphView m_GraphView;
         GameLogicData m_GameLogicData;
 
-        [MenuItem("Adventure Game/Game Logic Open")]
+        [MenuItem("Adventure Game/Game Logic Window")]
         public static void OpenWindow()
         {
             GetWindow<GameLogicGraphViewWindow>();
@@ -22,6 +23,7 @@ namespace UnityEditor.AdventureGame
         // Use this for initialization
         void OnEnable()
         {
+            titleContent.text = "Game Logic";
             var sampleGraphView = new GameLogicGraphView();
             m_GraphView = sampleGraphView;
 
@@ -45,6 +47,18 @@ namespace UnityEditor.AdventureGame
 
         void OnSelectionChanged()
         {
+            List<Node> removeNodes = m_GraphView.nodes.ToList();
+            foreach (Node node in removeNodes)
+            {
+                m_GraphView.RemoveElement(node);
+            }
+
+            List<Edge> removeEdges = m_GraphView.edges.ToList();
+            foreach (Edge edge in removeEdges)
+            {
+                m_GraphView.RemoveElement(edge);
+            }
+
             GameLogicData[] data = Selection.GetFiltered<GameLogicData>(SelectionMode.Assets);
             if (data.Length != 1)
             {
@@ -95,66 +109,41 @@ namespace UnityEditor.AdventureGame
 
         Node DeserializeNode(GameLogicData.GameLogicGraphNode graphNode)
         {
-            Node node = graphNode.m_title == "Start" ? CreateRootNode() : CreateNode(graphNode.m_title);
+            Node node;
+            if (graphNode.m_title == "Start")
+            {
+                node = CreateRootNode();
+            }
+            else
+            {
+                node = CreateNodeFromType(graphNode.GetType());
+            }
             node.SetPosition(new Rect(graphNode.m_position, Vector2.zero));
             return node;
         }
 
-        Node CreateNode(string title)
+        Node CreateNodeFromType(Type type)
         {
-            Node node = new Node();
-            node.title = title;
+            MethodInfo method = type.GetMethod("CreateNode", BindingFlags.Static | BindingFlags.Public);
+            if (method == null)
+            {
+                Debug.LogError("Failed to find method CreateNode()!");
+                return null;
+            }
 
-            node.capabilities |= Capabilities.Movable;
-            Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
-            inputPort.portName = "in port";
-            inputPort.userData = null;
-            node.inputContainer.Add(inputPort);
-
-            Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-            outputPort.portName = "out port";
-            outputPort.userData = null;
-            node.outputContainer.Add(outputPort);
+            Node node = method.Invoke(null, null) as Node;
+            if (node == null)
+            {
+                Debug.LogError("Failed to create node!");
+                return null;
+            }
 
             return node;
         }
 
-        Node CreateEndNode(string title)
+        SearchTreeEntry CreateSearchTreeEntry(Texture2D icon, int level, Type type)
         {
-            Node node = new Node();
-            node.title = title;
-
-            node.capabilities |= Capabilities.Movable;
-            Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
-            inputPort.portName = "action";
-            inputPort.userData = null;
-            node.inputContainer.Add(inputPort);
-
-            return node;
-        }
-
-        Node CreateConditionNode(string title)
-        {
-            Node node = new Node();
-            node.title = title;
-
-            node.capabilities |= Capabilities.Movable;
-            Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
-            inputPort.portName = "in port";
-            inputPort.userData = null;
-            node.inputContainer.Add(inputPort);
-
-            Port outputPort1 = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-            outputPort1.portName = "true";
-            outputPort1.userData = null;
-            node.outputContainer.Add(outputPort1);
-
-            Port outputPort2 = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-            outputPort2.portName = "false";
-            outputPort2.userData = null;
-            node.outputContainer.Add(outputPort2);
-
-            return node;
+            return new SearchTreeEntry(new GUIContent(type.Name, icon)) { level = level, userData = type };
         }
 
         public List<SearchTreeEntry> CreateSearchTree(SearchWindowContext context)
@@ -164,8 +153,7 @@ namespace UnityEditor.AdventureGame
 
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Category"), 1));
-            tree.Add(new SearchTreeEntry(new GUIContent("Condition", icon)) { level = 2, userData = typeof(GameLogicConditionNode) });
-            tree.Add(new SearchTreeEntry(new GUIContent("End node", icon)) { level = 2, userData = typeof(GameLogicEndNode) });
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
 
             return tree;
         }
@@ -174,29 +162,22 @@ namespace UnityEditor.AdventureGame
         {
             if (!(entry is SearchTreeGroupEntry))
             {
-                GameLogicNode gameLogicNode = ScriptableObject.CreateInstance(entry.userData as Type) as GameLogicNode;
-                Node node = null;
-
-                if (gameLogicNode is GameLogicConditionNode)
+                Type createType = entry.userData as Type;
+                Node node = CreateNodeFromType(createType);
+                if (node == null)
                 {
-                    node = CreateConditionNode("Default");
-                }
-                else if (gameLogicNode is GameLogicEndNode)
-                {
-                    node = CreateEndNode("Default");
+                    return false;
                 }
 
-                if (node != null)
-                {
-                    m_GraphView.AddElement(node);
+                node.userData = createType;
+                m_GraphView.AddElement(node);
 
-                    Vector2 pointInWindow = context.screenMousePosition - position.position;
-                    Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
-                    node.SetPosition(new Rect(pointInGraph, Vector2.zero));
-                    node.Select(m_GraphView, false);
+                Vector2 pointInWindow = context.screenMousePosition - position.position;
+                Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
+                node.SetPosition(new Rect(pointInGraph, Vector2.zero));
+                node.Select(m_GraphView, false);
 
-                    SaveGraphData();
-                }
+                SaveGraphData();
 
                 return true;
             }
@@ -218,9 +199,26 @@ namespace UnityEditor.AdventureGame
             graphData.m_graphNodes = new List<GameLogicData.GameLogicGraphNode>();
             for (int i = 0; i < nodes.Count; ++i)
             {
-                GameLogicData.GameLogicGraphNode graphNode = new GameLogicData.GameLogicGraphNode();
                 Node currentNode = nodes[i];
+                Type nodeType = currentNode.userData as Type;
+                GameLogicData.GameLogicGraphNode graphNode = new GameLogicData.GameLogicGraphNode();
+                if (nodeType == null)
+                {
+                    graphNode.m_type = null;
+                    graphNode.m_typeData = null;
+                }
+                else
+                {
+                    MethodInfo method = nodeType.GetMethod("ExtractExtraData", BindingFlags.Static | BindingFlags.Public);
+                    if (method == null)
+                    {
+                        Debug.LogError("Failed to find method ExtractExtraData()!");
+                        return;
+                    }
 
+                    graphNode.m_type = nodeType.FullName;
+                    graphNode.m_typeData = (string)method.Invoke(null, new object[] { currentNode });
+                }
                 graphNode.m_title = currentNode.title;
                 graphNode.m_position = currentNode.GetPosition().position;
                 graphNode.m_outputs = new List<GameLogicData.GameLogicGraphEdge>();
@@ -236,12 +234,14 @@ namespace UnityEditor.AdventureGame
                         graphNode.m_outputs.Add(serializedEdge);
                     }
                 }
-
+                
                 graphData.m_graphNodes.Add(graphNode);
             }
 
             AssetDatabase.CreateAsset(graphData, assetPath);
             AssetDatabase.SaveAssets();
+
+            m_GameLogicData = AssetDatabase.LoadAssetAtPath<GameLogicData>(assetPath);
         }
 
         public bool LoadGraphData()
