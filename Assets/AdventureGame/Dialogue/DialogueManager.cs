@@ -54,7 +54,7 @@ namespace UnityEngine.AdventureGame
                         dialogueChoices[i] = m_CurrentDialogueNode.m_outputs[i].m_outputDialog;
                     }
                 }
-                AdventureGameOverlayManager.Instance.CreateDialogueBox(dialogueChoices, m_CurrentDialogueNode.m_characterDialogue, ContinueDialogue);
+                AdventureGameOverlayManager.Instance.DisplayDialogueOptions(dialogueChoices, m_CurrentDialogueNode.m_characterDialogue, ContinueDialogue);
             }
             else
             {
