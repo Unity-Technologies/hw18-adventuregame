@@ -42,8 +42,11 @@ public class Interactable : MonoBehaviour
 		Debug.Log("Clickable Item Clicked");
 		InputSystemManager.Instance.SelectAction(m_PossibleActions, PerformInteraction);
 
-        StartCoroutine(m_gameLogicData.Execute());
-    }
+	    if (m_gameLogicData != null)
+	    {
+	        StartCoroutine(m_gameLogicData.Execute());
+	    }
+	}
 
     public void OnInteracted(InventoryItem item)
 	{
@@ -62,8 +65,12 @@ public class Interactable : MonoBehaviour
 		{
 			if (m_Interactions[i].Action == action)
 			{
+                Debug.Log("Interaction " + action);
 				m_Interactions[i].Reaction.Invoke();
+			    return;
 			}
 		}
+
+        AdventureGameOverlayManager.Instance.DisplayCharacterDialogue("I can't do that.", "Character");
 	}
 }

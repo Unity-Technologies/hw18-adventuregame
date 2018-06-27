@@ -49,13 +49,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 666a5e0b48cc8a048b95b671eedb6edd, type: 3}
   - {fileID: 21300000, guid: d8d08cfb9e0081443a02fc835ac2c0a3, type: 3}
   m_PackedSpriteNamesToIndex:
-  - ' Check - Select'
-  - ' Check - Select'
+  - Check - Selected
+  - Check
   - Tray
   - Gamepad
-  - ' Menu'
-  - ' Menu'
+  - Menu
+  - MenuDark
   - Toggle
-  - Rectangle 5
+  - Rectangle
   m_Tag: UI Atlas
   m_IsVariant: 0
