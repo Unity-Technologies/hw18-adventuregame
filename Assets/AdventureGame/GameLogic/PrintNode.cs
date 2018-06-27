@@ -4,19 +4,19 @@ using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
-    public static class StoryEventConditionNode
+    public static class PrintNode
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            //if true return first return value if false return second
-            yield return currentNode.GetReturnValue(true ? 0 : 1);
+            Debug.LogFormat("Output is: {0}", currentNode.m_typeData);
+            yield break;
         }
 
 #if UNITY_EDITOR
         public static Node CreateNode(string typeData)
         {
             Node node = new Node();
-            node.title = "StoryEventCondition";
+            node.title = "Print";
 
             node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
@@ -28,11 +28,6 @@ namespace UnityEngine.AdventureGame
             outputPort1.portName = "true";
             outputPort1.userData = null;
             node.outputContainer.Add(outputPort1);
-
-            Port outputPort2 = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-            outputPort2.portName = "false";
-            outputPort2.userData = null;
-            node.outputContainer.Add(outputPort2);
 
             var characterName = new TextField()
             {

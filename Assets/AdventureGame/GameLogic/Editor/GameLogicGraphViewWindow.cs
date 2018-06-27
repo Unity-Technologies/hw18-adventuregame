@@ -164,6 +164,7 @@ namespace UnityEditor.AdventureGame
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Category"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
 
             return tree;
         }
@@ -248,7 +249,7 @@ namespace UnityEditor.AdventureGame
                 graphData.m_graphNodes.Add(graphNode);
             }
 
-            AssetDatabase.CreateAsset(graphData, assetPath);
+            EditorUtility.CopySerialized(graphData, m_GameLogicData);
             AssetDatabase.SaveAssets();
 
             m_GameLogicData = AssetDatabase.LoadAssetAtPath<GameLogicData>(assetPath);
