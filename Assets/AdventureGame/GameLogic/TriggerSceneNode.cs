@@ -8,7 +8,7 @@ using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
-    public static class TriggerScene
+    public static class TriggerSceneNode
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
@@ -29,16 +29,6 @@ namespace UnityEngine.AdventureGame
             inputPort.portName = "";
             inputPort.userData = null;
             node.inputContainer.Add(inputPort);
-
-	        List<string> storyEvents = StoryEventsDatabase.StoryEventDatabase != null ? StoryEventsDatabase.StoryEventDatabase.events
-										: new List<string>();
-
-	        var storyEventsDropdown =
-		        new PopupField<string>(storyEvents,
-										string.IsNullOrEmpty(typeData) || !storyEvents.Exists((x) => string.Equals(x, typeData)) ? 0
-											: storyEvents.FindIndex((x) => string.Equals(x, typeData)));
-			node.mainContainer.Insert(1, storyEventsDropdown);
-
             return node;
         }
 

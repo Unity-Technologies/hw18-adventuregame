@@ -68,6 +68,7 @@ namespace UnityEngine.AdventureGame
             var triggerableArea = collision.gameObject.GetComponent<TriggerArea>();
             if (triggerableArea != null)
             {
+                triggerableArea.OnTriggered();
             }    
         }
     }

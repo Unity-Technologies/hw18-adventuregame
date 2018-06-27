@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.AdventureGame;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace UnityEngine.AdventureGame
 {
-    public static class SetStoryEventNode
+    public static class TriggerDialogNode
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            PersistentDataManager.Instance.AddFinishedStoryEvent(currentNode.m_typeData);
+            string path = AssetDatabase.GUIDToAssetPath(currentNode.m_typeData);
+            DialogueManager.Instance.StartDialogue(AssetDatabase.LoadAssetAtPath<SerializableDialogData>(path));
 
             //if true return first return value if false return second
 	        yield return currentNode.GetReturnValue(0);
@@ -37,14 +40,14 @@ namespace UnityEngine.AdventureGame
             outputPort1.userData = null;
             node.outputContainer.Add(outputPort1);
 
-	        List<string> storyEvents = StoryEventsDatabase.StoryEventDatabase != null ? StoryEventsDatabase.StoryEventDatabase.events
-										: new List<string>();
-
-	        var storyEventsDropdown =
-		        new PopupField<string>(storyEvents,
-										string.IsNullOrEmpty(typeData) || !storyEvents.Exists((x) => string.Equals(x, typeData)) ? 0
-											: storyEvents.FindIndex((x) => string.Equals(x, typeData)));
-			node.mainContainer.Insert(1, storyEventsDropdown);
+            var dialogOptions = new ObjectField()
+            {
+                objectType = typeof(SerializableDialogData),
+                allowSceneObjects = false
+            };
+            string path = AssetDatabase.GUIDToAssetPath(typeData);
+            dialogOptions.value = AssetDatabase.LoadAssetAtPath<SerializableDialogData>(path);
+			node.mainContainer.Insert(1, dialogOptions);
 
             return node;
         }
@@ -53,9 +56,11 @@ namespace UnityEngine.AdventureGame
         {
             foreach (VisualElement ele in node.mainContainer)
             {
-                if (ele is PopupField<string>)
+                if (ele is ObjectField)
                 {
-                    return (ele as PopupField<string>).value;
+                    ObjectField field = (ele as ObjectField);
+                    string path = AssetDatabase.GetAssetPath(field.value);
+                    return AssetDatabase.AssetPathToGUID(path);
                 }
             }
 

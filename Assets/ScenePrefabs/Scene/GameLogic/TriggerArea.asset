@@ -16,9 +16,12 @@ MonoBehaviour:
     m_typeData: 
     m_title: Start
     m_position: {x: -50, y: -50}
-    m_outputs: []
-  - m_type: UnityEngine.AdventureGame.SetStoryEventNode
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
     m_typeData: talked_to_tom
-    m_title: Set Story Event
-    m_position: {x: 171.5823, y: -70.1331}
+    m_title: Trigger Scene
+    m_position: {x: 166.9823, y: -65.53311}
     m_outputs: []

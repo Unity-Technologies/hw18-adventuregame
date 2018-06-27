@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: Hotspot
+  m_Name: 
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -28,8 +28,16 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 2
       m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerDialogNode
+    m_typeData: 8ac992656a060ab469029dd81af63cbd
+    m_title: Set Story Event
+    m_position: {x: 348.68234, y: -58.63311}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: asdads
     m_title: Print
-    m_position: {x: 476.33234, y: -81.63308}
+    m_position: {x: 585.99646, y: -58.633076}
     m_outputs: []
