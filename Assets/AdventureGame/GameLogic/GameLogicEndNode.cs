@@ -6,5 +6,8 @@ using UnityEngine.Experimental.UIElements;
 
 public class GameLogicEndNode : GameLogicNode
 {
-	
+	public override void DetermineOutput()
+	{
+		
+	}
 }

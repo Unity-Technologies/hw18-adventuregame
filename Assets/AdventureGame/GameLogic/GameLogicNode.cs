@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class GameLogicNode : ScriptableObject
 {
-	
+	public abstract void DetermineOutput();
 }

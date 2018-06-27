@@ -9,7 +9,7 @@ using UnityEngine.Experimental.UIElements;
 
 public class GameLogicGraphViewWindow : EditorWindow, ISearchWindowProvider
 {
-	const string gameLogicGraphDataPath = "Assets/AdventureGame/GameLogic/OneScriptData.asset";
+	const string gameLogicGraphDataPath = "Assets/AdventureGame/GameLogic/SavedGraphs/graphTest.asset";
 
 	GameLogicGraphView m_GraphView;
 
