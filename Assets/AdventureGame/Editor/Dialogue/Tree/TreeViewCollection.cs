@@ -1,8 +1,16 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditor.IMGUI.Controls;
+using UnityEngine;
 
 class TreeViewCollection : TreeView
 {
+    int currentID = 10;
+
+    public int GetAndIncrementID() {
+        return ++currentID;
+    }
+
     public TreeViewCollection(TreeViewState treeViewState)
         : base(treeViewState)
     {
