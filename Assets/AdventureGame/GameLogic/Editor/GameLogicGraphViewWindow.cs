@@ -20,6 +20,17 @@ namespace UnityEditor.AdventureGame
             GetWindow<GameLogicGraphViewWindow>();
         }
 
+        public void ShowScript(GameLogicData data)
+        {
+            m_GameLogicData = data;
+
+            if (!LoadGraphData())
+            {
+                Node node = CreateRootNode();
+                m_GraphView.AddElement(node);
+            }
+        }
+
         // Use this for initialization
         void OnEnable()
         {
@@ -43,6 +54,11 @@ namespace UnityEditor.AdventureGame
         void OnDisable()
         {
             Selection.selectionChanged -= OnSelectionChanged;
+        }
+
+        void OnLostFocus()
+        {
+            SaveGraphData();
         }
 
         void OnSelectionChanged()
@@ -83,11 +99,6 @@ namespace UnityEditor.AdventureGame
         {
             EditorApplication.update += DelayedSaveGraphData;
             return change;
-        }
-
-        public void OnGraphNodeChanged()
-        {
-            EditorApplication.update += DelayedSaveGraphData;
         }
 
         void DelayedSaveGraphData()
@@ -145,9 +156,8 @@ namespace UnityEditor.AdventureGame
                 Debug.LogError("Failed to find method CreateNode()!");
                 return null;
             }
-
-            Action action = OnGraphNodeChanged;
-            Node node = method.Invoke(null, new object[] {typedata, action}) as Node;
+            
+            Node node = method.Invoke(null, new object[] {typedata}) as Node;
             if (node == null)
             {
                 Debug.LogError("Failed to create node!");

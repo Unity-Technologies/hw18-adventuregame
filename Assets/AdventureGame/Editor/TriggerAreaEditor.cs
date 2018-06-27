@@ -17,6 +17,8 @@ namespace UnityEditor.AdventureGame
 
         public override void OnInspectorGUI()
         {
+            Color oldColor = GUI.color;
+            GUI.color = Color.yellow;
             if (GUILayout.Button("Edit Game Logic", GUILayout.Height(50)))
             {
                 if (m_GameLogicData.objectReferenceValue == null)
@@ -32,14 +34,14 @@ namespace UnityEditor.AdventureGame
                     m_GameLogicData.objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameLogicData>(gameLogicAssetPath);
                 }
 
-                Selection.activeObject = m_GameLogicData.objectReferenceValue;
-
                 GameLogicGraphViewWindow graphViewWindow = EditorWindow.GetWindow<GameLogicGraphViewWindow>();
                 if (graphViewWindow != null)
                 {
                     graphViewWindow.Focus();
+                    graphViewWindow.ShowScript((GameLogicData)m_GameLogicData.objectReferenceValue);
                 }
             }
+            GUI.color = oldColor;
 
             GUILayout.Space(10);
             base.OnInspectorGUI();

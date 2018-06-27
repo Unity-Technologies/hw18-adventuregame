@@ -25,3 +25,8 @@ MonoBehaviour:
     m_title: Trigger Scene
     m_position: {x: 149.9623, y: -50.58311}
     m_outputs: []
+  - m_type: UnityEngine.AdventureGame.WalkToNode
+    m_typeData: dfgdfgf
+    m_title: Walk To
+    m_position: {x: 402.50235, y: -127.63312}
+    m_outputs: []
