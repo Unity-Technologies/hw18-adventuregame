@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
 
@@ -34,13 +36,12 @@ namespace UnityEngine.AdventureGame
             outputPort2.userData = null;
             node.outputContainer.Add(outputPort2);
 
-            var characterName = new TextField()
-            {
-                multiline = false,
-                value = typeData
-            };
+	        List<string> storyEvents = StoryEventsDatabase.StoryEventDatabase != null ? StoryEventsDatabase.StoryEventDatabase.events
+										: new List<string>();
 
-            node.mainContainer.Insert(1, characterName);
+	        var storyEventsDropdown =
+		        new PopupField<string>(storyEvents, string.IsNullOrEmpty(typeData) ? 0 : storyEvents.FindIndex((x) => string.Equals(x, typeData)));
+			node.mainContainer.Insert(1, storyEventsDropdown);
 
             return node;
         }
@@ -49,9 +50,9 @@ namespace UnityEngine.AdventureGame
         {
             foreach (VisualElement ele in node.mainContainer)
             {
-                if (ele is TextField)
+                if (ele is PopupField<string>)
                 {
-                    return (ele as TextField).value;
+                    return (ele as PopupField<string>).value;
                 }
             }
 

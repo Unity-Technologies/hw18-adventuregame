@@ -3,100 +3,131 @@ using UnityEngine.UI;
 
 namespace UnityEngine.AdventureGame
 {
-    public class InventoryManager : MonoBehaviour
-    {
-        public const int INVENTORY_SLOTS = 8;
+	public class InventoryManager : MonoBehaviour
+	{
+		public const int INVENTORY_SLOTS = 8;
 
-        public Image[] itemImages = new Image[INVENTORY_SLOTS];
-        public InventoryItem[] items = new InventoryItem[INVENTORY_SLOTS];
-        public InventoryItem Selected = null;
+		public InventoryItem[] items = new InventoryItem[INVENTORY_SLOTS];
+		public InventoryItem Selected = null;
 
-        InventoryUI inventoryUI = null;
+		private static InventoryManager instance;
 
-        public void RegisterInventoryUI(InventoryUI newInventoryUI) {
-            inventoryUI = newInventoryUI;
-        }
+		public static InventoryManager Instance
+		{
+			get
+			{
+				if (instance == null)
+				{
+					InventoryManager existingInventoryManager = FindObjectOfType<InventoryManager>();
+					if (existingInventoryManager != null)
+					{
+						instance = existingInventoryManager;
+					}
+					else
+					{
+						GameObject manager = new GameObject();
+						instance = manager.AddComponent<InventoryManager>();
+					}
+				}
+				return instance;
+			}
+		}
 
 		public void UpdateUI(int index)
 		{
-			inventoryUI.UpdateSlot(index);
+			InventoryUI.Instance.UpdateSlot(index);
 		}
 
-        public void DropItem(Vector3 dropPosition){
-            if(Selected == null){
-                Debug.Log("Called DropItem with nothing selected!");
-                return;
-            }
+		//returns inventory item with the given id if it is in the inventory, 
+		//otherwise returns null
+		public InventoryItem GetItemWithId(string id)
+		{
+			for (int i = 0; i < items.Length; i++)
+			{
+				if (items[i].Id == id)
+				{
+					return items[i];
+				}
+			}
+			return null;
+		}
 
-            Selected.transform.position = new Vector3(dropPosition.x - 0.1f, dropPosition.y + 0.1f, dropPosition.z);
-            RemoveItem(Selected);
-        }
+		public void DropSelectedItem(Vector2 position)
+		{
+			if (Selected == null)
+			{
+				Debug.Log("Called DropSelectedItem with nothing selected!");
+				return;
+			}
 
-        public bool AddItem(InventoryItem itemToAdd)
-        {
-            //find the first empty inventory slot
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i] == null)
-                {
-                    items[i] = itemToAdd;
-                    itemImages[i].sprite = itemToAdd.sprite;
-                    itemImages[i].enabled = true;
-                    UpdateUI(i);
-                    return true;
-                }
-            }
+			Selected.transform.position = new Vector3(position.x, position.y, 0.0f);
+			Debug.Log("Dropping " + Selected.Id + " at " + Selected.transform.position);
+			Selected.Dropped();
+			ClearSelected();
+		}
+
+		public bool AddItem(InventoryItem itemToAdd)
+		{
+			//find the first empty inventory slot
+			for (int i = 0; i < items.Length; i++)
+			{
+				if (items[i] == null)
+				{
+					items[i] = itemToAdd;
+					UpdateUI(i);
+					return true;
+				}
+			}
 			Debug.Log("Inventory is full!");
 			return false;
-        }
+		}
 
-        public bool RemoveItem(InventoryItem itemToRemove)
-        {
-            //find the slot containing the item and remove it
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i] == itemToRemove)
-                {
-                    items[i] = null;
-                    itemImages[i].sprite = null;
-                    itemImages[i].enabled = false;
-                    UpdateUI(i);
-                    return true;
-                }
-            }
-			Debug.Log("That isn't in your inventory!");
+		public bool RemoveItem(InventoryItem itemToRemove)
+		{
+			//find the slot containing the item and remove it
+			for (int i = 0; i < items.Length; i++)
+			{
+				if (items[i] == itemToRemove)
+				{
+					items[i] = null;
+					UpdateUI(i);
+					return true;
+				}
+			}
 			return false;
-        }
+		}
 
 		private void selectItem(int index)
 		{
 			if (items[index] == null)
 			{
-				Debug.Log("Nothing to select here!");
 				return;
 			}
-            Debug.Log("Selected " + items[index].Id);
+			Debug.Log("Selected " + items[index].Id);
 			this.Selected = items[index];
+			AdventureGameOverlayManager.Instance.ChangeCursor(items[index].sprite);
 		}
 
 		public void ClearSelected()
 		{
+			Debug.Log("Selected item cleared");
 			this.Selected = null;
+			AdventureGameOverlayManager.Instance.ChangeCursor(null);
 		}
 
 		public void SlotClicked(int index)
 		{
-            Debug.Log("Clicked slot "+index);
-            if(items[index] == null){
-                //nothing to do here
-                return;
-            }
+			if (items[index] == null)
+			{
+				//nothing to do here
+				return;
+			}
 
 			InventoryItem itemInSlot = items[index];
-            //clicking an item on another item
+			//clicking an item on another item
 			if (Selected != null)
 			{
-                if (Selected.Id == itemInSlot.Id)
+				if (Selected.Id == itemInSlot.Id)
 				{
 					//clicking the item on itself, clear selection
 					ClearSelected();
@@ -107,16 +138,18 @@ namespace UnityEngine.AdventureGame
 					CombineItems(Selected, itemInSlot);
 				}
 			}
-            //clicking an item when nothing is currently selected
-            else {
-                selectItem(index);
-            }
+			//clicking an item when nothing is currently selected
+			else
+			{
+				selectItem(index);
+			}
 		}
 
 		public void CombineItems(InventoryItem first, InventoryItem second)
 		{
+			//TODO replace one of the items with the new (combined) item if applicable, clear the other
 			Debug.Log("You've combined two items!");
-            //TODO replace one of the items with the new (combined) item if applicable, clear the other
+			ClearSelected();
 		}
-    }
+	}
 }
