@@ -101,7 +101,7 @@ namespace UnityEngine.AdventureGame
 
         void UnloadScenePrefab() {
             Debug.Log("Unloading : " + m_scenePrefabCurrent);
-            DestroyImmediate(transform.GetChild(0).gameObject);
+            Destroy(transform.GetChild(0).gameObject);
             Debug.Log("Unloaded : " + m_scenePrefabCurrent);
         }
 
@@ -129,6 +129,9 @@ namespace UnityEngine.AdventureGame
             }
             m_Character.WarpToPosition(m_sceneStartingPosition);
             Debug.Log("Loaded : " + m_scenePrefabToLoad);
+
+            GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
+            camera.GetComponent<RegionWindowFollowingCamera>().WarpToTargetPosition();
         }
 
         void ResetTransition() {
@@ -177,7 +180,7 @@ namespace UnityEngine.AdventureGame
 
 
         // Sent by trigger area in scene asking scene manager to load a new scene
-        void TriggerDoorway() {
+        public void TriggerDoorway() {
             StartTransition();
         }
     }

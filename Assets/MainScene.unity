@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -167,35 +167,35 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 99021478}
     m_Modifications:
-    - target: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
+    - target: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
+    - target: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
+    - target: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
+    - target: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
+    - target: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
+    - target: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
+    - target: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
+    - target: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422, type: 2}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -204,7 +204,7 @@ Prefab:
   m_IsPrefabAsset: 0
 --- !u!4 &199472237 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 4244210725686210, guid: 6f51e21856bfe4544a202dff24683422,
+  m_CorrespondingSourceObject: {fileID: 4997547438380108, guid: 6f51e21856bfe4544a202dff24683422,
     type: 2}
   m_PrefabInternal: {fileID: 199472236}
 --- !u!1 &389967139
@@ -256,6 +256,7 @@ GameObject:
   m_Component:
   - component: {fileID: 743221605}
   - component: {fileID: 743221606}
+  - component: {fileID: 743221607}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -322,6 +323,31 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &743221607
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 743221604}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.05}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 0.99, y: 2.1}
+    newSize: {x: 0.16, y: 0.16}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.99, y: 2.1}
+  m_EdgeRadius: 0
 --- !u!1 &861653817
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,6 +649,7 @@ GameObject:
   - component: {fileID: 1816081931}
   - component: {fileID: 1816081930}
   - component: {fileID: 1816081932}
+  - component: {fileID: 1816081933}
   m_Layer: 0
   m_Name: MainCharacter
   m_TagString: Untagged
@@ -681,6 +708,26 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &1816081933
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1816081929}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!4 &1816081934
 Transform:
   m_ObjectHideFlags: 0
