@@ -16,10 +16,18 @@ namespace UnityEngine.AdventureGame
 
     public class Triggerable : MonoBehaviour
     {
+        [SerializeField]
+        public TriggerEventType m_EventType;
 
-         public void OnTriggered(TriggerEventType type)
+        public TriggerEventType EventType
         {
-            switch (type)
+            get { return m_EventType; }
+            set { m_EventType = value; }
+        }
+
+        public void OnTriggered()
+        {
+            switch (m_EventType)
             {
                 case TriggerEventType.SCENE_TRANSITION :
                     Debug.Log("Triggered a SCENE_TRANSITION");
