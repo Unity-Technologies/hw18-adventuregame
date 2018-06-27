@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
+  m_Name: GameLogic
+  m_EditorClassIdentifier: 
+  m_graphNodes:
+  - m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+  - m_title: Default
+    m_position: {x: 216.11511, y: -262.25757}
+    m_outputs: []
+  - m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 5
+      m_targetPort: 0
+  - m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 4
+      m_targetPort: 0
+  - m_title: Default
+    m_position: {x: 214.11511, y: -110.25757}
+    m_outputs: []
+  - m_title: Default
+    m_position: {x: 398.1151, y: -168.25757}
+    m_outputs: []

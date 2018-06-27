@@ -10,7 +10,7 @@ public class StoryEventsEditorWindow : EditorWindow
 
 	private int currentlyChangingNameIndex = -1;
 
-	[MenuItem("Adventure Game/Story events/Open")]
+	[MenuItem("Adventure Game/Story Events Window")]
 	public static void OpenWindow()
 	{
 		GetWindow<StoryEventsEditorWindow>();
