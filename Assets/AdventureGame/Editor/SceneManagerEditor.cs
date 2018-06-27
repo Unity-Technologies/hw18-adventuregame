@@ -68,7 +68,6 @@ namespace UnityEditor.AdventureGame
         SerializedProperty m_DefaultHeight;
         SerializedProperty m_TransitionObject;
         SerializedProperty m_TransitionTime;
-        SerializedProperty m_LocatorRoot;
 
         [InitializeOnLoadMethod]
         static void InitializeOnLoad()
@@ -121,7 +120,6 @@ namespace UnityEditor.AdventureGame
             m_DefaultHeight = serializedObject.FindProperty("m_defaultHeight");
             m_TransitionObject = serializedObject.FindProperty("m_transitionTransform");
             m_TransitionTime = serializedObject.FindProperty("m_transitionTime");
-            m_LocatorRoot = serializedObject.FindProperty("m_LocatorRoot");
         }
 
         public override void OnInspectorGUI()
@@ -139,8 +137,6 @@ namespace UnityEditor.AdventureGame
             EditorGUILayout.LabelField(" x ", GUILayout.Width(20.0f));
             EditorGUILayout.PropertyField(m_DefaultHeight, GUIContent.none, GUILayout.MaxWidth(75.0f));
             EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.PropertyField(m_LocatorRoot);
 
             EditorGUILayout.PropertyField(m_TransitionObject);
             EditorGUILayout.PropertyField(m_TransitionTime, new GUIContent("Transition Time"));
@@ -196,6 +192,7 @@ namespace UnityEditor.AdventureGame
             GameObject sceneRoot = new GameObject();
             sceneRoot.transform.SetParent(m_SceneManager.transform, false);
             sceneRoot.name = GameObjectUtility.GetUniqueNameForSibling(m_SceneManager.transform, "Scene");
+            Scene sceneComponent = sceneRoot.AddComponent<Scene>();
 
             GameObject backgroundObject = new GameObject();
             backgroundObject.transform.SetParent(sceneRoot.transform, false);
@@ -205,6 +202,11 @@ namespace UnityEditor.AdventureGame
             backgroundRenderer.drawMode = SpriteDrawMode.Sliced;
             backgroundRenderer.color = Color.gray;
             backgroundRenderer.size = new Vector2(backgroundHeight * aspectRatio, backgroundHeight);
+
+            GameObject locatorsGroup = new GameObject();
+            locatorsGroup.transform.SetParent(sceneRoot.transform, false);
+            locatorsGroup.name = "Locators";
+            sceneComponent.m_LocatorRoot = locatorsGroup;
 
             GameObject hotspotGroup = new GameObject();
             hotspotGroup.transform.SetParent(sceneRoot.transform, false);
