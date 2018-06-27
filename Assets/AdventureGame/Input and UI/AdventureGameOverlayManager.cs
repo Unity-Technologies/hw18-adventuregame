@@ -53,10 +53,10 @@ namespace UnityEngine.AdventureGame
 
         // Prefabs for action menu buttons
         [Header("Action Menu")]
-        public bool autoLayoutButtons = true;
-        [Tooltip("Only set if Auto Layout is true.")]
+        public bool autoCreateButtons = true;
+        [Tooltip("Only set if Auto Create is true.")]
         public Button naiveActionButton;
-        [Tooltip("Only set if Auto Layout is true.")]
+        [Tooltip("Only set if Auto Create is true.")]
         public Button contextualActionButton;
 
         // Settings for Dialogue Menus
@@ -67,6 +67,11 @@ namespace UnityEngine.AdventureGame
         public DialogueOptionMenuPlacement dialogueOptionMenuPlacement = DialogueOptionMenuPlacement.BOTTOM;
         public Font menuFont;
         public Color menuTextColor = Color.black;
+
+        // Settings for System Menus
+        [Header("Settings for System Menus")]
+        public GameObject systemMenuPrefab;
+
         // Callback that returns the currently selected action (or the result of a menu selection)
         public delegate void DialogueSelectionDelegate(string result);
         #endregion
@@ -78,9 +83,57 @@ namespace UnityEngine.AdventureGame
         private GameObject dialogueBoxPrefab;
         private Canvas canvas;
         private GameObject currentlyDisplayedDialogueBox;
+        private GameObject currentlyDisplayedSystemMenu;
         #endregion
 
         #region Public Methods
+        public void Awake() {
+            instance = this;
+        }
+
+        public void Start()
+        {
+            canvas = GetComponentInChildren<Canvas>();
+            naiveActionUI = GameObject.Find("NaiveActionUI");
+            contextualActionUI = GameObject.Find("ContextualActionUI");
+            // Set all menus to false and selectively enable
+            if (naiveActionUI != null)
+            {
+                naiveActionUI.SetActive(false);
+            }
+            if (contextualActionUI != null)
+            {
+                contextualActionUI.SetActive(false);
+            }
+
+            SetUpGameTypeUI();
+            SetUpSystemMenu();
+
+            // Set up Dialogue Box prefab
+            dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
+            // Set up default menu font
+            if (menuFont == null)
+            {
+                menuFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            }
+            // test
+            DisplaySystemMenu();
+            //CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
+        }
+
+        public void DisplaySystemMenu () {
+            if (systemMenuPrefab != null) {
+                GameObject systemMenu = Instantiate(systemMenuPrefab);
+                systemMenu.transform.SetParent(canvas.transform, false);
+                currentlyDisplayedSystemMenu = systemMenu;
+            }
+        }
+
+        public void CloseSystemMenu() {
+            // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
+            Destroy(currentlyDisplayedSystemMenu);
+        }
+
         public void CreateDialogueBox(string[] dialogueOptions, string description = null, DialogueSelectionDelegate dialogueSelectionDelegate = null)
         {
             // If we are only showing a dialogue box, get rid of it before we display the next one.
@@ -216,41 +269,34 @@ namespace UnityEngine.AdventureGame
             Debug.Log(characterActionType);
         }
 
+        public void HandleSystemAction(SystemMenuButtonOptions buttonAction) {
+            Debug.Log(buttonAction);
+            switch (buttonAction) {
+                case SystemMenuButtonOptions.SAVE: {
+                    break;
+                }
+                case SystemMenuButtonOptions.QUIT: {
+                    break;
+                }
+                case SystemMenuButtonOptions.SETTINGS: {
+                    break;
+                }
+                case SystemMenuButtonOptions.CLOSEMENU: {
+                    CloseSystemMenu();
+                    break;
+                }
+                case SystemMenuButtonOptions.OTHER: {
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+
         #endregion
 
         #region Private Methods
-        private void Awake() {
-            instance = this;
-        }
-
-        private void Start()
-        {
-            canvas = GetComponentInChildren<Canvas>();
-            naiveActionUI = GameObject.Find("NaiveActionUI");
-            contextualActionUI = GameObject.Find("ContextualActionUI");
-            // Set all menus to false and selectively enable
-            if (naiveActionUI != null)
-            {
-                naiveActionUI.SetActive(false);
-            }
-            if (contextualActionUI != null)
-            {
-                contextualActionUI.SetActive(false);
-            }
-
-            SetUpGameTypeUI();
-
-            // Set up Dialogue Box prefab
-            dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
-            // Set up default menu font
-            if (menuFont == null)
-            {
-                menuFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            }
-            // test
-            //CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
-        }
-
         /// <summary>
         /// Initial setup call. Sets up all the other UIs and enables the appropriate ones.
         /// </summary>
@@ -260,7 +306,7 @@ namespace UnityEngine.AdventureGame
             {
                 case AdventureGameType.NAIVE:
                     {
-                        if (naiveActionUI != null && autoLayoutButtons)
+                        if (naiveActionUI != null && autoCreateButtons)
                         {
                             SetUpNaiveActionButtonUI();
                         }
@@ -279,7 +325,6 @@ namespace UnityEngine.AdventureGame
             }
         }
 
-
         private void SetUpNaiveActionButtonUI()
         {
             naiveActionUI.SetActive(true);
@@ -288,6 +333,7 @@ namespace UnityEngine.AdventureGame
                 if (naiveActionButton != null)
                 {
                     Button characterActionButton = Instantiate(naiveActionButton);
+                    // TODO(laurenfrazier): Icon?
                     characterActionButton.GetComponentInChildren<Text>().text = characterAction.actionName;
                     characterActionButton.name = characterAction.actionName;
 
@@ -295,6 +341,10 @@ namespace UnityEngine.AdventureGame
                     characterActionButton.onClick.AddListener(delegate { HandleActionButtonClick(characterAction.actionType); });
                 }
             }
+        }
+
+        private void SetUpSystemMenu () {
+
         }
 
         private void HandleDialogueOptionClick()
