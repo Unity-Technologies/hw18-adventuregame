@@ -7,18 +7,15 @@ namespace UnityEditor.AdventureGame
     [CustomEditor(typeof(InventoryManager))]
     public class InventoryEditor : Editor
     {
-        private bool[] showItemSlots = new bool[InventoryManager.INVENTORY_SLOTS];    // Whether the GUI for each Item slot is expanded.
-        private SerializedProperty itemImagesProperty;                      // Represents the array of Image components to display the Items.
-        private SerializedProperty itemsProperty;                           // Represents the array of Items.
+        private bool[] showItemSlots = new bool[InventoryManager.INVENTORY_SLOTS];   
+        private SerializedProperty itemsProperty;                           
 
-        private const string inventoryPropItemImagesName = "itemImages";    // The name of the field that is an array of Image components.
-        private const string inventoryPropItemsName = "items";              // The name of the field that is an array of Items.
+        private const string inventoryPropItemsName = "items";              
 
 
         private void OnEnable()
         {
             // Cache the SerializedProperties.
-            itemImagesProperty = serializedObject.FindProperty(inventoryPropItemImagesName);
             itemsProperty = serializedObject.FindProperty(inventoryPropItemsName);
         }
 
@@ -44,13 +41,10 @@ namespace UnityEditor.AdventureGame
             EditorGUILayout.BeginVertical(GUI.skin.box);
             EditorGUI.indentLevel++;
 
-            // Display a foldout to determine whether the GUI should be shown or not.
             showItemSlots[index] = EditorGUILayout.Foldout(showItemSlots[index], "Item slot " + index);
 
-            // If the foldout is open then display default GUI for the specific elements in each array.
             if (showItemSlots[index])
             {
-                EditorGUILayout.PropertyField(itemImagesProperty.GetArrayElementAtIndex(index));
                 EditorGUILayout.PropertyField(itemsProperty.GetArrayElementAtIndex(index));
             }
 
