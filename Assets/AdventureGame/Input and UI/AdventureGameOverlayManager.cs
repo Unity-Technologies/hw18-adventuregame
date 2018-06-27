@@ -125,7 +125,7 @@ namespace UnityEngine.AdventureGame
             }
             // testing only!
             //DisplaySystemMenu();
-            CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
+            //CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
         }
 
         public void DisplaySystemMenu () {
