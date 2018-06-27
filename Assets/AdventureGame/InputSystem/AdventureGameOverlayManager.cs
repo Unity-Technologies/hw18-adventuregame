@@ -63,7 +63,7 @@ namespace UnityEngine.AdventureGame
         public DialogueOptionMenuPlacement dialogueOptionMenuPlacement = DialogueOptionMenuPlacement.BOTTOM;
         public Font menuFont;
         // Callback that returns the currently selected action (or the result of a menu selection)
-        public delegate void DialogueSelectionDelegate(string result);
+        public delegate void DialogueSelectionDelegate(int result);
         #endregion
 
         #region Private Variables
