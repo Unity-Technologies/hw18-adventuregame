@@ -3,23 +3,16 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 
 namespace Unity.Adventuregame {
     public class DialogueGraphViewWindow : EditorWindow, ISearchWindowProvider
     {
-
-        [MenuItem("Dialogue/Open Window")]
-        public static void OpenWindow()
-        {
-            GetWindow<DialogueGraphViewWindow>();
-        }
-
         const string k_TestGraphDataPath = "Assets/AdventureGame/Dialogue/Test.asset";
 
         protected SampleGraphView m_GraphView;
-
 
         // Use this for initialization
         void OnEnable()
