@@ -3,14 +3,7 @@
     [RequireComponent(typeof(PolygonCollider2D))]
     public class TriggerArea : Triggerable, IBaseArea
     {
-        public enum TriggerEventType
-        {
-            SCENE_TRANSITION,
-            OTHER,
-        }
-
 #if UNITY_EDITOR
-      //  public TriggerEventType m_TriggerEventType;
         public Sprite m_sprite;
         public Color m_color = new Color(1.0f, 1.0f, 0.0f, 0.25f);
 
