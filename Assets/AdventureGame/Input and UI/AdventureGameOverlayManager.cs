@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.AdventureGame;
 using UnityEngine;
@@ -93,7 +94,9 @@ namespace UnityEngine.AdventureGame
         private GameObject currentlyDisplayedSystemMenu;
         private bool awaitingDialogueAdvance;
         private DialogueAdvanceDelegate dialogueAdvanceDelegate;
+        private Text currentlyDisplayedDialogue;
         private GameObject screenTouchPanel;
+        private float kDialogueVerticalOffset = 2.0f;
         #endregion
 
         #region Public Methods
@@ -170,7 +173,35 @@ namespace UnityEngine.AdventureGame
 
         public void DisplayCharacterDialogue(string dialogue, string characterName = null, DialogueAdvanceDelegate dialogueAdvanceDelegate = null)
         {
-            // TODO(laurenfrazier): Display dialogue over character
+            Debug.Log(characterName + " says: " + dialogue);
+            // Place dialogue
+            Vector2 dialoguePoint = new Vector2(100, 100);
+            if (characterName !=  null) {
+                GameObject speaker = GameObject.Find(characterName);
+                Renderer renderer = speaker.GetComponent<Renderer>();
+                float height = 150;
+                if (renderer != null) {
+                    height = renderer.bounds.size.y;
+                }
+                Vector3 offsetPosition = new Vector3(speaker.transform.position.x, speaker.transform.position.y + height + kDialogueVerticalOffset, speaker.transform.position.z) ;
+                Camera cam = FindObjectsOfType<Camera>().First();
+                if (cam != null && speaker != null) {
+                    Vector3 screenPosition = cam.WorldToScreenPoint(offsetPosition);
+                    dialoguePoint = new Vector2(screenPosition.x, screenPosition.y);
+                }
+            }
+            GameObject textObject = new GameObject("Current Dialogue");
+            Text dialogueText = textObject.AddComponent<Text>();
+            ContentSizeFitter sizeFitter = textObject.AddComponent<ContentSizeFitter>();
+            sizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            sizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            dialogueText.text = dialogue;
+            // TODO(laurenfrazier): Will each character have their own font/size/color?
+            dialogueText.font = menuFont;
+            dialogueText.fontSize = 44;
+            textObject.transform.SetParent(canvas.transform, true);
+            textObject.transform.position = dialoguePoint;
+            currentlyDisplayedDialogue = dialogueText;
 
             // When user dismisses by touching the screen, call callback
             this.dialogueAdvanceDelegate = dialogueAdvanceDelegate;
@@ -429,6 +460,9 @@ namespace UnityEngine.AdventureGame
         private void HandleAdvanceDialogue () {
             if (dialogueAdvanceDelegate != null) {
                 dialogueAdvanceDelegate();
+            }
+            if (currentlyDisplayedDialogue != null) {
+                Destroy(currentlyDisplayedDialogue.gameObject);
             }
             awaitingDialogueAdvance = false;
             screenTouchPanel.SetActive(false);
