@@ -129,6 +129,9 @@ namespace UnityEngine.AdventureGame
             }
             m_Character.WarpToPosition(m_sceneStartingPosition);
             Debug.Log("Loaded : " + m_scenePrefabToLoad);
+
+            GameObject camera = GameObject.FindGameObjectWithTag("MainCamera");
+            camera.GetComponent<RegionWindowFollowingCamera>().WarpToTargetPosition();
         }
 
         void ResetTransition() {
