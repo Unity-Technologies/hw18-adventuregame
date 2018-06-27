@@ -3,7 +3,6 @@ using UnityEngine.UI;
 
 namespace UnityEngine.AdventureGame
 {
-    //TODO - notify when an item is selected/unselected so that cursor can be updated to show item sprite
     //TODO - "picking up" should call AddItem
     //TODO - clicking in the world with an item selected should drop the item
 
@@ -16,6 +15,27 @@ namespace UnityEngine.AdventureGame
         public InventoryItem Selected = null;
 
         private InventoryUI inventoryUI;
+
+        private static InventoryManager instance;
+
+		public static InventoryManager Instance
+		{
+			get
+			{
+				if (instance == null)
+				{
+                    InventoryManager existingInventoryManager = FindObjectOfType<InventoryManager>();
+                    if(existingInventoryManager != null){
+                        instance = existingInventoryManager;
+                    }
+                    else {
+						GameObject manager = new GameObject();
+						instance = manager.AddComponent<InventoryManager>();
+                    }
+				}
+				return instance;
+			}
+		}
 
         public void RegisterInventoryUI(InventoryUI inventoryUI)
         {
