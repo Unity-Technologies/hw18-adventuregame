@@ -1,7 +1,14 @@
+using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Experimental.UIElements;
+using UnityEditor.Experimental.UIElements.GraphView;
+using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 
-public class SampleGraphViewWindow : GraphViewWindow {
-    
+public class SampleGraphViewWindow : GraphViewWindow
+{
+    const string k_TestGraphDataPath = "Assets/AdventureGame/SampleGraphView/Test.asset";
+
     [MenuItem("SampleGraphView/Open Window")]
     public static void OpenWindow()
     {
@@ -105,7 +112,7 @@ public class SampleGraphViewWindow : GraphViewWindow {
         return tree;
     }
 
-    public bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)
+    public virtual bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)
     {
         if (!(entry is SearchTreeGroupEntry))
         {
