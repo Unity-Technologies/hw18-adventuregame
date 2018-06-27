@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using UnityEditor.AdventureGame;
 using UnityEngine.AI;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -34,6 +35,14 @@ namespace UnityEngine.AdventureGame
             }
         }
 
+        [SerializeField]
+        Transform m_transitionTransform;
+
+        [SerializeField]
+        float m_transitionTime = 3.0f;
+        bool m_isTransitioning = false;
+        bool m_isGrowing = true;
+
         // Use this for initialization
         void Start()
         {
@@ -41,6 +50,23 @@ namespace UnityEngine.AdventureGame
 #if UNITY_EDITOR
             ReloadScenePrefabs();
 #endif
+            if (PersistentDataManager.Instance.Load())
+            {
+                m_Character.WarpToPosition(PersistentDataManager.Instance.GetSavedPosition());
+            }
+
+            if (!m_transitionTransform)
+                Debug.LogWarning("No star wipe object specified.");
+            else {
+                ResetTransition();
+                StartTransition();
+            }
+        }
+
+        void OnApplicationQuit()
+        {
+            var playerPosition = m_Character.transform.position;
+            PersistentDataManager.Instance.Save(new Vector2(playerPosition.x, playerPosition.y), new List<InventoryItem>());
         }
 
 #if UNITY_EDITOR
@@ -84,6 +110,39 @@ namespace UnityEngine.AdventureGame
             }
         }
 #endif
+        void ResetTransition() {
+            m_transitionTransform.localScale = new Vector3(1f, 1f, 1f);
+            m_transitionTransform.gameObject.SetActive(false);
+        }
+
+        void StartTransition() {
+            // Make transition object visible
+            m_transitionTransform.gameObject.SetActive(true);
+
+            // Begin growing transition object to cover entire screen
+            m_isTransitioning = true;
+            m_isGrowing = true;
+        }
+
+        void Update() {
+            if (m_isTransitioning) {
+                float transitionIncrement = 1000.0f / (m_transitionTime/2) * Time.fixedDeltaTime;
+                if (m_isGrowing) {
+                    m_transitionTransform.localScale += new Vector3(transitionIncrement, transitionIncrement, transitionIncrement);
+                    // Shrink transition
+                    if (m_transitionTransform.localScale.x >= 1000.0f)
+                        m_isGrowing = false;
+                }
+                else {
+                    m_transitionTransform.localScale -= new Vector3(transitionIncrement, transitionIncrement, transitionIncrement);
+                    // Stop transition
+                    if (m_transitionTransform.localScale.x <= 1.0f) {
+                        m_isTransitioning = false;
+                        m_transitionTransform.gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
     }
 
 }

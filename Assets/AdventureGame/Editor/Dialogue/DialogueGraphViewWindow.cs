@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 
 namespace Unity.Adventuregame {
-    public class DialogueGraphViewWindow : GraphViewWindow {
+    public class DialogueGraphViewWindow : SampleGraphViewWindow {
         
         [MenuItem("Dialogue/Open Window")]
         public static void OpenWindow()
