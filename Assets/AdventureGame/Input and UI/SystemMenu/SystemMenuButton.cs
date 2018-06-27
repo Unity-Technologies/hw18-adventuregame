@@ -14,6 +14,7 @@ namespace UnityEngine.AdventureGame
         QUIT,
         SETTINGS,
 		CLOSEMENU,
+        LOAD,
         OTHER,
     }
 

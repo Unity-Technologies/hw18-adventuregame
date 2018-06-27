@@ -107,7 +107,6 @@ namespace UnityEngine.AdventureGame
             }
 
             SetUpGameTypeUI();
-            SetUpSystemMenu();
 
             // Set up Dialogue Box prefab
             dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
@@ -273,12 +272,17 @@ namespace UnityEngine.AdventureGame
             Debug.Log(buttonAction);
             switch (buttonAction) {
                 case SystemMenuButtonOptions.SAVE: {
+                    
                     break;
                 }
                 case SystemMenuButtonOptions.QUIT: {
+                    if (Application.platform != RuntimePlatform.IPhonePlayer) {
+                        Application.Quit();
+                    }
                     break;
                 }
                 case SystemMenuButtonOptions.SETTINGS: {
+                    // TODO(laurenfrazier): Show settings screen!
                     break;
                 }
                 case SystemMenuButtonOptions.CLOSEMENU: {
@@ -341,10 +345,6 @@ namespace UnityEngine.AdventureGame
                     characterActionButton.onClick.AddListener(delegate { HandleActionButtonClick(characterAction.actionType); });
                 }
             }
-        }
-
-        private void SetUpSystemMenu () {
-
         }
 
         private void HandleDialogueOptionClick()
