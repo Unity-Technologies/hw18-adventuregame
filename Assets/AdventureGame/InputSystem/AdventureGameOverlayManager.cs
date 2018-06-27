@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -51,8 +52,11 @@ namespace UnityEngine.AdventureGame
         }
 
         // Prefabs for action menu buttons
-        [Header("Action Button Prefabs")]
+        [Header("Action Menu")]
+        public bool autoLayoutButtons = true;
+        [Tooltip("Only set if Auto Layout is true.")]
         public Button naiveActionButton;
+        [Tooltip("Only set if Auto Layout is true.")]
         public Button contextualActionButton;
 
         // Settings for Dialogue Menus
@@ -62,6 +66,7 @@ namespace UnityEngine.AdventureGame
         public DialogueOptionMenuSize dialogueOptionMenuSize = DialogueOptionMenuSize.MEDIUM;
         public DialogueOptionMenuPlacement dialogueOptionMenuPlacement = DialogueOptionMenuPlacement.BOTTOM;
         public Font menuFont;
+        public Color menuTextColor = Color.black;
         // Callback that returns the currently selected action (or the result of a menu selection)
         public delegate void DialogueSelectionDelegate(string result);
         #endregion
@@ -76,16 +81,19 @@ namespace UnityEngine.AdventureGame
         #endregion
 
         #region Public Methods
-        public void CreateDialogueBox(string[] dialogueOptions, string description = null, DialogueSelectionDelegate dialogueSelectionDelegate = null) {
+        public void CreateDialogueBox(string[] dialogueOptions, string description = null, DialogueSelectionDelegate dialogueSelectionDelegate = null)
+        {
             // If we are only showing a dialogue box, get rid of it before we display the next one.
-            if (currentlyDisplayedDialogueBox != null) {
+            if (currentlyDisplayedDialogueBox != null)
+            {
                 // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
                 Destroy(currentlyDisplayedDialogueBox);
             }
 
             // Create fresh dialogue box and add to screen
             GameObject dialogueBox = Instantiate(dialogueBoxPrefab);
-            if (borderSprite != null) {
+            if (borderSprite != null)
+            {
                 dialogueBox.GetComponent<Image>().sprite = borderSprite;
             }
             dialogueBox.transform.SetParent(canvas.transform, true);
@@ -94,80 +102,95 @@ namespace UnityEngine.AdventureGame
             float boxWidth = 0;
             float boxHeight = 0;
             int boxFontSize = 14;
-            switch (dialogueOptionMenuSize) {
-                case DialogueOptionMenuSize.SMALL: {
-                    boxWidth = (float)Screen.width * 0.3f;
-                    boxHeight = (float)Screen.height * 0.3f;
-                    boxFontSize = 14;
-                    break;
-                }
-                case DialogueOptionMenuSize.MEDIUM: {
-                    boxWidth = (float)Screen.width * 0.5f;
-                    boxHeight = (float)Screen.height * 0.5f;
-                    boxFontSize = 24;
-                    break;
-                }
-                case DialogueOptionMenuSize.LARGE: {
-                    boxWidth = (float)Screen.width * 0.8f;
-                    boxHeight = (float)Screen.height * 0.8f;
-                    boxFontSize = 34;
-                    break;
-                }
-                default: {
-                    // Should never hit this, just bail and pick arbitrary size
-                    boxWidth = 100f;
-                    boxHeight = 100f;
-                    break;
-                }
+            switch (dialogueOptionMenuSize)
+            {
+                case DialogueOptionMenuSize.SMALL:
+                    {
+                        boxWidth = (float)Screen.width * 0.3f;
+                        boxHeight = (float)Screen.height * 0.3f;
+                        boxFontSize = 14;
+                        break;
+                    }
+                case DialogueOptionMenuSize.MEDIUM:
+                    {
+                        boxWidth = (float)Screen.width * 0.5f;
+                        boxHeight = (float)Screen.height * 0.5f;
+                        boxFontSize = 24;
+                        break;
+                    }
+                case DialogueOptionMenuSize.LARGE:
+                    {
+                        boxWidth = (float)Screen.width * 0.8f;
+                        boxHeight = (float)Screen.height * 0.8f;
+                        boxFontSize = 34;
+                        break;
+                    }
+                default:
+                    {
+                        // Should never hit this, just bail and pick arbitrary size
+                        boxWidth = 100f;
+                        boxHeight = 100f;
+                        break;
+                    }
             }
 
             // Set placement of dialogue box
             float offsetX = Screen.width - boxWidth;
             float offsetY = Screen.height - boxHeight;
-            switch (dialogueOptionMenuPlacement) {
-                case DialogueOptionMenuPlacement.BOTTOM: {
-                    dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(offsetX / 2.0f, 0); // left, bottom
-                    dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(-1.0f * (offsetX / 2.0f), -1.0f * offsetY); // -right, -top
-                    break;
-                }
-                case DialogueOptionMenuPlacement.CENTER: {
-                    dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(offsetX / 2.0f, offsetY / 2.0f); // left, bottom
-                    dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(-1.0f * (offsetX / 2.0f), -1.0f * (offsetY / 2.0f)); // -right, -top
-                    break;
-                }
-                case DialogueOptionMenuPlacement.LEFT: {
-                    dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(0, offsetY / 2.0f); // left, bottom
-                    dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(-1.0f * offsetX, -1.0f * (offsetY / 2.0f)); // -right, -top
-                    break;
-                }
-                case DialogueOptionMenuPlacement.RIGHT: {
-                    dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(offsetX, offsetY / 2.0f); // left, bottom
-                    dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(0, -1.0f * (offsetY / 2.0f)); // -right, -top
-                    break;
-                }
-                case DialogueOptionMenuPlacement.TOP: {
-                    dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(offsetX / 2.0f, offsetY); // left, bottom
-                    dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(-1.0f * (offsetX / 2.0f), 0); // -right, -top
-                    break;
-                }
-                default: {
-                    break;
-                }
+            switch (dialogueOptionMenuPlacement)
+            {
+                case DialogueOptionMenuPlacement.BOTTOM:
+                    {
+                        dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(offsetX / 2.0f, 0); // left, bottom
+                        dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(-1.0f * (offsetX / 2.0f), -1.0f * offsetY); // -right, -top
+                        break;
+                    }
+                case DialogueOptionMenuPlacement.CENTER:
+                    {
+                        dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(offsetX / 2.0f, offsetY / 2.0f); // left, bottom
+                        dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(-1.0f * (offsetX / 2.0f), -1.0f * (offsetY / 2.0f)); // -right, -top
+                        break;
+                    }
+                case DialogueOptionMenuPlacement.LEFT:
+                    {
+                        dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(0, offsetY / 2.0f); // left, bottom
+                        dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(-1.0f * offsetX, -1.0f * (offsetY / 2.0f)); // -right, -top
+                        break;
+                    }
+                case DialogueOptionMenuPlacement.RIGHT:
+                    {
+                        dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(offsetX, offsetY / 2.0f); // left, bottom
+                        dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(0, -1.0f * (offsetY / 2.0f)); // -right, -top
+                        break;
+                    }
+                case DialogueOptionMenuPlacement.TOP:
+                    {
+                        dialogueBox.GetComponent<RectTransform>().offsetMin = new Vector2(offsetX / 2.0f, offsetY); // left, bottom
+                        dialogueBox.GetComponent<RectTransform>().offsetMax = new Vector2(-1.0f * (offsetX / 2.0f), 0); // -right, -top
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
             }
             currentlyDisplayedDialogueBox = dialogueBox;
 
             // Set up optional title text
-            if (description != null) {
+            if (description != null)
+            {
                 GameObject descriptionObject = new GameObject("Description");
                 Text descriptionText = descriptionObject.AddComponent<Text>();
                 descriptionText.text = description;
                 descriptionText.font = menuFont;
                 descriptionText.fontSize = boxFontSize;
+                descriptionText.color = menuTextColor;
                 descriptionObject.transform.SetParent(dialogueBox.transform, false);
             }
 
             // Set up dialogue selections
-            foreach (string dialogueOption in dialogueOptions) {
+            foreach (string dialogueOption in dialogueOptions)
+            {
                 Button dialogueOptionButton = Instantiate(naiveActionButton);
                 Text buttonText = dialogueOptionButton.GetComponentInChildren<Text>();
                 buttonText.text = dialogueOption;
@@ -182,13 +205,24 @@ namespace UnityEngine.AdventureGame
         /// <summary>
         /// Changes the cursor to the given sprite, or back to the default sprite if null.
         /// </summary>
-        public void ChangeCursor(Sprite cursorSprite = null) {
+        public void ChangeCursor(Sprite cursorSprite = null)
+        {
             // TODO(laurenfrazier): Change the cursor
+        }
+
+        public void HandleActionButtonClick(CharacterActionType characterActionType)
+        {
+            InputSystemManager.Instance.currentlySelectedActionType = characterActionType;
+            Debug.Log(characterActionType);
         }
 
         #endregion
 
         #region Private Methods
+        private void Awake() {
+            instance = this;
+        }
+
         private void Start()
         {
             canvas = GetComponentInChildren<Canvas>();
@@ -209,7 +243,8 @@ namespace UnityEngine.AdventureGame
             // Set up Dialogue Box prefab
             dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
             // Set up default menu font
-            if (menuFont == null) {
+            if (menuFont == null)
+            {
                 menuFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
             }
             // test
@@ -225,9 +260,9 @@ namespace UnityEngine.AdventureGame
             {
                 case AdventureGameType.NAIVE:
                     {
-                        if (naiveActionUI != null)
+                        if (naiveActionUI != null && autoLayoutButtons)
                         {
-                            SetUpNaiveActionUI();
+                            SetUpNaiveActionButtonUI();
                         }
                         break;
                     }
@@ -245,7 +280,7 @@ namespace UnityEngine.AdventureGame
         }
 
 
-        private void SetUpNaiveActionUI()
+        private void SetUpNaiveActionButtonUI()
         {
             naiveActionUI.SetActive(true);
             foreach (InputSystemManager.CharacterAction characterAction in InputSystemManager.Instance.characterActions)
@@ -257,18 +292,13 @@ namespace UnityEngine.AdventureGame
                     characterActionButton.name = characterAction.actionName;
 
                     characterActionButton.transform.SetParent(naiveActionUI.transform, false);
-                    characterActionButton.onClick.AddListener(delegate { HandleNaiveActionButtonClick(characterAction.actionType); });
+                    characterActionButton.onClick.AddListener(delegate { HandleActionButtonClick(characterAction.actionType); });
                 }
             }
         }
 
-        private void HandleNaiveActionButtonClick(CharacterActionType characterActionType)
+        private void HandleDialogueOptionClick()
         {
-            InputSystemManager.Instance.currentlySelectedActionType = characterActionType;
-            Debug.Log(characterActionType);
-        }
-
-        private void HandleDialogueOptionClick() {
 
         }
         #endregion

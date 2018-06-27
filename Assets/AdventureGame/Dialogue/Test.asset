@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf65b2694fa04b2199e1ac30299d0d7, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  m_dialogNodes:
+  - m_title: Start
+    m_speakingCharacterName: 
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+      m_inputDialog: 
+      m_outputDialog: 
+  - m_title: 
+    m_speakingCharacterName: END
+    m_position: {x: 639.08435, y: -41.635235}
+    m_outputs: []
+  - m_title: 
+    m_speakingCharacterName: BadGuy
+    m_position: {x: 350.11804, y: -192.20187}
+    m_outputs:
+    - m_sourcePort: 1
+      m_targetNode: 1
+      m_targetPort: 1
+      m_inputDialog: "Come with me if you want \nyour chicken to live!"
+      m_outputDialog: Follow!
+  - m_title: 
+    m_speakingCharacterName: MainCharacter
+    m_position: {x: 79.402336, y: 28.324993}
+    m_outputs:
+    - m_sourcePort: 1
+      m_targetNode: 2
+      m_targetPort: 1
+      m_inputDialog: Where is my chicken?
+      m_outputDialog: Did you take my chicken?
