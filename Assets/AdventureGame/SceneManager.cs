@@ -58,7 +58,7 @@ namespace UnityEngine.AdventureGame
             if (!m_transitionTransform)
                 Debug.LogWarning("No star wipe object specified.");
             else {
-                m_transitionTransform.gameObject.SetActive(false);
+                ResetTransition();
                 StartTransition();
             }
         }
@@ -110,6 +110,11 @@ namespace UnityEngine.AdventureGame
             }
         }
 #endif
+        void ResetTransition() {
+            m_transitionTransform.localScale = new Vector3(1f, 1f, 1f);
+            m_transitionTransform.gameObject.SetActive(false);
+        }
+
         void StartTransition() {
             // Make transition object visible
             m_transitionTransform.gameObject.SetActive(true);
