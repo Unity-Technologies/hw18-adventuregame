@@ -16,9 +16,20 @@ MonoBehaviour:
     m_typeData: 
     m_title: Start
     m_position: {x: -50, y: -50}
-    m_outputs: []
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
-    m_typeData: element
+    m_typeData: xsgsdfsdf
     m_title: StoryEventCondition
-    m_position: {x: 251.31165, y: -174.12381}
+    m_position: {x: 378.2717, y: -29.971272}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 2
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
+    m_typeData: testaasds
+    m_title: StoryEventCondition
+    m_position: {x: 608.38666, y: -109.32133}
     m_outputs: []

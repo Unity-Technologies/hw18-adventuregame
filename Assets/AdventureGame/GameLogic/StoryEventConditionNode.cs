@@ -12,7 +12,7 @@ namespace UnityEngine.AdventureGame
         public override void Execute() { }
 
 #if UNITY_EDITOR
-        public static Node CreateNode()
+        public static Node CreateNode(string typeData)
         {
             Node node = new Node();
             node.title = "StoryEventCondition";
@@ -36,7 +36,7 @@ namespace UnityEngine.AdventureGame
             var characterName = new TextField()
             {
                 multiline = false,
-                value = "element"
+                value = typeData
             };
 
             node.mainContainer.Insert(1, characterName);

@@ -113,6 +113,7 @@ namespace UnityEditor.AdventureGame
             if (string.IsNullOrEmpty(graphNode.m_type))
             {
                 node = CreateRootNode();
+                node.userData = null;
             }
             else
             {
@@ -122,7 +123,8 @@ namespace UnityEditor.AdventureGame
                     Debug.LogErrorFormat("Failed to find type: {0}", graphNode.m_type);
                     return null;
                 }
-                node = CreateNodeFromType(type);
+                node = CreateNodeFromType(type, graphNode.m_typeData);
+                node.userData = type;
             }
 
             node.title = graphNode.m_title;
@@ -130,7 +132,7 @@ namespace UnityEditor.AdventureGame
             return node;
         }
 
-        Node CreateNodeFromType(Type type)
+        Node CreateNodeFromType(Type type, string typedata)
         {
             MethodInfo method = type.GetMethod("CreateNode", BindingFlags.Static | BindingFlags.Public);
             if (method == null)
@@ -139,7 +141,7 @@ namespace UnityEditor.AdventureGame
                 return null;
             }
 
-            Node node = method.Invoke(null, null) as Node;
+            Node node = method.Invoke(null, new object[] {typedata}) as Node;
             if (node == null)
             {
                 Debug.LogError("Failed to create node!");
@@ -171,7 +173,7 @@ namespace UnityEditor.AdventureGame
             if (!(entry is SearchTreeGroupEntry))
             {
                 Type createType = entry.userData as Type;
-                Node node = CreateNodeFromType(createType);
+                Node node = CreateNodeFromType(createType, null);
                 if (node == null)
                 {
                     return false;
