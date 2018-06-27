@@ -6,11 +6,10 @@ namespace UnityEngine.AdventureGame
     {
         public string Id;
         public Sprite sprite;
-        SpriteRenderer spriteRenderer;
 
         void Start()
         {
-            spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+            SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = sprite;
         }
 
