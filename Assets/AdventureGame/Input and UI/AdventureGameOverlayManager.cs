@@ -91,10 +91,14 @@ namespace UnityEngine.AdventureGame
         private Canvas canvas;
         private GameObject currentlyDisplayedDialogueBox;
         private GameObject currentlyDisplayedSystemMenu;
+        private bool awaitingDialogueAdvance;
+        private DialogueAdvanceDelegate dialogueAdvanceDelegate;
+        private GameObject screenTouchPanel;
         #endregion
 
         #region Public Methods
-        public void Awake() {
+        public void Awake()
+        {
             instance = this;
         }
 
@@ -103,6 +107,7 @@ namespace UnityEngine.AdventureGame
             canvas = GetComponentInChildren<Canvas>();
             naiveActionUI = GameObject.Find("NaiveActionUI");
             contextualActionUI = GameObject.Find("ContextualActionUI");
+            screenTouchPanel = GameObject.Find("ScreenTouchPanel");
             // Set all menus to false and selectively enable
             if (naiveActionUI != null)
             {
@@ -111,6 +116,9 @@ namespace UnityEngine.AdventureGame
             if (contextualActionUI != null)
             {
                 contextualActionUI.SetActive(false);
+            }
+            if (screenTouchPanel != null) {
+                screenTouchPanel.SetActive(false);
             }
 
             SetUpGameTypeUI();
@@ -125,27 +133,49 @@ namespace UnityEngine.AdventureGame
             }
             // testing only!
             //DisplaySystemMenu();
+            //DisplayCharacterDialogue("hello world", "Character1");
             //CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
         }
 
-        public void DisplaySystemMenu () {
-            if (systemMenuPrefab != null) {
+        public void Update()
+        {
+            if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+            {
+                if (EventSystem.current.IsPointerOverGameObject())
+                {
+                    // Handle a dialogue advance press
+                    if (awaitingDialogueAdvance && screenTouchPanel != null && screenTouchPanel.activeInHierarchy) 
+                    {
+                        HandleAdvanceDialogue();
+                    }
+                }
+            }
+        }
+
+        public void DisplaySystemMenu()
+        {
+            if (systemMenuPrefab != null)
+            {
                 GameObject systemMenu = Instantiate(systemMenuPrefab);
                 systemMenu.transform.SetParent(canvas.transform, false);
                 currentlyDisplayedSystemMenu = systemMenu;
             }
         }
 
-        public void CloseSystemMenu() {
+        public void CloseSystemMenu()
+        {
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
             Destroy(currentlyDisplayedSystemMenu);
         }
 
         public void DisplayCharacterDialogue(string dialogue, string characterName = null, DialogueAdvanceDelegate dialogueAdvanceDelegate = null)
         {
-            // Display dialogue over character
+            // TODO(laurenfrazier): Display dialogue over character
 
-            // When user dismisses, call callback
+            // When user dismisses by touching the screen, call callback
+            this.dialogueAdvanceDelegate = dialogueAdvanceDelegate;
+            screenTouchPanel.SetActive(true);
+            awaitingDialogueAdvance = true;
         }
 
         public void CreateDialogueBox(string[] dialogueOptions, string description = null, DialogueSelectionDelegate dialogueSelectionDelegate = null)
@@ -269,7 +299,8 @@ namespace UnityEngine.AdventureGame
             }
         }
 
-        public void DestroyDialogueBox () {
+        public void DestroyDialogueBox()
+        {
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
             Destroy(currentlyDisplayedDialogueBox);
         }
@@ -287,34 +318,43 @@ namespace UnityEngine.AdventureGame
             Debug.Log(characterActionType);
         }
 
-        public void HandleSystemAction(SystemMenuButtonOptions buttonAction) {
+        public void HandleSystemAction(SystemMenuButtonOptions buttonAction)
+        {
             Debug.Log(buttonAction);
-            switch (buttonAction) {
-                case SystemMenuButtonOptions.SAVE: {
-                    PersistentDataManager.Instance.Save();
-                    break;
-                }
-                case SystemMenuButtonOptions.QUIT: {
-                    if (Application.platform != RuntimePlatform.IPhonePlayer) {
-                        Application.Quit();
+            switch (buttonAction)
+            {
+                case SystemMenuButtonOptions.SAVE:
+                    {
+                        PersistentDataManager.Instance.Save();
+                        break;
                     }
-                    break;
-                }
-                case SystemMenuButtonOptions.SETTINGS: {
-                    // TODO(laurenfrazier): Show settings screen!
-                    break;
-                }
-                case SystemMenuButtonOptions.CLOSEMENU: {
-                    CloseSystemMenu();
-                    break;
-                }
-                case SystemMenuButtonOptions.LOAD: {
-                    // TODO(laurenfrazier): Show load saved game screen!
-                    break;
-                }
-                default: {
-                    break;
-                }
+                case SystemMenuButtonOptions.QUIT:
+                    {
+                        if (Application.platform != RuntimePlatform.IPhonePlayer)
+                        {
+                            Application.Quit();
+                        }
+                        break;
+                    }
+                case SystemMenuButtonOptions.SETTINGS:
+                    {
+                        // TODO(laurenfrazier): Show settings screen!
+                        break;
+                    }
+                case SystemMenuButtonOptions.CLOSEMENU:
+                    {
+                        CloseSystemMenu();
+                        break;
+                    }
+                case SystemMenuButtonOptions.LOAD:
+                    {
+                        // TODO(laurenfrazier): Show load saved game screen!
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
             }
         }
 
@@ -369,16 +409,27 @@ namespace UnityEngine.AdventureGame
 
         private void HandleDialogueOptionClick(int dialogueOption, DialogueSelectionDelegate dialogueSelectionDelegate = null)
         {
-            if (dialogueSelectionDelegate != null) {
+            if (dialogueSelectionDelegate != null)
+            {
                 dialogueSelectionDelegate(dialogueOption);
             }
             DestroyDialogueBox();
         }
 
-        private void SetUpCursor () {
-            if (defaultMouseCursor != null) {
+        private void SetUpCursor()
+        {
+            if (defaultMouseCursor != null)
+            {
                 // TODO(laurenfrazier): Set up cursor
             }
+        }
+
+        private void HandleAdvanceDialogue () {
+            if (dialogueAdvanceDelegate != null) {
+                dialogueAdvanceDelegate();
+            }
+            awaitingDialogueAdvance = false;
+            screenTouchPanel.SetActive(false);
         }
         #endregion
     }
