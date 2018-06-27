@@ -110,14 +110,22 @@ namespace UnityEditor.AdventureGame
         Node DeserializeNode(GameLogicData.GameLogicGraphNode graphNode)
         {
             Node node;
-            if (graphNode.m_title == "Start")
+            if (string.IsNullOrEmpty(graphNode.m_type))
             {
                 node = CreateRootNode();
             }
             else
             {
-                node = CreateNodeFromType(graphNode.GetType());
+                Type type = Type.GetType(string.Format("{0}, Assembly-CSharp", graphNode.m_type));
+                if (type == null)
+                {
+                    Debug.LogErrorFormat("Failed to find type: {0}", graphNode.m_type);
+                    return null;
+                }
+                node = CreateNodeFromType(type);
             }
+
+            node.title = graphNode.m_title;
             node.SetPosition(new Rect(graphNode.m_position, Vector2.zero));
             return node;
         }
