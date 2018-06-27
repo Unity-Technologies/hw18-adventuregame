@@ -85,6 +85,11 @@ namespace UnityEditor.AdventureGame
             return change;
         }
 
+        public void OnGraphNodeChanged()
+        {
+            EditorApplication.update += DelayedSaveGraphData;
+        }
+
         void DelayedSaveGraphData()
         {
             EditorApplication.update -= DelayedSaveGraphData;
@@ -141,7 +146,8 @@ namespace UnityEditor.AdventureGame
                 return null;
             }
 
-            Node node = method.Invoke(null, new object[] {typedata}) as Node;
+            Action action = OnGraphNodeChanged;
+            Node node = method.Invoke(null, new object[] {typedata, action}) as Node;
             if (node == null)
             {
                 Debug.LogError("Failed to create node!");

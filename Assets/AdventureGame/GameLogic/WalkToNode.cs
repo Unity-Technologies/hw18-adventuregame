@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
 
@@ -28,7 +29,7 @@ namespace UnityEngine.AdventureGame
         }
 
 #if UNITY_EDITOR
-        public static Node CreateNode(string typeData)
+        public static Node CreateNode(string typeData, Action changeCallback)
         {
             Node node = new Node();
             node.title = "Walk To";

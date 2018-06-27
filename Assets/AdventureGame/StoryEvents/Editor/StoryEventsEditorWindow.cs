@@ -10,7 +10,7 @@ public class StoryEventsEditorWindow : EditorWindow
 
 	private int currentlyChangingNameIndex = -1;
 
-	[MenuItem("Adventure Game/Story events/Open")]
+	[MenuItem("Adventure Game/Story Events Window")]
 	public static void OpenWindow()
 	{
 		GetWindow<StoryEventsEditorWindow>();
@@ -43,7 +43,7 @@ public class StoryEventsEditorWindow : EditorWindow
 
 					if (currentlyChangingNameIndex == i)
 					{
-						var changedTextInField = EditorGUILayout.TextField("- ", storyEvents.events[i], GUILayout.ExpandWidth(false));
+						var changedTextInField = EditorGUILayout.TextField(storyEvents.events[i] , GUILayout.Width(200));
 
 						if (!storyEvents.events.Exists((x) => string.Equals(x, changedTextInField)) || storyEvents.events.FindAll((x) => string.Equals(x, changedTextInField)).Count <= 1)
 						{
@@ -55,7 +55,7 @@ public class StoryEventsEditorWindow : EditorWindow
 						}
 						else
 						{
-							EditorGUILayout.LabelField(" - you can't add event with same name which already exists ", "", GUILayout.ExpandWidth(false));
+							EditorGUILayout.LabelField(" - you can't add event with same name which already exists ", "", GUILayout.Width(300));
 						}
 					}
 					else

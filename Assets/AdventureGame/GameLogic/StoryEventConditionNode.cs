@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.AdventureGame;
 using UnityEditor.Experimental.UIElements;
@@ -16,7 +17,7 @@ namespace UnityEngine.AdventureGame
         }
 
 #if UNITY_EDITOR
-        public static Node CreateNode(string typeData)
+        public static Node CreateNode(string typeData, Action changeCallback)
         {
             Node node = new Node();
             node.title = "StoryEventCondition";
