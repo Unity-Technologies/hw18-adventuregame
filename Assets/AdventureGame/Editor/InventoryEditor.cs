@@ -8,17 +8,14 @@ namespace UnityEditor.AdventureGame
     public class InventoryEditor : Editor
     {
         private bool[] showItemSlots = new bool[InventoryManager.INVENTORY_SLOTS];    // Whether the GUI for each Item slot is expanded.
-        private SerializedProperty itemImagesProperty;                      // Represents the array of Image components to display the Items.
         private SerializedProperty itemsProperty;                           // Represents the array of Items.
 
-        private const string inventoryPropItemImagesName = "itemImages";    // The name of the field that is an array of Image components.
         private const string inventoryPropItemsName = "items";              // The name of the field that is an array of Items.
 
 
         private void OnEnable()
         {
             // Cache the SerializedProperties.
-            itemImagesProperty = serializedObject.FindProperty(inventoryPropItemImagesName);
             itemsProperty = serializedObject.FindProperty(inventoryPropItemsName);
         }
 
@@ -50,7 +47,6 @@ namespace UnityEditor.AdventureGame
             // If the foldout is open then display default GUI for the specific elements in each array.
             if (showItemSlots[index])
             {
-                EditorGUILayout.PropertyField(itemImagesProperty.GetArrayElementAtIndex(index));
                 EditorGUILayout.PropertyField(itemsProperty.GetArrayElementAtIndex(index));
             }
 
