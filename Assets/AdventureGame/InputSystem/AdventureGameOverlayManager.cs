@@ -178,6 +178,14 @@ namespace UnityEngine.AdventureGame
             }
             // Return dialogue selection
         }
+
+        /// <summary>
+        /// Changes the cursor to the given sprite, or back to the default sprite if null.
+        /// </summary>
+        public void ChangeCursor(Sprite cursorSprite = null) {
+            // TODO(laurenfrazier): Change the cursor
+        }
+
         #endregion
 
         #region Private Methods
