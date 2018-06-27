@@ -13,6 +13,8 @@ public class SerializableDialogData : ScriptableObject
         public string m_speakingCharacterName;
         public string m_characterDialogue;
         public Vector2 m_position;
+        public int inputNodeCount;
+        public int outputNodeCount;
         public List<SerializableDialogEdge> m_outputs;
     }
 
