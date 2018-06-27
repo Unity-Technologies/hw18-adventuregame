@@ -36,6 +36,19 @@ namespace UnityEngine.AdventureGame
             InventoryUI.Instance.UpdateSlot(index);
         }
 
+        //returns inventory item with the given id if it is in the inventory, 
+        //otherwise returns null
+        public InventoryItem GetItemWithId(string id){
+			for (int i = 0; i < items.Length; i++)
+			{
+				if (items[i].Id == id)
+				{
+					return items[i];
+				}
+			}
+			return null;
+        }
+
         public void DropSelectedItem(Vector2 position)
         {
             if (Selected == null)
@@ -78,7 +91,6 @@ namespace UnityEngine.AdventureGame
                     return true;
                 }
             }
-            Debug.Log("That isn't in your inventory!");
             return false;
         }
 
@@ -86,7 +98,6 @@ namespace UnityEngine.AdventureGame
         {
             if (items[index] == null)
             {
-                Debug.Log("Nothing to select here!");
                 return;
             }
             Debug.Log("Selected " + items[index].Id);
