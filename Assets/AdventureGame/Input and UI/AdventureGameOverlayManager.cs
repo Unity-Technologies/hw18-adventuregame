@@ -246,8 +246,9 @@ namespace UnityEngine.AdventureGame
             }
 
             // Set up dialogue selections
-            foreach (string dialogueOption in dialogueOptions)
+            for (int i = 0; i < dialogueOptions.Length; i++)
             {
+                string dialogueOption = dialogueOptions[i];
                 Button dialogueOptionButton = Instantiate(naiveActionButton);
                 Text buttonText = dialogueOptionButton.GetComponentInChildren<Text>();
                 buttonText.text = dialogueOption;
@@ -255,7 +256,7 @@ namespace UnityEngine.AdventureGame
                 buttonText.fontSize = boxFontSize;
                 dialogueOptionButton.name = dialogueOption;
                 dialogueOptionButton.transform.SetParent(dialogueBox.transform, false);
-                //dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(dialogueOption, dialogueSelectionDelegate); });
+                dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(i, dialogueSelectionDelegate); });
             }
         }
 
