@@ -134,7 +134,7 @@ namespace UnityEngine.AdventureGame
             // testing only!
             //DisplaySystemMenu();
             //DisplayCharacterDialogue("hello world", "Character1");
-            //CreateDialogueBox(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
+            //DisplayDialogueOptions(new []{"Option 1", "Option 2", "Option 3"}, "Here is some dialogue. Respond!");
         }
 
         public void Update()
@@ -174,11 +174,13 @@ namespace UnityEngine.AdventureGame
 
             // When user dismisses by touching the screen, call callback
             this.dialogueAdvanceDelegate = dialogueAdvanceDelegate;
-            screenTouchPanel.SetActive(true);
+            if (screenTouchPanel != null) {
+                screenTouchPanel.SetActive(true);
+            }
             awaitingDialogueAdvance = true;
         }
 
-        public void CreateDialogueBox(string[] dialogueOptions, string description = null, DialogueSelectionDelegate dialogueSelectionDelegate = null)
+        public void DisplayDialogueOptions(string[] dialogueOptions, string description = null, DialogueSelectionDelegate dialogueSelectionDelegate = null)
         {
             // If we are only showing a dialogue box, get rid of it before we display the next one.
             if (currentlyDisplayedDialogueBox != null)
