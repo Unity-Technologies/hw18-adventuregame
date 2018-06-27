@@ -61,7 +61,8 @@ namespace UnityEngine.AdventureGame
 			}
 			else
 			{
-				inventorySlots[index].GetComponent<Image>().sprite = null;
+                //go back to the slot background image
+                inventorySlots[index].GetComponent<Image>().sprite = inventorySlots[index].backgroundImage;
 			}
 		}
 
