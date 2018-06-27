@@ -18,7 +18,7 @@ namespace UnityEngine.AdventureGame
 
         public void OnTriggered()
         {
-            Debug.Log("Area Triggered");
+            SceneManager.Instance.TriggerDoorway();
         }
     }
 }

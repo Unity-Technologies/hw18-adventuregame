@@ -177,7 +177,7 @@ namespace UnityEngine.AdventureGame
 
 
         // Sent by trigger area in scene asking scene manager to load a new scene
-        void TriggerDoorway() {
+        public void TriggerDoorway() {
             StartTransition();
         }
     }
