@@ -21,7 +21,23 @@ MonoBehaviour:
       m_targetNode: 1
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
-    m_typeData: picked_up_pot
+    m_typeData: xsgsdfsdf
     m_title: StoryEventCondition
-    m_position: {x: 342.08008, y: -318.10208}
+    m_position: {x: 201.05673, y: -70.96871}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 2
+      m_targetPort: 0
+    - m_sourcePort: 1
+      m_targetNode: 3
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.PrintNode
+    m_typeData: True123
+    m_title: Print
+    m_position: {x: 455.80695, y: -146.15488}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.PrintNode
+    m_typeData: False
+    m_title: Print
+    m_position: {x: 452.93173, y: 50.19616}
     m_outputs: []

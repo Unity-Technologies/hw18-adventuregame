@@ -1,24 +1,22 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
-    public static class StoryEventConditionNode
+    public static class PrintNode
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            //if true return first return value if false return second
-            yield return currentNode.GetReturnValue(true ? 0 : 1);
+            Debug.LogFormat("Output is: {0}", currentNode.m_typeData);
+            yield break;
         }
 
 #if UNITY_EDITOR
         public static Node CreateNode(string typeData)
         {
             Node node = new Node();
-            node.title = "StoryEventCondition";
+            node.title = "Print";
 
             node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
@@ -31,17 +29,13 @@ namespace UnityEngine.AdventureGame
             outputPort1.userData = null;
             node.outputContainer.Add(outputPort1);
 
-            Port outputPort2 = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-            outputPort2.portName = "false";
-            outputPort2.userData = null;
-            node.outputContainer.Add(outputPort2);
+            var characterName = new TextField()
+            {
+                multiline = false,
+                value = typeData
+            };
 
-	        List<string> storyEvents = StoryEventsDatabase.StoryEventDatabase != null ? StoryEventsDatabase.StoryEventDatabase.events
-										: new List<string>();
-
-	        var storyEventsDropdown =
-		        new PopupField<string>(storyEvents, string.IsNullOrEmpty(typeData) ? 0 : storyEvents.FindIndex((x) => string.Equals(x, typeData)));
-			node.mainContainer.Insert(1, storyEventsDropdown);
+            node.mainContainer.Insert(1, characterName);
 
             return node;
         }
@@ -50,9 +44,9 @@ namespace UnityEngine.AdventureGame
         {
             foreach (VisualElement ele in node.mainContainer)
             {
-                if (ele is PopupField<string>)
+                if (ele is TextField)
                 {
-                    return (ele as PopupField<string>).value;
+                    return (ele as TextField).value;
                 }
             }
 

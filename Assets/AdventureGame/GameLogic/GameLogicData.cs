@@ -16,6 +16,11 @@ namespace UnityEngine.AdventureGame
             public string m_title;
             public Vector2 m_position;
             public List<GameLogicGraphEdge> m_outputs;
+
+            public int GetReturnValue(int index)
+            {
+                return m_outputs[index].m_targetNode;
+            }
         }
 
         [Serializable]
