@@ -175,7 +175,7 @@ namespace UnityEngine.AdventureGame
         {
             Debug.Log(characterName + " says: " + dialogue);
             // Place dialogue
-            Vector2 dialoguePoint = new Vector2(100, 100);
+            Vector2 dialoguePoint = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
             if (characterName !=  null) {
                 GameObject speaker = GameObject.Find(characterName);
                 Renderer renderer = speaker.GetComponent<Renderer>();
