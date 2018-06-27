@@ -3,6 +3,10 @@ using UnityEngine.UI;
 
 namespace UnityEngine.AdventureGame
 {
+    //TODO - notify when an item is selected/unselected so that cursor can be updated to show item sprite
+    //TODO - "picking up" should call AddItem
+    //TODO - clicking in the world with an item selected should drop the item
+
     public class InventoryManager : MonoBehaviour
     {
         public const int INVENTORY_SLOTS = 8;
@@ -11,19 +15,24 @@ namespace UnityEngine.AdventureGame
         public InventoryItem[] items = new InventoryItem[INVENTORY_SLOTS];
         public InventoryItem Selected = null;
 
-        InventoryUI inventoryUI = null;
+        private InventoryUI inventoryUI;
 
-        public void RegisterInventoryUI(InventoryUI newInventoryUI) {
-            inventoryUI = newInventoryUI;
+        public void RegisterInventoryUI(InventoryUI inventoryUI)
+        {
+            this.inventoryUI = inventoryUI;
         }
 
-		public void UpdateUI(int index)
-		{
-			inventoryUI.UpdateSlot(index);
-		}
+        public void UpdateUI(int index)
+        {
+            inventoryUI.UpdateSlot(index);
+        }
 
-        public void DropItem(Vector3 dropPosition){
-            if(Selected == null){
+        //TODO should be called by screen click area if an item is selected when a noninteractable part of
+        //the world is clicked on
+        public void DropItem(Vector3 dropPosition)
+        {
+            if (Selected == null)
+            {
                 Debug.Log("Called DropItem with nothing selected!");
                 return;
             }
@@ -46,8 +55,8 @@ namespace UnityEngine.AdventureGame
                     return true;
                 }
             }
-			Debug.Log("Inventory is full!");
-			return false;
+            Debug.Log("Inventory is full!");
+            return false;
         }
 
         public bool RemoveItem(InventoryItem itemToRemove)
@@ -64,59 +73,64 @@ namespace UnityEngine.AdventureGame
                     return true;
                 }
             }
-			Debug.Log("That isn't in your inventory!");
-			return false;
+            Debug.Log("That isn't in your inventory!");
+            return false;
         }
 
-		private void selectItem(int index)
-		{
-			if (items[index] == null)
-			{
-				Debug.Log("Nothing to select here!");
-				return;
-			}
+        private void selectItem(int index)
+        {
+            if (items[index] == null)
+            {
+                Debug.Log("Nothing to select here!");
+                return;
+            }
             Debug.Log("Selected " + items[index].Id);
-			this.Selected = items[index];
-		}
+            this.Selected = items[index];
+            AdventureGameOverlayManager.Instance.ChangeCursor(items[index].sprite);
+        }
 
-		public void ClearSelected()
-		{
-			this.Selected = null;
-		}
+        public void ClearSelected()
+        {
+            Debug.Log("Selected item cleared");
+            this.Selected = null;
+            AdventureGameOverlayManager.Instance.ChangeCursor(null);
+        }
 
-		public void SlotClicked(int index)
-		{
-            Debug.Log("Clicked slot "+index);
-            if(items[index] == null){
+        public void SlotClicked(int index)
+        {
+            if (items[index] == null)
+            {
                 //nothing to do here
                 return;
             }
 
-			InventoryItem itemInSlot = items[index];
+            InventoryItem itemInSlot = items[index];
             //clicking an item on another item
-			if (Selected != null)
-			{
+            if (Selected != null)
+            {
                 if (Selected.Id == itemInSlot.Id)
-				{
-					//clicking the item on itself, clear selection
-					ClearSelected();
-				}
-				//combine the selected item with the item in this slot
-				else
-				{
-					CombineItems(Selected, itemInSlot);
-				}
-			}
+                {
+                    //clicking the item on itself, clear selection
+                    ClearSelected();
+                }
+                //combine the selected item with the item in this slot
+                else
+                {
+                    CombineItems(Selected, itemInSlot);
+                }
+            }
             //clicking an item when nothing is currently selected
-            else {
+            else
+            {
                 selectItem(index);
             }
-		}
+        }
 
-		public void CombineItems(InventoryItem first, InventoryItem second)
-		{
-			Debug.Log("You've combined two items!");
+        public void CombineItems(InventoryItem first, InventoryItem second)
+        {
             //TODO replace one of the items with the new (combined) item if applicable, clear the other
-		}
+            Debug.Log("You've combined two items!");
+            ClearSelected();
+        }
     }
 }
