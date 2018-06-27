@@ -1,15 +1,22 @@
-﻿using System;
+﻿using System.Collections;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
-    [Serializable]
-    public class StoryEventConditionNode : BaseGameLogicNode
+    public static class StoryEventConditionNode
     {
-        public string m_storyEvent = "";
+        public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
+        {
+            yield return null;
+            yield return null;
 
-        public override void Execute() { }
+            //if true
+            yield return currentNode.m_outputs[0].m_targetNode;
+
+            //if false
+            yield return currentNode.m_outputs[1].m_targetNode;
+        }
 
 #if UNITY_EDITOR
         public static Node CreateNode(string typeData)
@@ -19,7 +26,7 @@ namespace UnityEngine.AdventureGame
 
             node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
-            inputPort.portName = "in port";
+            inputPort.portName = "";
             inputPort.userData = null;
             node.inputContainer.Add(inputPort);
 

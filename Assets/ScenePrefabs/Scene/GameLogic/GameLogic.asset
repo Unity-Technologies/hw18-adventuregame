@@ -23,13 +23,21 @@ MonoBehaviour:
   - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
     m_typeData: xsgsdfsdf
     m_title: StoryEventCondition
-    m_position: {x: 378.2717, y: -29.971272}
+    m_position: {x: 201.05673, y: -70.96871}
     m_outputs:
     - m_sourcePort: 0
       m_targetNode: 2
       m_targetPort: 0
+    - m_sourcePort: 1
+      m_targetNode: 3
+      m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
-    m_typeData: testaasds
+    m_typeData: True
     m_title: StoryEventCondition
-    m_position: {x: 608.38666, y: -109.32133}
+    m_position: {x: 441.7517, y: -137.09361}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.StoryEventConditionNode
+    m_typeData: False
+    m_title: StoryEventCondition
+    m_position: {x: 441.7518, y: 22.928688}
     m_outputs: []

@@ -100,7 +100,7 @@ namespace UnityEditor.AdventureGame
             node.SetPosition(new Rect(new Vector2(-50, -50), new Vector2(100, 100)));
 
             Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-            outputPort.portName = "start";
+            outputPort.portName = "";
             outputPort.userData = null;
 
             node.outputContainer.Add(outputPort);

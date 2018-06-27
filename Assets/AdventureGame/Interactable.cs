@@ -8,6 +8,8 @@ using UnityEngine.AdventureGame;
 /// </summary>
 public class Interactable : MonoBehaviour
 {
+    public GameLogicData m_gameLogicData;
+
     [SerializeField]
     Interaction[] m_Interactions;
 
@@ -39,6 +41,7 @@ public class Interactable : MonoBehaviour
     {
         Debug.Log("Clickable Item Clicked");
         InputSystemManager.Instance.SelectAction(m_PossibleActions, PerformInteraction);
+        StartCoroutine(m_gameLogicData.Execute());
     }
 
     /// <summary>

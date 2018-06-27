@@ -32,7 +32,7 @@ namespace UnityEditor.AdventureGame
         static float s_BrushSize = 5.0f;
         static PaintMode s_PaintMode = PaintMode.Painting;
 
-        void OnEnable()
+        public virtual void OnEnable()
         {
             SceneView sceneViewWindow = EditorWindow.GetWindow<SceneView>();
             if (sceneViewWindow != null)
@@ -155,7 +155,7 @@ namespace UnityEditor.AdventureGame
             Tools.hidden = true;
         }
 
-        void OnDisable()
+        public virtual void OnDisable()
         {
             DestroyImmediate(m_CollisionObject);
             Tools.hidden = false;
@@ -231,8 +231,6 @@ namespace UnityEditor.AdventureGame
 
         public override void OnInspectorGUI()
         {
-            serializedObject.Update();
-
             EditorGUILayout.PropertyField(m_Sprite);
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
@@ -449,8 +447,6 @@ namespace UnityEditor.AdventureGame
 
             EditorUtility.SetDirty(importer);
             AssetDatabase.ImportAsset(assetPath, ImportAssetOptions.ForceUpdate);
-
-            Sprite reloadedSprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
 
             Vector2[] vertices = new Vector2[m_BaseArea.Sprite.vertices.Length];
 
