@@ -8,8 +8,6 @@ using UnityEngine.AdventureGame;
 /// </summary>
 public class Interactable : MonoBehaviour
 {
-    public GameLogicData m_gameLogicData;
-
     [SerializeField]
 	Interaction[] m_Interactions;
 
@@ -41,11 +39,6 @@ public class Interactable : MonoBehaviour
 	{
 		Debug.Log("Clickable Item Clicked");
 		InputSystemManager.Instance.SelectAction(m_PossibleActions, PerformInteraction);
-
-	    if (m_gameLogicData != null)
-	    {
-	        StartCoroutine(m_gameLogicData.Execute());
-	    }
 	}
 
     public void OnInteracted(InventoryItem item)
@@ -63,10 +56,10 @@ public class Interactable : MonoBehaviour
 	{
 		for (int i = 0; i < m_Interactions.Length; ++i)
 		{
-			if (m_Interactions[i].Action == action)
+			if (m_Interactions[i].Action == action && m_Interactions[i].Reaction != null)
 			{
                 Debug.Log("Interaction " + action);
-				m_Interactions[i].Reaction.Invoke();
+			    StartCoroutine(m_Interactions[i].Reaction.Execute());
 			    return;
 			}
 		}

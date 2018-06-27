@@ -13,7 +13,7 @@ public struct Interaction
     [SerializeField]
     CharacterActionType m_Action;
     [SerializeField]
-    UnityEvent m_Reaction;
+    GameLogicData m_Reaction;
 
     /// <summary>
     /// The player's action.
@@ -26,7 +26,7 @@ public struct Interaction
     /// <summary>
     /// The Interectable's reaction.
     /// </summary>
-    public UnityEvent Reaction
+    public GameLogicData Reaction
     {
         get { return m_Reaction; }
     }
