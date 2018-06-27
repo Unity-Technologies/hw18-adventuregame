@@ -8,7 +8,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66fe0177a3e52b04c866ae4015404963, type: 3}
+  m_Script: {fileID: 11500000, guid: 2b00c9334d1f2034cb28f8c5ae0474fb, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
   m_dialogNodes:
@@ -22,25 +22,7 @@ MonoBehaviour:
       m_targetPort: 0
       m_outputDialog: 
   - m_title: 
-    m_speakingCharacterName: Chicken
+    m_speakingCharacterName: Character
     m_characterDialogue: I found a coin!
-    m_position: {x: 124.439995, y: -6.8799896}
-    m_outputs:
-    - m_sourcePort: 1
-      m_targetNode: 2
-      m_targetPort: 0
-      m_outputDialog: 
-  - m_title: 
-    m_speakingCharacterName: Pirate
-    m_characterDialogue: That's mine!
-    m_position: {x: 378.96002, y: -3.1199646}
-    m_outputs:
-    - m_sourcePort: 1
-      m_targetNode: 3
-      m_targetPort: 0
-      m_outputDialog: 
-  - m_title: 
-    m_speakingCharacterName: END
-    m_characterDialogue: <Character Dialogue Area>
-    m_position: {x: 551.44, y: 113.360016}
+    m_position: {x: 109.95996, y: -46.079987}
     m_outputs: []

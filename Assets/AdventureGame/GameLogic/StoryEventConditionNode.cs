@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.AdventureGame;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
@@ -11,7 +12,7 @@ namespace UnityEngine.AdventureGame
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
             //if true return first return value if false return second
-            yield return currentNode.GetReturnValue(true ? 0 : 1);
+	        yield return currentNode.GetReturnValue(PersistentDataManager.Instance.IsStoryEventFinished(currentNode.m_typeData) ? 0 : 1);
         }
 
 #if UNITY_EDITOR
@@ -20,7 +21,9 @@ namespace UnityEngine.AdventureGame
             Node node = new Node();
             node.title = "StoryEventCondition";
 
-            node.capabilities |= Capabilities.Movable;
+	        node.mainContainer.style.backgroundColor = Color.yellow;
+
+			node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
             inputPort.portName = "";
             inputPort.userData = null;
