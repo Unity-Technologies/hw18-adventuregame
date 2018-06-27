@@ -23,11 +23,9 @@ namespace UnityEngine.AdventureGame
 					{
 						instance = existingInventoryManager;
 					}
-					else
-					{
-						GameObject manager = new GameObject();
-						instance = manager.AddComponent<InventoryManager>();
-					}
+                    else {
+                        throw new System.Exception("No Inventory Manager exists!");
+                    }
 				}
 				return instance;
 			}
