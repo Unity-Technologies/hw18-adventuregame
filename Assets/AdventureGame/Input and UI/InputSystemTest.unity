@@ -152,19 +152,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 114642557834360634, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
-        type: 2}
-      propertyPath: autoCreateButtons
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1121996537944768, guid: 57b63706ffb9b4bbf9b3a3c59d891eca, type: 2}
-      propertyPath: m_Name
-      value: NaiveActionUI
-      objectReference: {fileID: 0}
-    - target: {fileID: 1516633880721998, guid: 57b63706ffb9b4bbf9b3a3c59d891eca, type: 2}
-      propertyPath: m_Name
-      value: ContextualActionUI
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57b63706ffb9b4bbf9b3a3c59d891eca, type: 2}
   m_IsPrefabAsset: 0
