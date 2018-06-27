@@ -345,7 +345,7 @@ namespace UnityEditor.AdventureGame
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
 
-            if (GUILayout.Button("Regenerate Collision"))
+            if (GUILayout.Button("Regenerate Collision", GUILayout.Height(50)))
             {
                 RegenerateMesh();
             }

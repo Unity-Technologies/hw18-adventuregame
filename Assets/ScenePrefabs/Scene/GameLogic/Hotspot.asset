@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: GameLogic
+  m_Name: Hotspot
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -23,13 +23,13 @@ MonoBehaviour:
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
-    m_position: {x: 178.4824, y: -47.13324}
+    m_position: {x: 196.88231, y: -51.7331}
     m_outputs:
     - m_sourcePort: 0
       m_targetNode: 2
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.PrintNode
-    m_typeData: True123
+    m_typeData: 
     m_title: Print
-    m_position: {x: 381.65228, y: -55.705}
+    m_position: {x: 442.98233, y: -29.883099}
     m_outputs: []

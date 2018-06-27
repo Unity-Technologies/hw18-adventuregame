@@ -13,7 +13,8 @@ namespace UnityEditor.AdventureGame
 
         Material m_CollisionMeshMaterial;
         GameObject m_CollisionObject;
-
+        
+        SerializedProperty m_GameLogicData;
         SerializedProperty m_Sprite;
         SerializedProperty m_Detail;
         SerializedProperty m_Color;
@@ -43,6 +44,8 @@ namespace UnityEditor.AdventureGame
             m_BaseArea = (IBaseArea)target;
             m_Behavior = (MonoBehaviour)target;
 
+
+            m_GameLogicData = serializedObject.FindProperty("m_gameLogicData");
             m_Sprite = serializedObject.FindProperty("m_sprite");
             m_Detail = serializedObject.FindProperty("m_detail");
             m_Color = serializedObject.FindProperty("m_color");
@@ -231,14 +234,42 @@ namespace UnityEditor.AdventureGame
 
         public override void OnInspectorGUI()
         {
+            if (GUILayout.Button("Edit Game Logic", GUILayout.Height(50)))
+            {
+                if (m_GameLogicData.objectReferenceValue == null)
+                {
+                    GameObject root = PrefabUtility.FindValidUploadPrefabInstanceRoot(m_Behavior.transform.parent.gameObject);
+                    string gameLogicPath = Path.Combine(Path.Combine(SceneManager.Instance.m_outputPath, root.name), "GameLogic");
+                    Directory.CreateDirectory(gameLogicPath);
+                    string gameLogicAssetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(gameLogicPath, string.Format("{0}.asset", m_Behavior.name)));
+
+                    AssetDatabase.CreateAsset(CreateInstance<GameLogicData>(), gameLogicAssetPath);
+                    AssetDatabase.SaveAssets();
+
+                    m_GameLogicData.objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameLogicData>(gameLogicAssetPath);
+                }
+
+                Selection.activeObject = m_GameLogicData.objectReferenceValue;
+
+                GameLogicGraphViewWindow graphViewWindow = EditorWindow.GetWindow<GameLogicGraphViewWindow>();
+                if (graphViewWindow != null)
+                {
+                    graphViewWindow.Focus();
+                }
+            }
+
+            GUILayout.Space(10);
+
             EditorGUILayout.PropertyField(m_Sprite);
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
 
-            if (GUILayout.Button("Regenerate NavMesh"))
+            if (GUILayout.Button("Regenerate NavMesh", GUILayout.Height(50)))
             {
                 RegenerateMesh();
             }
+
+            GUILayout.Space(10);
 
             serializedObject.ApplyModifiedProperties();
         }
