@@ -58,29 +58,22 @@ namespace UnityEditor.AdventureGame
                 var json = File.ReadAllText(Application.persistentDataPath + "save.json");
                 JsonUtility.FromJsonOverwrite(json, m_GameData);
 
+                SceneManager.Instance.Character.WarpToPosition(m_GameData.playerPosition);
+                //TODO Set player inventory
+
                 return true;
             }
 
             return false;
         }
 
-        public void Save(Vector2 playerPosition, List<InventoryItem> playerInventory)
+        public void Save()
         {
-            m_GameData.playerPosition = playerPosition;
-            m_GameData.playerInventory.Clear();
-            m_GameData.playerInventory.AddRange(playerInventory);
+            var playerPosition = SceneManager.Instance.Character.transform.position;
+            m_GameData.playerPosition = new Vector2(playerPosition.x, playerPosition.y);
+            //TODO get items from inventory
             var json = JsonUtility.ToJson(m_GameData);
             File.WriteAllText(Application.persistentDataPath + "save.json", json);
-        }
-
-        public Vector2 GetSavedPosition()
-        {
-            return m_GameData.playerPosition;
-        }
-
-        public List<InventoryItem> GetSavedInventory()
-        {
-            return m_GameData.playerInventory;
         }
 
         public int GetValue(string key, int defaultValue = 0)

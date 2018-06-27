@@ -55,16 +55,7 @@ namespace UnityEngine.AdventureGame
 #if UNITY_EDITOR
             ReloadScenePrefabs();
 #endif
-            if (PersistentDataManager.Instance.Load())
-            {
-                m_Character.WarpToPosition(PersistentDataManager.Instance.GetSavedPosition());
-            }
-        }
-
-        void OnApplicationQuit()
-        {
-            var playerPosition = m_Character.transform.position;
-            PersistentDataManager.Instance.Save(new Vector2(playerPosition.x, playerPosition.y), new List<InventoryItem>());
+            PersistentDataManager.Instance.Load();
         }
 
 #if UNITY_EDITOR
