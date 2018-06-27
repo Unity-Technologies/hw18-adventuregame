@@ -8,16 +8,37 @@ namespace UnityEngine.AdventureGame
 {
     public class InventoryUI : MonoBehaviour
     {
-        InventorySlot[] inventorySlots;
+        private InventorySlot[] inventorySlots;
+
+		private static InventoryUI instance;
+
+		public static InventoryUI Instance
+		{
+			get
+			{
+				if (instance == null)
+				{
+                    InventoryUI existingInventoryUI = FindObjectOfType<InventoryUI>();
+					if (existingInventoryUI != null)
+					{
+						instance = existingInventoryUI;
+					}
+					else
+					{
+                        GameObject inventoryUI = new GameObject();
+						instance = inventoryUI.AddComponent<InventoryUI>();
+					}
+				}
+				return instance;
+			}
+		}
 
         void Start()
         {
             inventorySlots = GetComponentsInChildren<InventorySlot>();
             if(InventoryManager.INVENTORY_SLOTS != inventorySlots.Length){
-                Debug.Log("WARNING: Number of Inventory Slots does not match max inventory size!");
+                Debug.Log("WARNING: Number of Inventory Slots does not match max inventory size! InventoryUI is incorrectly configured.");
             }
-            //let the Inventory Manager know what UI needs to be updated when inventory changes
-            InventoryManager.Instance.RegisterInventoryUI(this);
             ConfigureSlots();
         }
 

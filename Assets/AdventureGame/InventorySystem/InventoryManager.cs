@@ -14,8 +14,6 @@ namespace UnityEngine.AdventureGame
         public InventoryItem[] items = new InventoryItem[INVENTORY_SLOTS];
         public InventoryItem Selected = null;
 
-        private InventoryUI inventoryUI;
-
         private static InventoryManager instance;
 
 		public static InventoryManager Instance
@@ -37,14 +35,9 @@ namespace UnityEngine.AdventureGame
 			}
 		}
 
-        public void RegisterInventoryUI(InventoryUI inventoryUI)
-        {
-            this.inventoryUI = inventoryUI;
-        }
-
         public void UpdateUI(int index)
         {
-            inventoryUI.UpdateSlot(index);
+            InventoryUI.Instance.UpdateSlot(index);
         }
 
         //TODO should be called by screen click area if an item is selected when a noninteractable part of
