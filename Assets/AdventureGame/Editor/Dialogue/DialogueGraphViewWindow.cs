@@ -56,6 +56,7 @@ namespace Unity.Adventuregame {
             m_GraphView.StretchToParentSize();
 
             this.GetRootVisualContainer().Add(m_GraphView);
+            OnSelectionChanged();
 
             m_GraphView.graphViewChanged += OnGraphViewChanged;
             m_GraphView.nodeCreationRequest += OnRequestNodeCreation;
@@ -69,7 +70,7 @@ namespace Unity.Adventuregame {
 
         void OnLostFocus()
         {
-            SaveGraphData();
+            //SaveGraphData();
         }
 
         void OnSelectionChanged()
@@ -152,10 +153,9 @@ namespace Unity.Adventuregame {
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Create Node"), 0));
 
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
-            tree.Add(new SearchTreeGroupEntry(new GUIContent("Test Category"), 1));
-            tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue", icon)) {level = 2});
-            tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue Start", icon)) { level = 2 });
-            tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue End", icon)) { level = 2 });
+            tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue", icon)) {level = 1});
+            tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue Start", icon)) { level = 1 });
+            tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue End", icon)) { level = 1 });
 
             return tree;
         }
@@ -178,6 +178,8 @@ namespace Unity.Adventuregame {
                     Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
 
                 node.Select(m_GraphView, false);
+
+                SaveGraphData();
                 return true;
             }
 
@@ -220,7 +222,7 @@ namespace Unity.Adventuregame {
         public void SaveGraphData()
         {
             if (m_DialogData == null)
-        {
+            {
                 return;
             }
 
@@ -320,7 +322,7 @@ namespace Unity.Adventuregame {
                 DialogueNode node = DeserializeNode(m_DialogData.m_dialogNodes[i]);
                 createdNodes.Add(node);
                 m_GraphView.AddElement(node);
-                node.title = dialogData.m_dialogNodes[i].m_title;
+                node.title = m_DialogData.m_dialogNodes[i].m_title;
 
                 for (int j = 0; j < m_DialogData.m_dialogNodes[i].inputNodeCount; j++)
                 {
@@ -337,7 +339,7 @@ namespace Unity.Adventuregame {
                     if (element.childCount > 1 && element[0] is TextField)
                     {
                         ((TextField) element[0]).value =
-                            dialogData.m_dialogNodes[i].m_outputDialogs[index++];
+                            m_DialogData.m_dialogNodes[i].m_outputDialogs[index++];
                     }
                 }
 
@@ -347,11 +349,11 @@ namespace Unity.Adventuregame {
                     {
                         if (((TextField)element).name == "characterName")
                         {
-                            ((TextField) element).value = dialogData.m_dialogNodes[i].m_speakingCharacterName;
+                            ((TextField) element).value = m_DialogData.m_dialogNodes[i].m_speakingCharacterName;
                         }
                         else if (((TextField)element).name == "characterDialogue")
                         {
-                            ((TextField)element).value = dialogData.m_dialogNodes[i].m_characterDialogue;
+                            ((TextField)element).value = m_DialogData.m_dialogNodes[i].m_characterDialogue;
                         }
                     }
                 }
