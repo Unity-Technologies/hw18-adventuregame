@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
 public class SerializableGraphData : ScriptableObject

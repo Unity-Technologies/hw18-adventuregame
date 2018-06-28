@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections;
+
+using UnityEditor;
+#if UNITY_EDITOR
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
-using UnityEngine.Experimental.UIElements;
-
-#if UNITY_EDITOR
-using UnityEditor;
 #endif
+using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
     public static class TriggerDialogNode
     {
+        #if UNITY_EDITOR
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
             string path = AssetDatabase.GUIDToAssetPath(currentNode.m_typeData);
@@ -21,7 +22,6 @@ namespace UnityEngine.AdventureGame
 	        yield return currentNode.GetReturnValue(0);
         }
 
-#if UNITY_EDITOR
         public static Node CreateNode(string typeData)
         {
             Node node = new Node();
