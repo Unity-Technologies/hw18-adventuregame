@@ -70,22 +70,12 @@ namespace Unity.Adventuregame {
 
         void OnLostFocus()
         {
-            //SaveGraphData();
+            SaveGraphData();
         }
 
         void OnSelectionChanged()
         {
-            List<Node> removeNodes = m_GraphView.nodes.ToList();
-            foreach (Node node in removeNodes)
-            {
-                m_GraphView.RemoveElement(node);
-            }
-
-            List<Edge> removeEdges = m_GraphView.edges.ToList();
-            foreach (Edge edge in removeEdges)
-            {
-                m_GraphView.RemoveElement(edge);
-            }
+            SaveGraphData();
 
             SerializableDialogData[] data = Selection.GetFiltered<SerializableDialogData>(SelectionMode.Assets);
             if (data.Length != 1)
@@ -126,22 +116,27 @@ namespace Unity.Adventuregame {
         protected DialogueNode CreateDialogueNode(string title, int inNodes, int outNodes)
         {
             DialogueNode node = new DialogueNode();
+            node.Initialize(this);
             node.title = title;
 
             var characterName = new TextField()
             {
                 multiline = false,
                 value = "<CharacterName Here>",
-                name = "characterName"
+                name = "characterName",
+                isDelayed = true
             };
+            characterName.OnValueChanged(val => SaveGraphData());
             node.mainContainer.Insert(1, characterName);
 
             var characterDialogue = new TextField()
             {
                 multiline = true,
                 value = "<Character Dialogue Area>",
-                name = "characterDialogue"
+                name = "characterDialogue",
+                isDelayed = true
             };
+            characterDialogue.OnValueChanged(val => SaveGraphData());
             node.mainContainer.Insert(2, characterDialogue);
 
             return node;
@@ -301,13 +296,25 @@ namespace Unity.Adventuregame {
 
                 dialogGraphData.m_dialogNodes.Add(dialogGraphNode);
             }
-
-            AssetDatabase.CreateAsset(dialogGraphData, assetPath);
+            
+            EditorUtility.CopySerialized(dialogGraphData, m_DialogData);
             AssetDatabase.SaveAssets();
         }
 
         public virtual bool LoadGraphData()
         {
+            List<Node> removeNodes = m_GraphView.nodes.ToList();
+            foreach (Node node in removeNodes)
+            {
+                m_GraphView.RemoveElement(node);
+            }
+
+            List<Edge> removeEdges = m_GraphView.edges.ToList();
+            foreach (Edge edge in removeEdges)
+            {
+                m_GraphView.RemoveElement(edge);
+            }
+
             if (m_DialogData == null || m_DialogData.m_dialogNodes.Count == 0)
             {
                 return false;

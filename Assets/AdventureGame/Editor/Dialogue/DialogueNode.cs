@@ -5,7 +5,15 @@ using UnityEngine.Experimental.UIElements.StyleEnums;
 using UnityEngine.Experimental.UIElements.StyleSheets;
 
 namespace Unity.Adventuregame {
-    public class DialogueNode : Node {
+    public class DialogueNode : Node
+    {
+        DialogueGraphViewWindow m_window;
+
+        public void Initialize(DialogueGraphViewWindow window)
+        {
+            m_window = window;
+        }
+
         void AddNoteMenuItems(ContextualMenu menu)
         {
             menu.AppendAction("Add input", (a) => addInput(), ContextualMenu.MenuAction.AlwaysEnabled);
@@ -21,8 +29,11 @@ namespace Unity.Adventuregame {
 
             TextField outText = new TextField
             {
-                multiline = true
+                multiline = true,
+                isDelayed = true
             };
+
+            outText.OnValueChanged(val => m_window.SaveGraphData());
             outText.style.flexGrow = 1;
             test.Add(outText);
             test.Add(outputPort);
