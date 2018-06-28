@@ -15,6 +15,7 @@ namespace UnityEngine.AdventureGame
         PICKUP,
         LOOKAT,
         USE,
+        USE_SELECTED_OBJECT,
         ACTION1,
         ACTION2,
         ACTION3,

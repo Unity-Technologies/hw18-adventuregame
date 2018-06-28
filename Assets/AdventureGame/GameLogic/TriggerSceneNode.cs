@@ -12,7 +12,7 @@ namespace UnityEngine.AdventureGame
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            SceneManager.Instance.TriggerDoorway("TEMP");
+            SceneManager.Instance.TriggerDoorway(currentNode.m_typeData);
             yield break;
         }
 
@@ -29,6 +29,15 @@ namespace UnityEngine.AdventureGame
             inputPort.portName = "";
             inputPort.userData = null;
             node.inputContainer.Add(inputPort);
+
+            var sceneNameToLoad = new TextField()
+            {
+                multiline = false,
+                value = typeData
+            };
+
+            node.mainContainer.Insert(1, sceneNameToLoad);
+
             return node;
         }
 
@@ -36,9 +45,9 @@ namespace UnityEngine.AdventureGame
         {
             foreach (VisualElement ele in node.mainContainer)
             {
-                if (ele is PopupField<string>)
+                if (ele is TextField)
                 {
-                    return (ele as PopupField<string>).value;
+                    return (ele as TextField).value;
                 }
             }
 

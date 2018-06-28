@@ -14,6 +14,7 @@ namespace UnityEditor.AdventureGame
     {
         GameLogicGraphView m_GraphView;
         GameLogicData m_GameLogicData;
+        Label m_NoSelectLabel;
 
         [OnOpenAsset(1)]
         public static bool OpenGameLogicFromAsset(int instanceID, int line)
@@ -52,14 +53,19 @@ namespace UnityEditor.AdventureGame
         // Use this for initialization
         void OnEnable()
         {
-            var sampleGraphView = new GameLogicGraphView();
-            m_GraphView = sampleGraphView;
+            m_GraphView = new GameLogicGraphView();
 
             m_GraphView.name = "theView";
             m_GraphView.persistenceKey = "theView";
             m_GraphView.StretchToParentSize();
 
+            m_NoSelectLabel = new Label("Select a Game Logic Asset in order to view");
+            m_NoSelectLabel.style.textAlignment = TextAnchor.MiddleCenter;
+            m_NoSelectLabel.StretchToParentSize();
+            m_NoSelectLabel.visible = false;
+
             this.GetRootVisualContainer().Add(m_GraphView);
+            this.GetRootVisualContainer().Add(m_NoSelectLabel);
 
             OnSelectionChanged();
 
@@ -80,6 +86,8 @@ namespace UnityEditor.AdventureGame
 
         void OnSelectionChanged()
         {
+            ClearGraphData();
+
             GameLogicData[] data = Selection.GetFiltered<GameLogicData>(SelectionMode.Assets);
             if (data.Length != 1)
             {
@@ -185,15 +193,20 @@ namespace UnityEditor.AdventureGame
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Conditionals"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(ItemInInventoryConditionNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SelectedInventoryItemConditionNode)));
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Actions"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WalkToNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PickUpNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(DropNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetStoryEventNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSceneNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerDialogNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSingleLineNode)));
 
-            return tree;
+
+			return tree;
         }
 
         public bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)
@@ -282,8 +295,11 @@ namespace UnityEditor.AdventureGame
             m_GameLogicData = AssetDatabase.LoadAssetAtPath<GameLogicData>(assetPath);
         }
 
-        public bool LoadGraphData()
+        void ClearGraphData()
         {
+            m_NoSelectLabel.visible = true;
+            m_GraphView.visible = false;
+
 	        List<Node> removeNodes = m_GraphView.nodes.ToList();
 	        foreach (Node node in removeNodes)
 	        {
@@ -295,8 +311,15 @@ namespace UnityEditor.AdventureGame
 	        {
 		        m_GraphView.RemoveElement(edge);
 	        }
+        }
 
-			if (m_GameLogicData.m_graphNodes.Count == 0)
+        public bool LoadGraphData()
+        {
+            ClearGraphData();
+            m_NoSelectLabel.visible = false;
+            m_GraphView.visible = true;
+
+	        if (m_GameLogicData == null || m_GameLogicData.m_graphNodes.Count == 0)
             {
                 return false;
             }
