@@ -6,11 +6,12 @@ using UnityEngine.UI;
 
 namespace UnityEngine.AdventureGame
 {
+	[RequireComponent(typeof(HorizontalOrVerticalLayoutGroup))]
     public class DialogueMenu : MonoBehaviour
     {
 
         #region Public Variables
-        public Button buttonPrefab;
+        public GameObject buttonPrefab;
         public Font titleFont;
         public int titleFontSize = 14;
         public Font descriptionFont;
@@ -20,7 +21,7 @@ namespace UnityEngine.AdventureGame
         #endregion
 
         #region Private Variables
-        private VerticalLayoutGroup layoutGroup;
+        private HorizontalOrVerticalLayoutGroup layoutGroup;
         #endregion
 
         #region Public Methods
@@ -43,10 +44,7 @@ namespace UnityEngine.AdventureGame
                 buttonFont = Resources.GetBuiltinResource<Font>("Arial.ttf");
             }
 
-            layoutGroup = GetComponentInChildren<VerticalLayoutGroup>();
-			if (layoutGroup == null) {
-				Debug.Log("Layout group is null");
-			}
+            layoutGroup = GetComponent<HorizontalOrVerticalLayoutGroup>();
         }
 
         public void AddTitle(string title)
@@ -64,6 +62,21 @@ namespace UnityEngine.AdventureGame
         public void AddButton(string buttonTitle, UnityAction buttonAction)
         {
             Debug.Log("adding button:" + buttonTitle + "\naction: " + buttonAction);
+			GameObject buttonObject = Instantiate(buttonPrefab);
+            Text buttonText = buttonObject.GetComponentInChildren<Text>();
+            // ContentSizeFitter sizeFitter = buttonObject.gameObject.AddComponent<ContentSizeFitter>();
+            // sizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            // sizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            buttonText.text = buttonTitle;
+            buttonText.font = buttonFont;
+            buttonText.fontSize = buttonFontSize;
+			Button button = buttonObject.GetComponent<Button>();
+			if (button) {
+				button.onClick.AddListener(buttonAction);
+			}
+			if (layoutGroup != null) {
+				buttonObject.transform.SetParent(layoutGroup.transform, false);
+			}
         }
         #endregion
 
@@ -71,12 +84,13 @@ namespace UnityEngine.AdventureGame
 		private void AddText(string text, Font font, int size) {
 			GameObject dialogueObject = new GameObject(text);
             Text dialogueText = dialogueObject.AddComponent<Text>();
-            ContentSizeFitter sizeFitter = dialogueObject.AddComponent<ContentSizeFitter>();
-            sizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-            sizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            // ContentSizeFitter sizeFitter = dialogueObject.AddComponent<ContentSizeFitter>();
+            // sizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            // sizeFitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
             dialogueText.text = text;
             dialogueText.font = font;
             dialogueText.fontSize = size;
+			dialogueText.alignment = TextAnchor.MiddleCenter;
 			if (layoutGroup != null) {
 				dialogueObject.transform.SetParent(layoutGroup.transform, false);
 			}
