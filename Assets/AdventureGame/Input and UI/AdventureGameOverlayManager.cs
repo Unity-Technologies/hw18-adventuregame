@@ -197,8 +197,9 @@ namespace UnityEngine.AdventureGame
                 Camera cam = FindObjectsOfType<Camera>().First();
                 if (cam != null)
                 {
-                    Vector3 screenPosition = cam.WorldToScreenPoint(offsetPosition);
-                    dialoguePoint = new Vector2(screenPosition.x, screenPosition.y);
+                    Vector3 screenPosition = cam.WorldToViewportPoint(offsetPosition);
+                    Debug.Log(screenPosition);
+                    dialoguePoint = new Vector2(screenPosition.x * canvas.GetComponent<RectTransform>().sizeDelta.x, screenPosition.y * canvas.GetComponent<RectTransform>().sizeDelta.y);
                 }
             }
 
