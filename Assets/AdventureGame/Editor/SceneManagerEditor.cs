@@ -227,6 +227,12 @@ namespace UnityEditor.AdventureGame
             walkableAreaGroup.name = "WalkableAreas";
             walkableAreaGroup.AddComponent<WalkableAreaGroup>();
 
+            GameObject startPosition = new GameObject();
+            startPosition.transform.SetParent(sceneRoot.transform, false);
+            startPosition.transform.localScale = new Vector3(Camera.main.orthographicSize * aspectRatio, Camera.main.orthographicSize, 1.0f);
+            startPosition.name = "StartPosition";
+            startPosition.tag = "StartPosition";
+
             SaveScenePrefab(m_SceneManager, sceneRoot.transform);
 
             Selection.activeGameObject = sceneRoot;

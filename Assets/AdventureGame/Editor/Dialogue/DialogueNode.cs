@@ -31,7 +31,7 @@ namespace Unity.Adventuregame {
 
         public void addInput()
         {
-            Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(string));
+            Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(string));
             inputPort.portName = string.Empty;
             inputContainer.Add(inputPort);
         }

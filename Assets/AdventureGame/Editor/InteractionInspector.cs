@@ -33,7 +33,17 @@ namespace UnityEditor.AdventureGame
                 if (reactionProperty.objectReferenceValue == null || !assetPath.Contains(actionType))
                 {
                     MonoBehaviour behaviour = property.serializedObject.targetObject as MonoBehaviour;
+                    if (behaviour.transform.parent == null)
+                    {
+                        Debug.LogErrorFormat("Interactable must be inside of a scene prefab!");
+                        return;
+                    }
                     GameObject root = PrefabUtility.FindValidUploadPrefabInstanceRoot(behaviour.transform.parent.gameObject);
+                    if (root == null)
+                    {
+                        Debug.LogErrorFormat("Interactable must be inside of a scene prefab!");
+                        return;
+                    }
                     string gameLogicPath = Path.Combine(Path.Combine(SceneManager.Instance.m_outputPath, root.name), "GameLogic");
                     Directory.CreateDirectory(gameLogicPath);
                     string gameLogicAssetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(gameLogicPath, string.Format("{0}-{1}.asset", behaviour.name, actionProperty.enumDisplayNames[actionProperty.enumValueIndex])));
@@ -44,12 +54,7 @@ namespace UnityEditor.AdventureGame
                     reactionProperty.objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameLogicData>(gameLogicAssetPath);
                 }
 
-                GameLogicGraphViewWindow graphViewWindow = EditorWindow.GetWindow<GameLogicGraphViewWindow>();
-                if (graphViewWindow != null)
-                {
-                    graphViewWindow.Focus();
-                    graphViewWindow.ShowScript((GameLogicData)reactionProperty.objectReferenceValue);
-                }
+                GameLogicGraphViewWindow.OpenWindow((GameLogicData)reactionProperty.objectReferenceValue);
             }
             GUI.color = oldColor;
             EditorGUI.EndProperty();

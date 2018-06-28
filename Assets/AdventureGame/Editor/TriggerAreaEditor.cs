@@ -34,12 +34,7 @@ namespace UnityEditor.AdventureGame
                     m_GameLogicData.objectReferenceValue = AssetDatabase.LoadAssetAtPath<GameLogicData>(gameLogicAssetPath);
                 }
 
-                GameLogicGraphViewWindow graphViewWindow = EditorWindow.GetWindow<GameLogicGraphViewWindow>();
-                if (graphViewWindow != null)
-                {
-                    graphViewWindow.Focus();
-                    graphViewWindow.ShowScript((GameLogicData)m_GameLogicData.objectReferenceValue);
-                }
+                GameLogicGraphViewWindow.OpenWindow((GameLogicData)m_GameLogicData.objectReferenceValue);
             }
             GUI.color = oldColor;
 
