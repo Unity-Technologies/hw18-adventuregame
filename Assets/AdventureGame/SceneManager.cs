@@ -205,6 +205,20 @@ namespace UnityEngine.AdventureGame
             Debug.Log("Trigger Scene " + sceneName);
             StartTransition();
         }
+
+		public InventoryItem GetInventoryItem(string id)
+		{
+			InventoryItem[] inventoryItems = gameObject.GetComponentsInChildren<InventoryItem>();
+
+            foreach (InventoryItem item in inventoryItems)
+            {
+                if(item.Id == id){
+                    return item;
+                }
+            }
+
+			return null;
+		}
     }
 
 }
