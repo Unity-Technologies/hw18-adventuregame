@@ -589,7 +589,67 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1186764386639952, guid: 7fce803e09b144ebca1f33ef5424caaf, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114831155212569722, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 0.047169805
+      objectReference: {fileID: 0}
+    - target: {fileID: 114831155212569722, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.028257383
+      objectReference: {fileID: 0}
+    - target: {fileID: 114831155212569722, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0.028257383
+      objectReference: {fileID: 0}
+    - target: {fileID: 114027156901998856, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 0.2924528
+      objectReference: {fileID: 0}
+    - target: {fileID: 114027156901998856, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.19450872
+      objectReference: {fileID: 0}
+    - target: {fileID: 114027156901998856, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0.19450872
+      objectReference: {fileID: 0}
+    - target: {fileID: 114523141485477556, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 0.3490566
+      objectReference: {fileID: 0}
+    - target: {fileID: 114523141485477556, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.24862051
+      objectReference: {fileID: 0}
+    - target: {fileID: 114523141485477556, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0.24862051
+      objectReference: {fileID: 0}
+    - target: {fileID: 114250009964604518, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 0.7075472
+      objectReference: {fileID: 0}
+    - target: {fileID: 114250009964604518, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 0.24363652
+      objectReference: {fileID: 0}
+    - target: {fileID: 114250009964604518, guid: 7fce803e09b144ebca1f33ef5424caaf,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 0.24363652
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fce803e09b144ebca1f33ef5424caaf, type: 2}
@@ -1041,6 +1101,21 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114038109914804468, guid: 81e68a1f549d04d3895182d3f624186d,
+        type: 2}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114038109914804468, guid: 81e68a1f549d04d3895182d3f624186d,
+        type: 2}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114038109914804468, guid: 81e68a1f549d04d3895182d3f624186d,
+        type: 2}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81e68a1f549d04d3895182d3f624186d, type: 2}
   m_IsPrefabAsset: 0
@@ -1150,11 +1225,6 @@ Prefab:
       propertyPath: m_Name
       value: CustomDialogueMenuCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 114117655861960926, guid: f6e9544795c1444269aff8ae01f2e17a,
-        type: 2}
-      propertyPath: descriptionFontSize
-      value: 14
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6e9544795c1444269aff8ae01f2e17a, type: 2}
   m_IsPrefabAsset: 0
@@ -1175,7 +1245,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1589818797
 MonoBehaviour:
   m_ObjectHideFlags: 0
