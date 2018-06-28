@@ -122,7 +122,11 @@ namespace UnityEngine.AdventureGame
 
         void UnloadScenePrefab() {
             Debug.Log("Unloading : " + m_scenePrefabCurrent);
-            Destroy(transform.GetChild(0).gameObject);
+            for (int i = 0; i < transform.childCount; i++)
+            {
+                transform.GetChild(i).gameObject.SetActive(false);
+            }
+            //Destroy(transform.GetChild(0).gameObject);
             Debug.Log("Unloaded : " + m_scenePrefabCurrent);
         }
 
@@ -130,13 +134,10 @@ namespace UnityEngine.AdventureGame
             m_scenePrefabCurrent = m_scenePrefabToLoad;
             Debug.Log("Loading : " + m_scenePrefabCurrent);
             string scenePrefabName = string.Format("{0}/{1}/{1}.prefab", m_outputPath, m_scenePrefabCurrent);
-            Object prefab = AssetDatabase.LoadAssetAtPath<Object>(scenePrefabName);
+            //Object prefab = AssetDatabase.LoadAssetAtPath<Object>(scenePrefabName);
 
-            GameObject go = (GameObject)Instantiate(prefab, transform);
-            go.name = prefab.name;
-
-            // Relink the prefab
-            PrefabUtility.ConnectGameObjectToPrefab(go, (GameObject)prefab);
+            GameObject go = transform.Find(m_scenePrefabCurrent).gameObject;
+            go.SetActive(true);
 
             // Grab starting position from scene prefab
             GameObject startPosObj = GameObject.FindGameObjectWithTag("StartPosition");
