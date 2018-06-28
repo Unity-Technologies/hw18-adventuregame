@@ -179,10 +179,10 @@ namespace UnityEngine.AdventureGame
             Vector2 dialoguePoint = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
             if (characterName != null) {
                 GameObject speaker = GameObject.Find(characterName);
-                Renderer renderer = speaker.GetComponent<Renderer>();
-                float height = 150;
-                if (renderer != null) {
-                    height = renderer.bounds.size.y;
+                BoxCollider2D collider = speaker.GetComponent<BoxCollider2D>();
+                float height = 0;
+                if (collider != null) {
+                    height = collider.size.y;
                 }
                 Vector3 offsetPosition = new Vector3(speaker.transform.position.x, speaker.transform.position.y + height + kDialogueVerticalOffset, speaker.transform.position.z) ;
                 Camera cam = FindObjectsOfType<Camera>().First();
@@ -333,7 +333,7 @@ namespace UnityEngine.AdventureGame
         public void DestroyDialogueBox()
         {
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
-            if (currentlyDisplayedDialogue != null) {
+            if (currentlyDisplayedDialogueBox != null) {
                 Destroy(currentlyDisplayedDialogueBox.gameObject);
             }
         }
