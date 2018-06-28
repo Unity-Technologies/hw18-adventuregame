@@ -64,7 +64,7 @@ namespace UnityEngine.AdventureGame
         // Settings for spoken text
         [Header("Settings for Spoken Text")]
         public bool autoCreateSpokenText;
-        
+
         // Settings for Dialogue Menus
         [Header("Settings for Dialogue Option Menus")]
         public bool autoCreateDialogueMenus;
@@ -140,7 +140,7 @@ namespace UnityEngine.AdventureGame
             // testing only!
             //DisplaySystemMenu();
             //DisplayCharacterDialogue("hello world", "Character1");
-            DisplayDialogueOptions(new[] { "Option 1", "Option 2", "Option 3" }, "Here is some dialogue. Respond!");
+            //DisplayDialogueOptions(new[] { "Option 1", "Option 2", "Option 3" }, "Here is some dialogue. Respond!");
         }
 
         public void Update()

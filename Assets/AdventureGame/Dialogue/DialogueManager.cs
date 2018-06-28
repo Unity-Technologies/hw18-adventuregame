@@ -67,6 +67,7 @@ namespace UnityEngine.AdventureGame
                     var dialogueChoices = new string[outputsCount];
                     for (int i = 0; i < outputsCount; i++)
                     {
+                        Debug.Log("dialogChoices[" + i + "]: " + m_CurrentDialogueNode.m_title);
                         dialogueChoices[i] = m_CurrentDialogueNode.m_outputDialogs[i];
                     }
                     AdventureGameOverlayManager.Instance.DisplayDialogueOptions(dialogueChoices, m_CurrentDialogueNode.m_characterDialogue, ContinueDialogue);
