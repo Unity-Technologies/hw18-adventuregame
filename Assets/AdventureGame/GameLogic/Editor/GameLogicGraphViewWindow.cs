@@ -203,8 +203,10 @@ namespace UnityEditor.AdventureGame
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetStoryEventNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSceneNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerDialogNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSingleLineNode)));
 
-            return tree;
+
+			return tree;
         }
 
         public bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)

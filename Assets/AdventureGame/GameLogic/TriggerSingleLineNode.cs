@@ -62,6 +62,7 @@ namespace UnityEngine.AdventureGame
             }
             catch (Exception)
             {
+                Debug.LogError(e);
                 data = new SingleLineNodeData();
             }
 

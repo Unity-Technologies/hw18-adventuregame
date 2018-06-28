@@ -63,6 +63,8 @@ namespace UnityEngine.AdventureGame
 
         // Settings for Dialogue Menus
         [Header("Settings for Dialogue Menus")]
+        public bool autoCreateDialogueMenus;
+        public GameObject dialogueBoxPrefab;
         [Tooltip("Use the Sprite Editor to set the slicing on the sprite.")]
         public Sprite borderSprite;
         public DialogueOptionMenuSize dialogueOptionMenuSize = DialogueOptionMenuSize.MEDIUM;
@@ -88,7 +90,6 @@ namespace UnityEngine.AdventureGame
         private static AdventureGameOverlayManager instance;
         private GameObject naiveActionUI;
         private GameObject contextualActionUI;
-        private GameObject dialogueBoxPrefab;
         private Canvas canvas;
         private GameObject currentlyDisplayedDialogueBox;
         private GameObject currentlyDisplayedSystemMenu;
@@ -125,7 +126,7 @@ namespace UnityEngine.AdventureGame
             }
 
             SetUpGameTypeUI();
-            SetUpCursor();
+            ChangeCursor(defaultMouseCursor);
 
             // Set up Dialogue Box prefab
             dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
@@ -462,14 +463,6 @@ namespace UnityEngine.AdventureGame
                 dialogueSelectionDelegate(dialogueOption);
             }
             DestroyDialogueBox();
-        }
-
-        private void SetUpCursor()
-        {
-            if (defaultMouseCursor != null)
-            {
-                // TODO(laurenfrazier): Set up cursor
-            }
         }
 
         private void HandleAdvanceDialogue () {

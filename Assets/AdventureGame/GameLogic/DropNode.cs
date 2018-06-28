@@ -27,7 +27,7 @@ namespace UnityEngine.AdventureGame
             Node node = new Node();
             node.title = "Drop";
 
-            node.mainContainer.style.backgroundColor = Color.yellow;
+            node.mainContainer.style.backgroundColor = Color.cyan;
 
             node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));

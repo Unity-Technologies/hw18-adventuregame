@@ -22,7 +22,7 @@ namespace UnityEngine.AdventureGame
             Node node = new Node();
             node.title = "Item In Inventory Condition";
 
-	        node.mainContainer.style.backgroundColor = Color.cyan;
+	        node.mainContainer.style.backgroundColor = Color.yellow;
 
 			node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
