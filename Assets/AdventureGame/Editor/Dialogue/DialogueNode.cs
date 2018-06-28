@@ -23,7 +23,11 @@ namespace Unity.Adventuregame {
 
         public void addOutput()
         {
-            style.backgroundColor = new Color(0, 0, 0, 0);
+            if (title != "START")
+            {
+                mainContainer.style.backgroundColor = new Color(0, 0, 0, 0);
+            }
+
             Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(string));
             outputPort.portName = string.Empty;
             VisualElement test = new VisualElement();
