@@ -12,7 +12,7 @@ namespace UnityEngine.AdventureGame
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            SceneManager.Instance.TriggerDoorway();
+            SceneManager.Instance.TriggerDoorway(currentNode.m_sceneToTrigger);
             yield break;
         }
 
