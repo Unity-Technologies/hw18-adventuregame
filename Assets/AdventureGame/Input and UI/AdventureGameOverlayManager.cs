@@ -61,8 +61,12 @@ namespace UnityEngine.AdventureGame
         [Tooltip("Only set if Auto Create is true.")]
         public Button contextualActionButton;
 
+        // Settings for spoken text
+        [Header("Settings for Spoken Text")]
+        public bool autoCreateSpokenText;
+
         // Settings for Dialogue Menus
-        [Header("Settings for Dialogue Menus")]
+        [Header("Settings for Dialogue Option Menus")]
         public bool autoCreateDialogueMenus;
         public GameObject dialogueBoxPrefab;
         [Tooltip("Use the Sprite Editor to set the slicing on the sprite.")]
@@ -193,13 +197,14 @@ namespace UnityEngine.AdventureGame
                 Camera cam = FindObjectsOfType<Camera>().First();
                 if (cam != null)
                 {
-                    Vector3 screenPosition = cam.WorldToScreenPoint(offsetPosition);
-                    dialoguePoint = new Vector2(screenPosition.x, screenPosition.y);
+                    Vector3 screenPosition = cam.WorldToViewportPoint(offsetPosition);
+                    Debug.Log(screenPosition);
+                    dialoguePoint = new Vector2(screenPosition.x * canvas.GetComponent<RectTransform>().sizeDelta.x, screenPosition.y * canvas.GetComponent<RectTransform>().sizeDelta.y);
                 }
             }
 
             GameObject dialogueObject;
-            if (autoCreateDialogueMenus || dialogueBoxPrefab == null)
+            if (autoCreateSpokenText || dialogueBoxPrefab == null)
             {
                 dialogueObject = new GameObject("Current Dialogue");
                 Text dialogueText = dialogueObject.AddComponent<Text>();
@@ -363,6 +368,7 @@ namespace UnityEngine.AdventureGame
             for (int i = 0; i < dialogueOptions.Length; i++)
             {
                 string dialogueOption = dialogueOptions[i];
+                int dialogueIndex = i;
                 if (autoCreateDialogueMenus)
                 {
                     Button dialogueOptionButton = Instantiate(naiveActionButton);
@@ -372,12 +378,12 @@ namespace UnityEngine.AdventureGame
                     buttonText.fontSize = boxFontSize;
                     dialogueOptionButton.name = dialogueOption;
                     dialogueOptionButton.transform.SetParent(dialogueBox.transform, false);
-                    dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(i, dialogueSelectionDelegate); });
+                    dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(dialogueIndex, dialogueSelectionDelegate); });
                 }
                 else
                 {
                     DialogueMenu dialogueMenu = dialogueBox.GetComponentInChildren<DialogueMenu>();
-                    dialogueMenu.AddButton(dialogueOption, delegate { HandleDialogueOptionClick(i, dialogueSelectionDelegate); });
+                    dialogueMenu.AddButton(dialogueOption, delegate { HandleDialogueOptionClick(dialogueIndex, dialogueSelectionDelegate); });
                 }
             }
         }
@@ -387,6 +393,7 @@ namespace UnityEngine.AdventureGame
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
             if (currentlyDisplayedDialogueBox != null)
             {
+                Debug.Log("Destroying the dialogue box: " + currentlyDisplayedDialogueBox);
                 Destroy(currentlyDisplayedDialogueBox.gameObject);
             }
         }
@@ -510,11 +517,11 @@ namespace UnityEngine.AdventureGame
 
         private void HandleDialogueOptionClick(int dialogueOption, DialogueSelectionDelegate dialogueSelectionDelegate = null)
         {
+            DestroyDialogueBox();
             if (dialogueSelectionDelegate != null)
             {
                 dialogueSelectionDelegate(dialogueOption);
             }
-            DestroyDialogueBox();
         }
 
         private void HandleAdvanceDialogue()

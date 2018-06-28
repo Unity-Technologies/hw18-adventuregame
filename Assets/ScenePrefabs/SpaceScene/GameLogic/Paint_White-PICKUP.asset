@@ -31,5 +31,13 @@ MonoBehaviour:
     m_position: {x: 140, y: 43}
     m_outputs:
     - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.AnimTriggerNode
+    m_typeData: Pick
+    m_title: Anim Trigger
+    m_position: {x: 340, y: 255}
+    m_outputs:
+    - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
