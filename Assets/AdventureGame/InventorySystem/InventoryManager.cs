@@ -154,5 +154,35 @@ namespace UnityEngine.AdventureGame
 			Debug.Log("You've combined two items!");
 			ClearSelected();
 		}
+
+	    public string[] GetInventoryItemIDs()
+	    {
+	        string[] ids = new string[INVENTORY_SLOTS];
+
+	        for (int i = 0; i < INVENTORY_SLOTS; i++)
+	        {
+	            ids[i] = items[i] != null ? items[i].Id : string.Empty;
+	        }
+
+	        return ids;
+	    }
+
+	    public void ReloadInventoryWithIDs(string[] ids)
+	    {
+	        for (int i = 0; i < INVENTORY_SLOTS && i < ids.Length; i++)
+	        {
+	            if (string.IsNullOrEmpty(ids[i]))
+	            {
+	                var inventoryItem = SceneManager.Instance.GetInventoryItem(ids[i]);
+                    items[i] = inventoryItem;
+	            }
+	            else
+	            {
+	                items[i] = null;
+	            }
+
+                UpdateUI(i);
+	        }
+	    }
 	}
 }

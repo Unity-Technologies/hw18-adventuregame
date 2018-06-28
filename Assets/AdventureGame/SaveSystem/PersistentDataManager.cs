@@ -11,7 +11,7 @@ namespace UnityEditor.AdventureGame
     {
         public Vector2 playerPosition;
 
-        public List<InventoryItem> playerInventory = new List<InventoryItem>();
+        public string[] playerInventory = new string[InventoryManager.INVENTORY_SLOTS];
 
         public HashSet<string> finishedStoryEvents = new HashSet<string>();
     }
@@ -49,7 +49,7 @@ namespace UnityEditor.AdventureGame
                 JsonUtility.FromJsonOverwrite(json, m_GameData);
 
                 SceneManager.Instance.Character.WarpToPosition(m_GameData.playerPosition);
-                //TODO Set player inventory
+                InventoryManager.Instance.ReloadInventoryWithIDs(m_GameData.playerInventory);
 
                 return true;
             }
