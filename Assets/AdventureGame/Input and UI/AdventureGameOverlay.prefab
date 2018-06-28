@@ -273,6 +273,7 @@ MonoBehaviour:
     type: 2}
   contextualActionButton: {fileID: 114299380457393874, guid: 893e9995af0124893a231548a36f1dee,
     type: 2}
+  autoCreateSpokenText: 1
   autoCreateDialogueMenus: 0
   dialogueBoxPrefab: {fileID: 1016907878542262, guid: 17b0b66b8fe32824cb0f35992e8bf9f2,
     type: 2}

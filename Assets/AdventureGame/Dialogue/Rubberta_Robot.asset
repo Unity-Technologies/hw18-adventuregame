@@ -25,7 +25,7 @@ MonoBehaviour:
     m_outputDialogs:
     - 
   - m_title: 
-    m_speakingCharacterName: Rubberta
+    m_speakingCharacterName: Character
     m_characterDialogue: Hi, I'm Rubberta Chicken!
     m_position: {x: 124.544945, y: -3.8335216}
     inputNodeCount: 1
@@ -49,7 +49,7 @@ MonoBehaviour:
     m_outputDialogs:
     - 
   - m_title: 
-    m_speakingCharacterName: Rubberta
+    m_speakingCharacterName: Character
     m_characterDialogue: Maybe he can help me...
     m_position: {x: 580.80743, y: -1.1885216}
     inputNodeCount: 1
@@ -93,7 +93,7 @@ MonoBehaviour:
     m_outputDialogs:
     - 
   - m_title: 
-    m_speakingCharacterName: Rubberta
+    m_speakingCharacterName: Character
     m_characterDialogue: I kind of need it...
     m_position: {x: 1173.6176, y: -129.20604}
     inputNodeCount: 1
@@ -117,7 +117,7 @@ MonoBehaviour:
     m_outputDialogs:
     - 
   - m_title: 
-    m_speakingCharacterName: Rubberta
+    m_speakingCharacterName: Character
     m_characterDialogue: Okay. What do you need?
     m_position: {x: 1507.4049, y: -118.85217}
     inputNodeCount: 1
@@ -143,7 +143,7 @@ MonoBehaviour:
     m_outputDialogs:
     - 
   - m_title: 
-    m_speakingCharacterName: Rubberta
+    m_speakingCharacterName: Character
     m_characterDialogue: 'How about you give me the antenna
 
       first, then I''ll help you.'
@@ -169,7 +169,7 @@ MonoBehaviour:
     m_outputDialogs:
     - 
   - m_title: 
-    m_speakingCharacterName: Rubberta
+    m_speakingCharacterName: Character
     m_characterDialogue: 'Fine, but I must say, you have some
 
       tRUST issues.'
@@ -207,7 +207,7 @@ MonoBehaviour:
     m_outputDialogs:
     - 
   - m_title: 
-    m_speakingCharacterName: Rubberta
+    m_speakingCharacterName: Character
     m_characterDialogue: More like a rust storm, am I right?
     m_position: {x: 1156.5308, y: 6.4491887}
     inputNodeCount: 1

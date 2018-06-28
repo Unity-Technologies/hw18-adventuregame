@@ -59,14 +59,21 @@ namespace UnityEngine.AdventureGame
         {
             Debug.Log("Dialogue Advance");
             int outputsCount = m_CurrentDialogueNode.m_outputs.Count;
+            Debug.Log("just closed dialogue node: " + m_CurrentDialogueNode.m_characterDialogue);
+            Debug.Log("selection: " + selection);
             if (outputsCount > 0 && selection < outputsCount)
             {
                 m_CurrentDialogueNode = m_CurrentDialogue.m_dialogNodes[m_CurrentDialogueNode.m_outputs[selection].m_targetNode];
+                Debug.Log("next dialogue node: " + m_CurrentDialogueNode.m_characterDialogue);
+                outputsCount = m_CurrentDialogueNode.m_outputs.Count;
                 if (outputsCount > 1)
                 {
                     var dialogueChoices = new string[outputsCount];
+                    Debug.Log("Outputs count: " + outputsCount);
                     for (int i = 0; i < outputsCount; i++)
                     {
+                        Debug.Log("dialogChoices[" + i + "]: ");
+                        Debug.Log(m_CurrentDialogueNode.m_outputDialogs[i]);
                         dialogueChoices[i] = m_CurrentDialogueNode.m_outputDialogs[i];
                     }
                     AdventureGameOverlayManager.Instance.DisplayDialogueOptions(dialogueChoices, m_CurrentDialogueNode.m_characterDialogue, ContinueDialogue);
