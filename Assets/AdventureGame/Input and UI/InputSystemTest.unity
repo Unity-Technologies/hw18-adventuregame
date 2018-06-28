@@ -164,7 +164,7 @@ Prefab:
     - target: {fileID: 114642557834360634, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
         type: 2}
       propertyPath: autoCreateDialogueMenus
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114642557834360634, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
         type: 2}
@@ -175,6 +175,16 @@ Prefab:
         type: 2}
       propertyPath: dialogueOptionMenuPlacement
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114642557834360634, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
+        type: 2}
+      propertyPath: dialogueBoxPrefab
+      value: 
+      objectReference: {fileID: 414766529}
+    - target: {fileID: 114642557834360634, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
+        type: 2}
+      propertyPath: defaultMouseCursor
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57b63706ffb9b4bbf9b3a3c59d891eca, type: 2}
@@ -411,6 +421,11 @@ MonoBehaviour:
     actionIcon: {fileID: 0}
     actionType: 3
   currentlySelectedActionType: 8
+--- !u!1 &414766529 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1051300097221744, guid: f6e9544795c1444269aff8ae01f2e17a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1295658411}
 --- !u!1001 &485323233
 Prefab:
   m_ObjectHideFlags: 0
@@ -983,38 +998,23 @@ Prefab:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1051300097221744, guid: f6e9544795c1444269aff8ae01f2e17a, type: 2}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_Name
+      value: CustomDialogueMenuCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 224505405125693720, guid: f6e9544795c1444269aff8ae01f2e17a,
+    - target: {fileID: 114771205310942672, guid: f6e9544795c1444269aff8ae01f2e17a,
         type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0
+      propertyPath: m_Padding.m_Top
+      value: 28
       objectReference: {fileID: 0}
-    - target: {fileID: 224505405125693720, guid: f6e9544795c1444269aff8ae01f2e17a,
+    - target: {fileID: 114771205310942672, guid: f6e9544795c1444269aff8ae01f2e17a,
         type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224505405125693720, guid: f6e9544795c1444269aff8ae01f2e17a,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224505405125693720, guid: f6e9544795c1444269aff8ae01f2e17a,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224505405125693720, guid: f6e9544795c1444269aff8ae01f2e17a,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: -624
+      propertyPath: m_Padding.m_Bottom
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 224505405125693720, guid: f6e9544795c1444269aff8ae01f2e17a,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: -468
+      value: -712
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6e9544795c1444269aff8ae01f2e17a, type: 2}

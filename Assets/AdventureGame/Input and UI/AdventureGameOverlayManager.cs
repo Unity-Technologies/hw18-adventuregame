@@ -330,6 +330,7 @@ namespace UnityEngine.AdventureGame
             else
             {
                 dialogueBox = Instantiate(dialogueBoxPrefab);
+                dialogueBox.SetActive(true);
             }
 
             dialogueBox.transform.SetParent(canvas.transform, true);
@@ -373,7 +374,7 @@ namespace UnityEngine.AdventureGame
                 else
                 {
                     DialogueMenu dialogueMenu = dialogueBox.GetComponentInChildren<DialogueMenu>();
-                    dialogueMenu.AddButton(dialogueOption);
+                    dialogueMenu.AddButton(dialogueOption, delegate { HandleDialogueOptionClick(i, dialogueSelectionDelegate); });
                 }
             }
         }
