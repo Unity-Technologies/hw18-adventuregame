@@ -41,24 +41,24 @@ SpriteAtlas:
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: ca8a49e14dcf14fd29252bc9b753d271, type: 3}
   - {fileID: 21300000, guid: a283e692dd61149838d2a547e9657404, type: 3}
-  - {fileID: 21300000, guid: 056d3f43eb0a14e0a97ca9943ba2530c, type: 3}
   - {fileID: 21300000, guid: f2573a152198d403ba50158fadcf64da, type: 3}
-  - {fileID: 21300000, guid: 4d0a2d45c90404cdab7622ee7f4657bc, type: 3}
-  - {fileID: 21300000, guid: 7aa829952033847368538c0d0ebabc2f, type: 3}
-  - {fileID: 21300000, guid: 370efda643d954ddcbf4067c84d6816a, type: 3}
-  - {fileID: 21300000, guid: 5e08b9c7e855948bd929fa6c0f0abb70, type: 3}
   - {fileID: 21300000, guid: 3a2308ef2b3f24b61bb0c3cfcc8e95cc, type: 3}
+  - {fileID: 21300000, guid: 4d0a2d45c90404cdab7622ee7f4657bc, type: 3}
+  - {fileID: 21300000, guid: 5e08b9c7e855948bd929fa6c0f0abb70, type: 3}
+  - {fileID: 21300000, guid: ca8a49e14dcf14fd29252bc9b753d271, type: 3}
+  - {fileID: 21300000, guid: 056d3f43eb0a14e0a97ca9943ba2530c, type: 3}
+  - {fileID: 21300000, guid: 370efda643d954ddcbf4067c84d6816a, type: 3}
+  - {fileID: 21300000, guid: 7aa829952033847368538c0d0ebabc2f, type: 3}
   m_PackedSpriteNamesToIndex:
-  - CHICKEN_wing-a-LEFT
   - CHICKEN_body
-  - CHICKEN_wing-a-RIGHT
   - CHICKEN_head
-  - CHICKEN_leg-LEFT
-  - CHICKEN_wing-b-RIGHT
-  - CHICKEN_wing-b-LEFT
-  - CHICKEN_neck
   - CHICKEN_leg-RIGHT
+  - CHICKEN_leg-LEFT
+  - CHICKEN_neck
+  - CHICKEN_wing-a-LEFT
+  - CHICKEN_wing-a-RIGHT
+  - CHICKEN_wing-b-LEFT
+  - CHICKEN_wing-b-RIGHT
   m_Tag: Atlas_CHICKEN
   m_IsVariant: 0
