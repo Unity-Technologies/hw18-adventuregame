@@ -77,6 +77,7 @@ namespace Unity.Adventuregame {
         protected DialogueNode CreateDialogueNode(string title, int inNodes, int outNodes)
         {
             DialogueNode node = new DialogueNode();
+            node.style.backgroundColor = Color.magenta;
             node.title = title;
 
             var characterName = new TextField()
