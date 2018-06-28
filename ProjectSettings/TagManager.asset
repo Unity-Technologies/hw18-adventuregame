@@ -45,3 +45,6 @@ TagManager:
   - name: UI
     uniqueID: 2023854457
     locked: 0
+  - name: Objects
+    uniqueID: 1106646751
+    locked: 0
