@@ -27,5 +27,5 @@ public class SerializableDialogData : ScriptableObject
         public int m_targetPort;
     }
 
-    public List<SerializableDialogNode> m_dialogNodes;
+    public List<SerializableDialogNode> m_dialogNodes = new List<SerializableDialogNode>();
 }

@@ -42,7 +42,12 @@ namespace Unity.Adventuregame {
         {
             m_DialogData = data;
 
-            LoadGraphData();
+            if (!LoadGraphData())
+            {
+                DialogueNode node = CreateStartNode();
+                node.addOutput();
+                m_GraphView.AddElement(node);
+            }
         }
 
         // Use this for initialization
@@ -58,9 +63,10 @@ namespace Unity.Adventuregame {
             this.GetRootVisualContainer().Add(m_GraphView);
             OnSelectionChanged();
 
-            if (!LoadGraphData(k_TestGraphDataPath))
+            if (!LoadGraphData())
             {
                 DialogueNode node = CreateStartNode();
+                node.addOutput();
                 m_GraphView.AddElement(node);
             }
             m_GraphView.graphViewChanged += OnGraphViewChanged;
@@ -90,15 +96,21 @@ namespace Unity.Adventuregame {
             }
             m_DialogData = data[0];
 
-            LoadGraphData();
+            if (!LoadGraphData())
+            {
+                DialogueNode node = CreateStartNode();
+                node.addOutput();
+                m_GraphView.AddElement(node);
+            }
         }
 
         private DialogueNode CreateStartNode()
         {
             var node = CreateDialogueNode("START", 0, 0);
+
+            node.mainContainer.style.backgroundColor = Color.green;
             m_GraphView.AddElement(node);
             node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
-            node.addOutput();
 
             node.capabilities &= ~(Capabilities.Movable | Capabilities.Deletable);
             node.style.backgroundColor = Color.green;
@@ -126,7 +138,7 @@ namespace Unity.Adventuregame {
 
         DialogueNode DeserializeNode(SerializableDialogData.SerializableDialogNode graphNode)
         {
-            DialogueNode node = CreateDialogueNode(graphNode.m_title, 0, 0);
+            DialogueNode node = graphNode.m_title == "START" ? CreateStartNode() : CreateDialogueNode(graphNode.m_title, 0, 0);
             Rect temp = new Rect(graphNode.m_position, new Vector2(1, 1));
             node.SetPosition(temp);
             return node;
@@ -134,8 +146,9 @@ namespace Unity.Adventuregame {
 
         protected DialogueNode CreateDialogueNode(string title, int inNodes, int outNodes)
         {
-            DialogueNode node = new DialogueNode();              node.Initialize(this);
-            node.style.backgroundColor = Color.magenta;
+            DialogueNode node = new DialogueNode();
+            node.Initialize(this);
+            node.mainContainer.style.backgroundColor = Color.magenta;
             node.title = title;
 
             var characterName = new TextField()
@@ -236,8 +249,8 @@ namespace Unity.Adventuregame {
                     new SerializableDialogData.SerializableDialogNode();
                 Node currentNode = nodes[i];
                 
-                    dialogGraphNode.inputNodeCount = currentNode.inputContainer.childCount;
-                    dialogGraphNode.outputNodeCount = currentNode.outputContainer.childCount;
+                dialogGraphNode.inputNodeCount = currentNode.inputContainer.childCount;
+                dialogGraphNode.outputNodeCount = currentNode.outputContainer.childCount;
 
                 dialogGraphNode.m_title = currentNode.title;
                 dialogGraphNode.m_position = currentNode.GetPosition().position;
@@ -264,8 +277,8 @@ namespace Unity.Adventuregame {
                 {
                     if (element.childCount > 1 && element[0] is TextField)
                     {
-
                         outPutString = ((TextField) element[0]).value;
+                        dialogGraphNode.m_outputDialogs.Add(outPutString);
                     }
 
                     if (element.childCount > 1 && element[1] is Port)
@@ -282,12 +295,6 @@ namespace Unity.Adventuregame {
                             if (serializedEdge.m_sourcePort == -1 || serializedEdge.m_targetPort == -1)
                             {
                                 continue;
-                            }
-
-                            dialogGraphNode.m_outputDialogs.Add(outPutString);
-                            if (outPutString != string.Empty)
-                            {
-                                outPutString = string.Empty;
                             }
 
                             dialogGraphNode.m_outputs.Add(serializedEdge);
@@ -312,7 +319,7 @@ namespace Unity.Adventuregame {
 
             List<Edge> removeEdges = m_GraphView.edges.ToList();
             foreach (Edge edge in removeEdges)
-        {
+            {
                 m_GraphView.RemoveElement(edge);
             }
 
@@ -331,7 +338,7 @@ namespace Unity.Adventuregame {
                 createdNodes.Add(node);
                 m_GraphView.AddElement(node);
                 node.title = m_DialogData.m_dialogNodes[i].m_title;
-                node.style.backgroundColor = dialogData.m_dialogNodes[i].m_nodeColor;
+                node.style.backgroundColor = m_DialogData.m_dialogNodes[i].m_nodeColor;
 
                 for (int j = 0; j < m_DialogData.m_dialogNodes[i].inputNodeCount; j++)
                 {

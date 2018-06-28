@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: 
+  m_Name: skull-SPEAK
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -20,10 +20,8 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
-    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.DropNode
     m_typeData: coin
     m_title: Drop
     m_position: {x: 181, y: -146}
     m_outputs: []
-    m_sceneToTrigger: 
