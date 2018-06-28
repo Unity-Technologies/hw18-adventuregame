@@ -42,7 +42,7 @@ namespace UnityEngine.AdventureGame
 		{
 			for (int i = 0; i < items.Length; i++)
 			{
-				if (items[i].Id == id)
+				if (items[i] != null && items[i].Id == id)
 				{
 					return items[i];
 				}

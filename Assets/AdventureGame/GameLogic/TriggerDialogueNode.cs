@@ -12,13 +12,23 @@ namespace UnityEngine.AdventureGame
 {
     public static class TriggerDialogNode
     {
+        static bool s_WaitingOnDialogue;
+
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
             string path = AssetDatabase.GUIDToAssetPath(currentNode.m_typeData);
-            DialogueManager.Instance.StartDialogue(AssetDatabase.LoadAssetAtPath<SerializableDialogData>(path));
+            s_WaitingOnDialogue = true;
+            DialogueManager.Instance.StartDialogue(AssetDatabase.LoadAssetAtPath<SerializableDialogData>(path), DialogueEnd);
 
-            //if true return first return value if false return second
-	        yield return currentNode.GetReturnValue(0);
+            while (s_WaitingOnDialogue)
+            {
+                yield return null;
+            }
+        }
+
+        static void DialogueEnd()
+        {
+            s_WaitingOnDialogue = false;
         }
 
 #if UNITY_EDITOR
