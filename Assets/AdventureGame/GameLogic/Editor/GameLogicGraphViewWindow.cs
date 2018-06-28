@@ -194,6 +194,7 @@ namespace UnityEditor.AdventureGame
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Conditionals"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(ItemInInventoryConditionNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SelectedInventoryItemConditionNode)));
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Actions"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WalkToNode)));
@@ -297,17 +298,17 @@ namespace UnityEditor.AdventureGame
             m_NoSelectLabel.visible = true;
             m_GraphView.visible = false;
 
-            List<Node> removeNodes = m_GraphView.nodes.ToList();
-            foreach (Node node in removeNodes)
-            {
-                m_GraphView.RemoveElement(node);
-            }
+	        List<Node> removeNodes = m_GraphView.nodes.ToList();
+	        foreach (Node node in removeNodes)
+	        {
+		        m_GraphView.RemoveElement(node);
+	        }
 
-            List<Edge> removeEdges = m_GraphView.edges.ToList();
-            foreach (Edge edge in removeEdges)
-            {
-                m_GraphView.RemoveElement(edge);
-            }
+	        List<Edge> removeEdges = m_GraphView.edges.ToList();
+	        foreach (Edge edge in removeEdges)
+	        {
+		        m_GraphView.RemoveElement(edge);
+	        }
         }
 
         public bool LoadGraphData()

@@ -43,9 +43,7 @@ public class Interactable : MonoBehaviour
 
     public void OnInteracted(InventoryItem item)
 	{
-		Debug.Log("Used " + item.Id);
-		//TODO use game logic to determine if interaction is valid
-		InventoryManager.Instance.RemoveItem(item);
+        PerformInteraction(CharacterActionType.USE_SELECTED_OBJECT);
 	}
 
 	/// <summary>
