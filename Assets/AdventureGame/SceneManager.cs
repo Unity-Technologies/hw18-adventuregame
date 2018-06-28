@@ -41,7 +41,7 @@ namespace UnityEngine.AdventureGame
         [SerializeField]
         float m_transitionTime = 3.0f;
         bool m_isTransitioning = false;
-        bool m_isGrowing = true;
+        bool m_isShrinking = true;
 
         string m_scenePrefabCurrent = "Scene";
         string m_scenePrefabToLoad = "Scene";
@@ -172,26 +172,26 @@ namespace UnityEngine.AdventureGame
 
             // Begin growing transition object to cover entire screen
             m_isTransitioning = true;
-            m_isGrowing = true;
+            m_isShrinking = true;
         }
 
         void Update() {
             if (m_isTransitioning) {
                 float transitionIncrement = 1000.0f / (m_transitionTime/2) * Time.fixedDeltaTime;
-                if (m_isGrowing) {
-                    m_transitionTransform.localScale += new Vector3(transitionIncrement, transitionIncrement, transitionIncrement);
+                if (m_isShrinking) {
+                    m_transitionTransform.localScale -= new Vector3(transitionIncrement, transitionIncrement, transitionIncrement);
                     // Shrink transition
-                    if (m_transitionTransform.localScale.x >= 1000.0f) {
+                    if (m_transitionTransform.localScale.x <= 10.0f) {
                         // Transition has covered whole screen; unload current scene and load new scene
-                        m_isGrowing = false;
+                        m_isShrinking = false;
                         UnloadScenePrefab();
                         LoadScenePrefab();
                     }
                 }
                 else {
-                    m_transitionTransform.localScale -= new Vector3(transitionIncrement, transitionIncrement, transitionIncrement);
+                    m_transitionTransform.localScale += new Vector3(transitionIncrement, transitionIncrement, transitionIncrement);
                     // Stop transition
-                    if (m_transitionTransform.localScale.x <= 1.0f) {
+                    if (m_transitionTransform.localScale.x >= 500.0f) {
                         m_isTransitioning = false;
                         m_transitionTransform.gameObject.SetActive(false);
                     }
