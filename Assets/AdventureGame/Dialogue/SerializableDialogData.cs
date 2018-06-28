@@ -15,6 +15,7 @@ public class SerializableDialogData : ScriptableObject
         public int inputNodeCount;
         public int outputNodeCount;
         public List<SerializableDialogEdge> m_outputs;
+        public List<string> m_outputDialogs;
     }
 
     [Serializable]
@@ -23,7 +24,6 @@ public class SerializableDialogData : ScriptableObject
         public int m_sourcePort;
         public int m_targetNode;
         public int m_targetPort;
-        public string m_outputDialog;
     }
 
     public List<SerializableDialogNode> m_dialogNodes;
