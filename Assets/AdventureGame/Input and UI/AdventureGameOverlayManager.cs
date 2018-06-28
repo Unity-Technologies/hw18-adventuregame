@@ -342,7 +342,22 @@ namespace UnityEngine.AdventureGame
         /// </summary>
         public void ChangeCursor(Sprite cursorSprite = null)
         {
-            // TODO(laurenfrazier): Change the cursor
+            //reset the cursor
+            if (cursorSprite == null)
+            {
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                return;
+            }
+
+            var croppedTexture = new Texture2D((int)cursorSprite.rect.width, (int)cursorSprite.rect.height);
+			var pixels = cursorSprite.texture.GetPixels((int)cursorSprite.textureRect.x,
+                                                    (int)cursorSprite.textureRect.y,
+                                                    (int)cursorSprite.textureRect.width,
+                                                    (int)cursorSprite.textureRect.height);
+            croppedTexture.SetPixels(pixels);
+            croppedTexture.Apply();
+
+            Cursor.SetCursor(croppedTexture, Vector2.zero, CursorMode.Auto);
         }
 
         public void HandleActionButtonClick(CharacterActionType characterActionType)

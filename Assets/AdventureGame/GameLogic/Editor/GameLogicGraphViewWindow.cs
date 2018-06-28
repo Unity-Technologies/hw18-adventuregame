@@ -23,7 +23,7 @@ namespace UnityEditor.AdventureGame
             return data != null; // we did not handle the open
         }
 
-        [MenuItem("Adventure Game/Game Logic Window")]
+        [MenuItem("Adventure Game/Game Logic Window &g")]
         public static void OpenWindow()
         {
             GetWindow<GameLogicGraphViewWindow>("Game Logic", true, typeof(SceneView));
