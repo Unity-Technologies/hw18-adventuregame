@@ -13,7 +13,7 @@ public class StoryEventsEditorWindow : EditorWindow
 	[MenuItem("Adventure Game/Story Events Window &e")]
 	public static void OpenWindow()
 	{
-		GetWindow<StoryEventsEditorWindow>();
+		GetWindow<StoryEventsEditorWindow>("Story Events", true, typeof(SceneView));
 	}
 
 	void OnEnable()

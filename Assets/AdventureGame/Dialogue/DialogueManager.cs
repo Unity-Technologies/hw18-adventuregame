@@ -28,14 +28,16 @@ namespace UnityEngine.AdventureGame
 
         SerializableDialogData m_CurrentDialogue;
         SerializableDialogData.SerializableDialogNode m_CurrentDialogueNode;
+        Action m_DialogueEnd;
 
-        public void StartDialogue(SerializableDialogData dialogue)
+        public void StartDialogue(SerializableDialogData dialogue, Action onDialogueEnd = null)
         {
             if (m_CurrentDialogue == null)
             {
                 Debug.Log("Dialogue Start");
                 m_CurrentDialogue = dialogue;
                 m_CurrentDialogueNode = dialogue.m_dialogNodes[0];
+                m_DialogueEnd = onDialogueEnd;
                 ContinueDialogue();
             }
         }
@@ -77,6 +79,11 @@ namespace UnityEngine.AdventureGame
             Debug.Log("Dialogue End");
             m_CurrentDialogue = null;
             m_CurrentDialogueNode = null;
+            if (m_DialogueEnd != null)
+            {
+                m_DialogueEnd();
+            }
+            m_DialogueEnd = null;
         }
     }
 }

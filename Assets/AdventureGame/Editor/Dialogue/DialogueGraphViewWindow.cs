@@ -14,6 +14,7 @@ namespace Unity.Adventuregame {
     {
         protected SampleGraphView m_GraphView;
         SerializableDialogData m_DialogData;
+        Label m_NoSelectLabel;
 
         [OnOpenAsset(1)]
         public static bool OpenGameLogicFromAsset(int instanceID, int line)
@@ -60,7 +61,13 @@ namespace Unity.Adventuregame {
             m_GraphView.persistenceKey = "theView";
             m_GraphView.StretchToParentSize();
 
+            m_NoSelectLabel = new Label("Select a Dialogue Asset in order to view");
+            m_NoSelectLabel.style.textAlignment = TextAnchor.MiddleCenter;
+            m_NoSelectLabel.StretchToParentSize();
+            m_NoSelectLabel.visible = false;
+
             this.GetRootVisualContainer().Add(m_GraphView);
+            this.GetRootVisualContainer().Add(m_NoSelectLabel);
             OnSelectionChanged();
 
             if (!LoadGraphData())
@@ -87,6 +94,8 @@ namespace Unity.Adventuregame {
         void OnSelectionChanged()
         {
             SaveGraphData();
+
+            ClearGraphData();
 
             SerializableDialogData[] data = Selection.GetFiltered<SerializableDialogData>(SelectionMode.Assets);
             if (data.Length != 1)
@@ -309,8 +318,11 @@ namespace Unity.Adventuregame {
             AssetDatabase.SaveAssets();
         }
 
-        public virtual bool LoadGraphData()
+        void ClearGraphData()
         {
+            m_NoSelectLabel.visible = true;
+            m_GraphView.visible = false;
+
             List<Node> removeNodes = m_GraphView.nodes.ToList();
             foreach (Node node in removeNodes)
             {
@@ -322,6 +334,13 @@ namespace Unity.Adventuregame {
             {
                 m_GraphView.RemoveElement(edge);
             }
+        }
+
+        public virtual bool LoadGraphData()
+        {
+            ClearGraphData();
+            m_NoSelectLabel.visible = false;
+            m_GraphView.visible = true;
 
             if (m_DialogData == null || m_DialogData.m_dialogNodes.Count == 0)
             {
