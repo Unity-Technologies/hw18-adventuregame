@@ -195,8 +195,8 @@ namespace UnityEditor.AdventureGame
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(ItemInInventoryConditionNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SelectedInventoryItemConditionNode)));
+
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Actions"), 1));
-            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WalkToNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PickUpNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(DropNode)));
@@ -204,9 +204,18 @@ namespace UnityEditor.AdventureGame
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSceneNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerDialogNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSingleLineNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WaitSecondsNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetGameObjectActiveNode)));
+
+            tree.Add(new SearchTreeGroupEntry(new GUIContent("Animation"), 1));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(AnimTriggerNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetAnimBooleanNode)));
+
+            tree.Add(new SearchTreeGroupEntry(new GUIContent("Debug"), 1));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
 
 
-			return tree;
+            return tree;
         }
 
         public bool OnSelectEntry(SearchTreeEntry entry, SearchWindowContext context)

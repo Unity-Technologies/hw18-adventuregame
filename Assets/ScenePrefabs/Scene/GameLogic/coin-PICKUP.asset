@@ -16,9 +16,12 @@ MonoBehaviour:
     m_typeData: 
     m_title: Start
     m_position: {x: -50, y: -50}
-    m_outputs: []
-  - m_type: UnityEngine.AdventureGame.WalkToNode
-    m_typeData: 
-    m_title: Walk To
-    m_position: {x: 74.39459, y: -131.64029}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.PickUpNode
+    m_typeData: coin
+    m_title: Pick Up
+    m_position: {x: 74, y: -57}
     m_outputs: []

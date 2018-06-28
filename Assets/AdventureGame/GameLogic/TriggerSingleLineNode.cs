@@ -28,6 +28,7 @@ namespace UnityEngine.AdventureGame
             {
                 yield return null;
             }
+            yield return currentNode.GetReturnValue(0);
         }
 
         static void OnDialogueEnd()

@@ -10,7 +10,7 @@ namespace UnityEngine.AdventureGame
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
             Debug.LogFormat("Output is: {0}", currentNode.m_typeData);
-            yield break;
+            yield return currentNode.GetReturnValue(0);
         }
 
 #if UNITY_EDITOR

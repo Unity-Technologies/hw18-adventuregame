@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.AdventureGame;
-using UnityEditor.Experimental.UIElements;
+﻿using System.Collections;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
 
@@ -30,13 +26,20 @@ namespace UnityEngine.AdventureGame
             inputPort.userData = null;
             node.inputContainer.Add(inputPort);
 
+            var sceneLabel = new Label
+            {
+                text = "Scene to Load"
+            };
+            
+            node.mainContainer.Insert(1, sceneLabel);
+
             var sceneNameToLoad = new TextField()
             {
                 multiline = false,
                 value = typeData
             };
 
-            node.mainContainer.Insert(1, sceneNameToLoad);
+            node.mainContainer.Insert(2, sceneNameToLoad);
 
             return node;
         }

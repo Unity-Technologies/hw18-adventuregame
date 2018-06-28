@@ -24,6 +24,7 @@ namespace UnityEngine.AdventureGame
             {
                 yield return null;
             }
+            yield return currentNode.GetReturnValue(0);
         }
 
         static void DialogueEnd()
@@ -35,7 +36,7 @@ namespace UnityEngine.AdventureGame
         public static Node CreateNode(string typeData)
         {
             Node node = new Node();
-            node.title = "Set Story Event";
+            node.title = "Trigger Dialog";
 
 	        node.mainContainer.style.backgroundColor = Color.blue;
 

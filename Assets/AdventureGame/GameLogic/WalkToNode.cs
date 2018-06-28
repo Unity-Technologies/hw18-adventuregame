@@ -16,14 +16,12 @@ namespace UnityEngine.AdventureGame
                 yield break;
             }
 
-            SceneManager.Instance.Character.Controllable = false;
             SceneManager.Instance.Character.WalkToPosition(trans.position);
 
             while (!SceneManager.Instance.Character.IsAtDestination())
             {
                 yield return null;
             }
-            SceneManager.Instance.Character.Controllable = true;
 
             yield return currentNode.GetReturnValue(0);
         }
