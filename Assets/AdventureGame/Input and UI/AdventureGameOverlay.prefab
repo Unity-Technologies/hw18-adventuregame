@@ -207,14 +207,17 @@ MonoBehaviour:
     type: 2}
   contextualActionButton: {fileID: 114299380457393874, guid: 893e9995af0124893a231548a36f1dee,
     type: 2}
-  borderSprite: {fileID: 21300000, guid: 8b9823ecf0c774858b03c9259b956275, type: 3}
-  dialogueOptionMenuSize: 1
-  dialogueOptionMenuPlacement: 0
+  autoCreateDialogueMenus: 0
+  dialogueBoxPrefab: {fileID: 1051300097221744, guid: f6e9544795c1444269aff8ae01f2e17a,
+    type: 2}
+  borderSprite: {fileID: 21300000, guid: f5422d3c2842c46d29fca9bc818056ec, type: 3}
+  dialogueOptionMenuSize: 0
+  dialogueOptionMenuPlacement: 4
   menuFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-  menuTextColor: {r: 0, g: 0, b: 0, a: 1}
+  menuTextColor: {r: 1, g: 1, b: 1, a: 1}
   systemMenuPrefab: {fileID: 1944156726394824, guid: 4dbd922aa89d64008ac28126dd617b29,
     type: 2}
-  defaultMouseCursor: {fileID: 0}
+  defaultMouseCursor: {fileID: 21300000, guid: cf5381e9e429c456eba77d91f9416d9a, type: 3}
 --- !u!114 &114793844419864668
 MonoBehaviour:
   m_ObjectHideFlags: 1
