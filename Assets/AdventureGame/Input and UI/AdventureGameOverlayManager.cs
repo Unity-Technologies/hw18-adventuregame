@@ -136,7 +136,7 @@ namespace UnityEngine.AdventureGame
             // testing only!
             //DisplaySystemMenu();
             //DisplayCharacterDialogue("hello world", "Character1");
-            DisplayDialogueOptions(new[] { "Option 1", "Option 2", "Option 3" }, "Here is some dialogue. Respond!");
+            //DisplayDialogueOptions(new[] { "Option 1", "Option 2", "Option 3" }, "Here is some dialogue. Respond!");
         }
 
         public void Update()
