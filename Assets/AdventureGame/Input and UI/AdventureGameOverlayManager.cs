@@ -385,8 +385,6 @@ namespace UnityEngine.AdventureGame
         public void DestroyDialogueBox()
         {
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
-
-            Debug.Log("Destroying object: " + currentlyDisplayedDialogueBox);
             if (currentlyDisplayedDialogueBox != null)
             {
                 Destroy(currentlyDisplayedDialogueBox.gameObject);
