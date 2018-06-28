@@ -201,6 +201,7 @@ namespace UnityEditor.AdventureGame
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WalkToNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PickUpNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(DropNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetStoryEventNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSceneNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerDialogNode)));

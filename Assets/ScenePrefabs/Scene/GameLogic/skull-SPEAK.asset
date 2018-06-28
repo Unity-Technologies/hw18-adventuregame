@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: coin-PICKUP 1
+  m_Name: 
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -21,9 +21,9 @@ MonoBehaviour:
       m_targetNode: 1
       m_targetPort: 0
     m_sceneToTrigger: 
-  - m_type: UnityEngine.AdventureGame.PickUpNode
+  - m_type: UnityEngine.AdventureGame.DropNode
     m_typeData: coin
-    m_title: Pick Up
-    m_position: {x: 74, y: -57}
+    m_title: Drop
+    m_position: {x: 181, y: -146}
     m_outputs: []
     m_sceneToTrigger: 
