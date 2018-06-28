@@ -17,6 +17,11 @@ namespace UnityEngine.AdventureGame
             set { m_Controllable = value; }
         }
 
+        public Animator Animator
+        {
+            get { return m_Animator; }
+        }
+
         void Awake()
         {
             m_NavMeshAgent = GetComponent<NavMeshAgent>();

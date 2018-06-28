@@ -13,8 +13,7 @@ namespace UnityEngine.AdventureGame
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
             PersistentDataManager.Instance.AddFinishedStoryEvent(currentNode.m_typeData);
-
-            //if true return first return value if false return second
+            
 	        yield return currentNode.GetReturnValue(0);
         }
 

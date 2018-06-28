@@ -28,6 +28,7 @@ namespace UnityEngine.AdventureGame
             {
                 yield return null;
             }
+            yield return currentNode.GetReturnValue(0);
         }
 
         static void OnDialogueEnd()
@@ -60,7 +61,7 @@ namespace UnityEngine.AdventureGame
             {
                 data = JsonUtility.FromJson<SingleLineNodeData>(typeData);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Debug.LogError(e);
                 data = new SingleLineNodeData();
