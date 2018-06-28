@@ -201,9 +201,24 @@ namespace UnityEngine.AdventureGame
 
 
         // Sent by trigger area in scene asking scene manager to load a new scene
-        public void TriggerDoorway() {
+        public void TriggerDoorway(string sceneName) {
+            Debug.Log("Trigger Scene " + sceneName);
             StartTransition();
         }
+
+		public InventoryItem GetInventoryItem(string id)
+		{
+			InventoryItem[] inventoryItems = gameObject.GetComponentsInChildren<InventoryItem>();
+
+            foreach (InventoryItem item in inventoryItems)
+            {
+                if(item.Id == id){
+                    return item;
+                }
+            }
+
+			return null;
+		}
     }
 
 }
