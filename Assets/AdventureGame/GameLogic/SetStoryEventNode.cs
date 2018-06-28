@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor.AdventureGame;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
+using UnityEngine.Experimental.UIElements.StyleEnums;
 
 namespace UnityEngine.AdventureGame
 {
@@ -43,12 +45,42 @@ namespace UnityEngine.AdventureGame
 		        new PopupField<string>(storyEvents,
 										string.IsNullOrEmpty(typeData) || !storyEvents.Exists((x) => string.Equals(x, typeData)) ? 0
 											: storyEvents.FindIndex((x) => string.Equals(x, typeData)));
-			node.mainContainer.Insert(1, storyEventsDropdown);
+		    storyEventsDropdown.style.height = 20;
 
-            return node;
+		    var openStoryEventWindowButton = new Button(OpenStoryEventWindow);
+		    openStoryEventWindowButton.text = "Add";
+		    openStoryEventWindowButton.style.height = 20;
+
+		    var rowWithCommands = new VisualElement();
+		    rowWithCommands.style.flexDirection = FlexDirection.Row;
+		    rowWithCommands.Add(storyEventsDropdown);
+		    rowWithCommands.Add(openStoryEventWindowButton);
+
+		    node.mainContainer.Insert(1, rowWithCommands);
+
+	        return node;
         }
 
-        public static string ExtractExtraData(Node node)
+	    private static void OpenStoryEventWindow()
+	    {
+		    var type = Type.GetType("UnityEditor.AdventureGame.StoryEventsEditorWindow, Assembly-CSharp-Editor");
+		    if (type == null)
+		    {
+			    Debug.LogError("Failed to find class StoryEventsEditorWindow!");
+			    return;
+		    }
+
+		    MethodInfo method = type.GetMethod("OpenWindow", BindingFlags.Static | BindingFlags.Public);
+		    if (method == null)
+		    {
+			    Debug.LogError("Failed to find method open window!");
+			    return;
+		    }
+
+		    method.Invoke(null, null);
+	    }
+
+		public static string ExtractExtraData(Node node)
         {
             foreach (VisualElement ele in node.mainContainer)
             {
