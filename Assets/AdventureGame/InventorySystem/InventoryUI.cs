@@ -25,9 +25,7 @@ namespace UnityEngine.AdventureGame
 					}
 					else
 					{
-						Debug.Log("Inventory UI was automatically added - it may not be in the correct place!");
-						GameObject inventoryUI = new GameObject();
-						instance = inventoryUI.AddComponent<InventoryUI>();
+						throw new System.Exception("No Inventory UI exists!");
 					}
 				}
 				return instance;
@@ -61,7 +59,8 @@ namespace UnityEngine.AdventureGame
 			}
 			else
 			{
-				inventorySlots[index].GetComponent<Image>().sprite = null;
+                //go back to the slot background image
+                inventorySlots[index].GetComponent<Image>().sprite = inventorySlots[index].backgroundImage;
 			}
 		}
 

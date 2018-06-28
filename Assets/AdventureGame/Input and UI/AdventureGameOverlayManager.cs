@@ -76,7 +76,7 @@ namespace UnityEngine.AdventureGame
 
         // Settings for Mouse Cursor
         [Header("Settings for Mouse Cursor")]
-        public Texture2D defaultMouseCursor;
+        public Sprite defaultMouseCursor;
 
         // Callback that returns the currently selected action (or the result of a menu selection)
         public delegate void DialogueSelectionDelegate(int result);
@@ -125,7 +125,7 @@ namespace UnityEngine.AdventureGame
             }
 
             SetUpGameTypeUI();
-            ChangeCursor();
+            ChangeCursor(defaultMouseCursor);
 
             // Set up Dialogue Box prefab
             dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
@@ -337,25 +337,27 @@ namespace UnityEngine.AdventureGame
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
             Destroy(currentlyDisplayedDialogueBox);
         }
-
         /// <summary>
         /// Changes the cursor to the given sprite, or back to the default sprite if null.
-        /// TODO(laurenfrazier): Find a way to ensure cursorTexture is of Cursor type, not UI.
         /// </summary>
-        public void ChangeCursor(Texture2D cursorTexture = null)
+        public void ChangeCursor(Sprite cursorSprite = null)
         {
-            CursorMode cursorMode = CursorMode.Auto;
-            Vector2 offset = Vector2.zero;
-            if (cursorTexture != null)
+            //reset the cursor
+            if (cursorSprite == null)
             {
-                offset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
-                Cursor.SetCursor(cursorTexture, offset, cursorMode);
-            } else if (defaultMouseCursor != null) {
-                offset = new Vector2(defaultMouseCursor.width / 2, defaultMouseCursor.height / 2);
-                Cursor.SetCursor(defaultMouseCursor, offset, cursorMode);
-            } else {
-                Cursor.SetCursor(null, Vector2.zero, cursorMode);
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+                return;
             }
+
+            var croppedTexture = new Texture2D((int)cursorSprite.rect.width, (int)cursorSprite.rect.height);
+			var pixels = cursorSprite.texture.GetPixels((int)cursorSprite.textureRect.x,
+                                                    (int)cursorSprite.textureRect.y,
+                                                    (int)cursorSprite.textureRect.width,
+                                                    (int)cursorSprite.textureRect.height);
+            croppedTexture.SetPixels(pixels);
+            croppedTexture.Apply();
+
+            Cursor.SetCursor(croppedTexture, Vector2.zero, CursorMode.Auto);
         }
 
         public void HandleActionButtonClick(CharacterActionType characterActionType)

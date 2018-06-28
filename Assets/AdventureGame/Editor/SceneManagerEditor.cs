@@ -192,6 +192,7 @@ namespace UnityEditor.AdventureGame
             GameObject sceneRoot = new GameObject();
             sceneRoot.transform.SetParent(m_SceneManager.transform, false);
             sceneRoot.name = GameObjectUtility.GetUniqueNameForSibling(m_SceneManager.transform, "Scene");
+            Scene sceneComponent = sceneRoot.AddComponent<Scene>();
 
             GameObject backgroundObject = new GameObject();
             backgroundObject.transform.SetParent(sceneRoot.transform, false);
@@ -201,6 +202,11 @@ namespace UnityEditor.AdventureGame
             backgroundRenderer.drawMode = SpriteDrawMode.Sliced;
             backgroundRenderer.color = Color.gray;
             backgroundRenderer.size = new Vector2(backgroundHeight * aspectRatio, backgroundHeight);
+
+            GameObject locatorsGroup = new GameObject();
+            locatorsGroup.transform.SetParent(sceneRoot.transform, false);
+            locatorsGroup.name = "Locators";
+            sceneComponent.m_LocatorRoot = locatorsGroup;
 
             GameObject hotspotGroup = new GameObject();
             hotspotGroup.transform.SetParent(sceneRoot.transform, false);
@@ -220,6 +226,12 @@ namespace UnityEditor.AdventureGame
             walkableAreaGroup.transform.localScale = new Vector3(Camera.main.orthographicSize * aspectRatio, 1.0f, Camera.main.orthographicSize);
             walkableAreaGroup.name = "WalkableAreas";
             walkableAreaGroup.AddComponent<WalkableAreaGroup>();
+
+            GameObject startPosition = new GameObject();
+            startPosition.transform.SetParent(sceneRoot.transform, false);
+            startPosition.transform.localScale = new Vector3(Camera.main.orthographicSize * aspectRatio, Camera.main.orthographicSize, 1.0f);
+            startPosition.name = "StartPosition";
+            startPosition.tag = "StartPosition";
 
             SaveScenePrefab(m_SceneManager, sceneRoot.transform);
 

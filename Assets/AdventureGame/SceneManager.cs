@@ -58,6 +58,27 @@ namespace UnityEngine.AdventureGame
             PersistentDataManager.Instance.Load();
         }
 
+        public Transform GetLocator(string name)
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.activeInHierarchy)
+                {
+                    Scene scene = child.gameObject.GetComponent<Scene>();
+                    for (int i = 0; i < scene.m_LocatorRoot.transform.childCount; ++i)
+                    {
+                        Transform locator = scene.m_LocatorRoot.transform.GetChild(i);
+                        if (locator.name == name)
+                        {
+                            return locator.transform;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
 #if UNITY_EDITOR
         public string m_outputPath = "Assets/ScenePrefabs";
         public int    m_defaultWidth  = 1024;
@@ -180,9 +201,24 @@ namespace UnityEngine.AdventureGame
 
 
         // Sent by trigger area in scene asking scene manager to load a new scene
-        public void TriggerDoorway() {
+        public void TriggerDoorway(string sceneName) {
+            Debug.Log("Trigger Scene " + sceneName);
             StartTransition();
         }
+
+		public InventoryItem GetInventoryItem(string id)
+		{
+			InventoryItem[] inventoryItems = gameObject.GetComponentsInChildren<InventoryItem>();
+
+            foreach (InventoryItem item in inventoryItems)
+            {
+                if(item.Id == id){
+                    return item;
+                }
+            }
+
+			return null;
+		}
     }
 
 }

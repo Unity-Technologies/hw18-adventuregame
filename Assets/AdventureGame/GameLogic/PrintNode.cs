@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
 
@@ -18,6 +19,8 @@ namespace UnityEngine.AdventureGame
             Node node = new Node();
             node.title = "Print";
 
+            node.mainContainer.style.backgroundColor = Color.magenta;
+
             node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
             inputPort.portName = "";
@@ -25,7 +28,7 @@ namespace UnityEngine.AdventureGame
             node.inputContainer.Add(inputPort);
 
             Port outputPort1 = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
-            outputPort1.portName = "true";
+            outputPort1.portName = "";
             outputPort1.userData = null;
             node.outputContainer.Add(outputPort1);
 

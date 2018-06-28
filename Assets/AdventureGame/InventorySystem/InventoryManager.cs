@@ -23,11 +23,9 @@ namespace UnityEngine.AdventureGame
 					{
 						instance = existingInventoryManager;
 					}
-					else
-					{
-						GameObject manager = new GameObject();
-						instance = manager.AddComponent<InventoryManager>();
-					}
+                    else {
+                        throw new System.Exception("No Inventory Manager exists!");
+                    }
 				}
 				return instance;
 			}
@@ -60,7 +58,9 @@ namespace UnityEngine.AdventureGame
 				return;
 			}
 
-			Selected.transform.position = new Vector3(position.x, position.y, 0.0f);
+			Selected.transform.position = new Vector3(position.x, 
+                                                      position.y, 
+                                                      Selected.transform.position.z);
 			Debug.Log("Dropping " + Selected.Id + " at " + Selected.transform.position);
 			Selected.Dropped();
 			ClearSelected();
@@ -91,6 +91,9 @@ namespace UnityEngine.AdventureGame
 				{
 					items[i] = null;
 					UpdateUI(i);
+                    if(Selected == itemToRemove){
+                        ClearSelected();
+                    }
 					return true;
 				}
 			}
@@ -105,7 +108,7 @@ namespace UnityEngine.AdventureGame
 			}
 			Debug.Log("Selected " + items[index].Id);
 			this.Selected = items[index];
-			AdventureGameOverlayManager.Instance.ChangeCursor(items[index].sprite.texture);
+			AdventureGameOverlayManager.Instance.ChangeCursor(items[index].sprite);
 		}
 
 		public void ClearSelected()

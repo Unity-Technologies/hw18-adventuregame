@@ -12,24 +12,26 @@ namespace Unity.Adventuregame {
             menu.AppendAction("Add output", (a) => addOutput(), ContextualMenu.MenuAction.AlwaysEnabled);
         }
 
-        void addOutput()
+        public void addOutput()
         {
             Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(string));
             outputPort.portName = string.Empty;
-            outputContainer.Add(outputPort);
+            VisualElement test = new VisualElement();
+            test.style.flexDirection = FlexDirection.Row;
 
             TextField outText = new TextField
             {
                 multiline = true
             };
-            outputContainer.Add(outText);
-            outText.PlaceBehind(outputPort);
-
+            outText.style.flexGrow = 1;
+            test.Add(outText);
+            test.Add(outputPort);
+            outputContainer.Add(test);
         }
 
-        void addInput()
+        public void addInput()
         {
-            Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(string));
+            Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(string));
             inputPort.portName = string.Empty;
             inputContainer.Add(inputPort);
         }

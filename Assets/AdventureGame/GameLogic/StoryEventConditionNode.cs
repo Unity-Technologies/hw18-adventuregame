@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.AdventureGame;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
@@ -11,7 +13,7 @@ namespace UnityEngine.AdventureGame
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
             //if true return first return value if false return second
-	        yield return currentNode.GetReturnValue(GameStateInfo.IsStoryEventFinished(currentNode.m_typeData) ? 0 : 1);
+	        yield return currentNode.GetReturnValue(PersistentDataManager.Instance.IsStoryEventFinished(currentNode.m_typeData) ? 0 : 1);
         }
 
 #if UNITY_EDITOR

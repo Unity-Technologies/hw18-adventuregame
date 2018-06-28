@@ -44,12 +44,6 @@ namespace UnityEditor.AdventureGame
 
         void OnEnable()
         {
-            SceneView sceneViewWindow = EditorWindow.GetWindow<SceneView>();
-            if (sceneViewWindow != null)
-            {
-                sceneViewWindow.Focus();
-            }
-
             m_WalkableArea = (WalkableArea)target;
 
             m_Sprite = serializedObject.FindProperty("m_sprite");
@@ -345,7 +339,7 @@ namespace UnityEditor.AdventureGame
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
 
-            if (GUILayout.Button("Regenerate Collision"))
+            if (GUILayout.Button("Regenerate Collision", GUILayout.Height(50)))
             {
                 RegenerateMesh();
             }

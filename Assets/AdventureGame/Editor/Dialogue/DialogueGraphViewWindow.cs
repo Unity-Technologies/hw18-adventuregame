@@ -3,23 +3,16 @@ using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
+using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 
 namespace Unity.Adventuregame {
     public class DialogueGraphViewWindow : EditorWindow, ISearchWindowProvider
     {
-
-        [MenuItem("Dialogue/Open Window")]
-        public static void OpenWindow()
-        {
-            GetWindow<DialogueGraphViewWindow>();
-        }
-
         const string k_TestGraphDataPath = "Assets/AdventureGame/Dialogue/Test.asset";
 
         protected SampleGraphView m_GraphView;
-
 
         // Use this for initialization
         void OnEnable()
@@ -35,12 +28,25 @@ namespace Unity.Adventuregame {
 
             if (!LoadGraphData(k_TestGraphDataPath))
             {
-                DialogueNode node = CreateRootNode();
+                DialogueNode node = CreateStartNode();
                 m_GraphView.AddElement(node);
             }
-
             m_GraphView.graphViewChanged += OnGraphViewChanged;
             m_GraphView.nodeCreationRequest += OnRequestNodeCreation;
+        }
+
+        private DialogueNode CreateStartNode()
+        {
+            var node = CreateDialogueNode("START", 0, 0);
+            m_GraphView.AddElement(node);
+            node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
+            node.addOutput();
+
+            node.capabilities &= ~(Capabilities.Movable | Capabilities.Deletable);
+            node.style.backgroundColor = Color.green;
+            node.SetPosition(new Rect(new Vector2(-50, -50), new Vector2(100, 100)));
+
+            return node;
         }
 
         protected void OnRequestNodeCreation(NodeCreationContext context)
@@ -60,28 +66,11 @@ namespace Unity.Adventuregame {
             SaveGraphData(m_GraphView.nodes.ToList(), k_TestGraphDataPath);
         }
 
-        DialogueNode CreateRootNode()
-        {
-            DialogueNode node = new DialogueNode();
-            node.title = "Start";
-            node.capabilities &= ~(Capabilities.Movable | Capabilities.Deletable);
-            node.style.backgroundColor = Color.green;
-            node.SetPosition(new Rect(new Vector2(-50, -50), new Vector2(100, 100)));
-
-            Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single,
-                typeof(bool));
-            outputPort.portName = "start";
-            outputPort.userData = null;
-
-            node.outputContainer.Add(outputPort);
-
-            return node;
-        }
-
         DialogueNode DeserializeNode(SerializableDialogData.SerializableDialogNode graphNode)
         {
-            DialogueNode node = graphNode.m_title == "Start" ? CreateRootNode() : CreateDialogueNode(graphNode.m_title, 1, 1);
-            node.SetPosition(new Rect(graphNode.m_position, Vector2.zero));
+            DialogueNode node = CreateDialogueNode(graphNode.m_title, 0, 0);
+            Rect temp = new Rect(graphNode.m_position, new Vector2(1, 1));
+            node.SetPosition(temp);
             return node;
         }
 
@@ -117,6 +106,7 @@ namespace Unity.Adventuregame {
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Test Category"), 1));
             tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue", icon)) {level = 2});
+            tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue End", icon)) { level = 2 });
 
             return tree;
         }
@@ -130,7 +120,23 @@ namespace Unity.Adventuregame {
                 m_GraphView.AddElement(node);
                 node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
 
+                Vector2 pointInWindow = context.screenMousePosition - position.position;
+                Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
+
+                node.SetPosition(new Rect(pointInGraph,
+                    Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
+
+                node.Select(m_GraphView, false);
+                return true;
+            }     
+
+            if (entry.name == "Create Dialogue End")
+            {
+                var node = CreateDialogueNode("END", 0, 0);
                 m_GraphView.AddElement(node);
+                node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
+                node.style.backgroundColor = Color.magenta;
+                node.addInput();
 
                 Vector2 pointInWindow = context.screenMousePosition - position.position;
                 Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
@@ -141,7 +147,6 @@ namespace Unity.Adventuregame {
                 node.Select(m_GraphView, false);
                 return true;
             }
-
             return OnSelectEntry(entry, context);
         }
 
@@ -157,11 +162,16 @@ namespace Unity.Adventuregame {
                 SerializableDialogData.SerializableDialogNode dialogGraphNode =
                     new SerializableDialogData.SerializableDialogNode();
                 Node currentNode = nodes[i];
+                
+                    dialogGraphNode.inputNodeCount = currentNode.inputContainer.childCount;
+                    dialogGraphNode.outputNodeCount = currentNode.outputContainer.childCount;
 
                 dialogGraphNode.m_title = currentNode.title;
                 dialogGraphNode.m_position = currentNode.GetPosition().position;
                 dialogGraphNode.m_outputs = new List<SerializableDialogData.SerializableDialogEdge>();
-
+                dialogGraphNode.m_outputDialogs = new List<string>();
+                dialogGraphNode.m_nodeColor = currentNode.style.backgroundColor;
+                    
                 foreach (VisualElement element in currentNode.mainContainer)
                 {
                     if (element is TextField)
@@ -179,35 +189,32 @@ namespace Unity.Adventuregame {
 
                 foreach (VisualElement element in currentNode.outputContainer)
                 {
-                    if (element is TextField)
+                    if (element.childCount > 1 && element[0] is TextField)
                     {
 
-                        outPutString = ((TextField) element).value;
+                        outPutString = ((TextField) element[0]).value;
                     }
 
-                    if (element is Port)
+                    if (element.childCount > 1 && element[1] is Port)
                     {
-                        foreach (Edge edge in ((Port) element).connections)
+                        foreach (Edge edge in ((Port) element[1]).connections)
                         {
                             SerializableDialogData.SerializableDialogEdge serializedEdge =
                                 new SerializableDialogData.SerializableDialogEdge();
-                            if (dialogGraphNode.m_title == "Start")
+
+                            var sourceContainer = currentNode.outputContainer.First(e => e[1] == edge.output);
+                            serializedEdge.m_sourcePort = sourceContainer == null ? -1 : currentNode.outputContainer.IndexOf(sourceContainer);
+                            serializedEdge.m_targetPort = edge.input.node.inputContainer.IndexOf(edge.input);
+                            serializedEdge.m_targetNode = nodes.IndexOf(edge.input.node);
+                            if (serializedEdge.m_sourcePort == -1 || serializedEdge.m_targetPort == -1)
                             {
-                                serializedEdge.m_sourcePort = currentNode.outputContainer.IndexOf(edge.output);
-                                serializedEdge.m_targetNode = nodes.IndexOf(edge.input.node);
+                                continue;
                             }
-                            else
+
+                            dialogGraphNode.m_outputDialogs.Add(outPutString);
+                            if (outPutString != string.Empty)
                             {
-                                serializedEdge.m_sourcePort = currentNode.outputContainer.IndexOf(edge.output);
-                                serializedEdge.m_targetPort = edge.input.node.inputContainer.IndexOf(edge.input);
-
-                                serializedEdge.m_outputDialog = outPutString;
-                                if (outPutString != string.Empty)
-                                {
-                                    outPutString = string.Empty;
-                                }
-
-                                serializedEdge.m_targetNode = nodes.IndexOf(edge.input.node);
+                                outPutString = string.Empty;
                             }
 
                             dialogGraphNode.m_outputs.Add(serializedEdge);
@@ -234,9 +241,47 @@ namespace Unity.Adventuregame {
             List<DialogueNode> createdNodes = new List<DialogueNode>();
             for (int i = 0; i < dialogData.m_dialogNodes.Count; ++i)
             {
+                int index = 0;
+                
                 DialogueNode node = DeserializeNode(dialogData.m_dialogNodes[i]);
                 createdNodes.Add(node);
                 m_GraphView.AddElement(node);
+                node.title = dialogData.m_dialogNodes[i].m_title;
+                node.style.backgroundColor = dialogData.m_dialogNodes[i].m_nodeColor;
+
+                for (int j = 0; j < dialogData.m_dialogNodes[i].inputNodeCount; j++)
+                {
+                    node.addInput();
+                }
+
+                for (int j = 0; j < dialogData.m_dialogNodes[i].outputNodeCount; j++)
+                {
+                    node.addOutput();                
+                }
+
+                foreach (VisualElement element in node.outputContainer)
+                {
+                    if (element.childCount > 1 && element[0] is TextField)
+                    {
+                        ((TextField) element[0]).value =
+                            dialogData.m_dialogNodes[i].m_outputDialogs[index++];
+                    }
+                }
+
+                foreach (VisualElement element in node.mainContainer)
+                {
+                    if (element is TextField)
+                    {
+                        if (((TextField)element).name == "characterName")
+                        {
+                            ((TextField) element).value = dialogData.m_dialogNodes[i].m_speakingCharacterName;
+                        }
+                        else if (((TextField)element).name == "characterDialogue")
+                        {
+                            ((TextField)element).value = dialogData.m_dialogNodes[i].m_characterDialogue;
+                        }
+                    }
+                }
             }
 
             //connect the nodes
@@ -245,7 +290,7 @@ namespace Unity.Adventuregame {
                 for (int iEdge = 0; iEdge < dialogData.m_dialogNodes[i].m_outputs.Count; ++iEdge)
                 {
                     SerializableDialogData.SerializableDialogEdge edge = dialogData.m_dialogNodes[i].m_outputs[iEdge];
-                    Port outputPort = createdNodes[i].outputContainer[edge.m_sourcePort] as Port;
+                    Port outputPort = createdNodes[i].outputContainer[edge.m_sourcePort][1] as Port;
                     Port inputPort = createdNodes[edge.m_targetNode].inputContainer[edge.m_targetPort] as Port;
                     m_GraphView.AddElement(outputPort.ConnectTo(inputPort));
                 }
