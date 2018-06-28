@@ -20,10 +20,8 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
-    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PickUpNode
     m_typeData: coin
     m_title: Pick Up
     m_position: {x: 74, y: -57}
     m_outputs: []
-    m_sceneToTrigger: 

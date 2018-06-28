@@ -80,6 +80,18 @@ namespace UnityEditor.AdventureGame
 
         void OnSelectionChanged()
         {
+            List<Node> removeNodes = m_GraphView.nodes.ToList();
+            foreach (Node node in removeNodes)
+            {
+                m_GraphView.RemoveElement(node);
+            }
+
+            List<Edge> removeEdges = m_GraphView.edges.ToList();
+            foreach (Edge edge in removeEdges)
+            {
+                m_GraphView.RemoveElement(edge);
+            }
+
             GameLogicData[] data = Selection.GetFiltered<GameLogicData>(SelectionMode.Assets);
             if (data.Length != 1)
             {
@@ -185,6 +197,7 @@ namespace UnityEditor.AdventureGame
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Conditionals"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(ItemInInventoryConditionNode)));
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Actions"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WalkToNode)));
@@ -285,19 +298,7 @@ namespace UnityEditor.AdventureGame
 
         public bool LoadGraphData()
         {
-	        List<Node> removeNodes = m_GraphView.nodes.ToList();
-	        foreach (Node node in removeNodes)
-	        {
-		        m_GraphView.RemoveElement(node);
-	        }
-
-	        List<Edge> removeEdges = m_GraphView.edges.ToList();
-	        foreach (Edge edge in removeEdges)
-	        {
-		        m_GraphView.RemoveElement(edge);
-	        }
-
-			if (m_GameLogicData.m_graphNodes.Count == 0)
+            if (m_GameLogicData.m_graphNodes.Count == 0)
             {
                 return false;
             }
