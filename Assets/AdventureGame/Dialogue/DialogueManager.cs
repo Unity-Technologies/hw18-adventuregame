@@ -46,6 +46,7 @@ namespace UnityEngine.AdventureGame
                     }
                 }
                 m_CurrentDialogueNode = dialogue.m_dialogNodes[startIndex];
+                m_DialogueEnd = onDialogueEnd;
                 ContinueDialogue();
             }
         }

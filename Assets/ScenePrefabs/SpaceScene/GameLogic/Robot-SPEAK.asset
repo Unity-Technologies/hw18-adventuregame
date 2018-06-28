@@ -18,10 +18,42 @@ MonoBehaviour:
     m_position: {x: -50, y: -50}
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 1
+      m_targetNode: 2
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.TriggerDialogNode
     m_typeData: e4aeb40ff9405ff4780d7f9a6d4c72c3
     m_title: Trigger Dialog
     m_position: {x: 99, y: -25}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.ItemInInventoryConditionNode
+    m_typeData: whiteliquid
+    m_title: Item In Inventory Condition
+    m_position: {x: -71, y: 136}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+    - m_sourcePort: 1
+      m_targetNode: 1
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerDialogNode
+    m_typeData: da7905f605c4aa74aa2066e1bb542007
+    m_title: Trigger Dialog
+    m_position: {x: 375, y: 183.20003}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 4
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.DropNode
+    m_typeData: whiteliquid
+    m_title: Drop
+    m_position: {x: 296.99997, y: 289.80002}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 5
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.PickUpNode
+    m_typeData: antenna
+    m_title: Pick Up
+    m_position: {x: 452.16, y: 377.92}
     m_outputs: []

@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b00c9334d1f2034cb28f8c5ae0474fb, type: 3}
+  m_Name: Robot_Antenna
+  m_EditorClassIdentifier: 
+  m_dialogNodes:
+  - m_title: START
+    m_speakingCharacterName: <CharacterName Here>
+    m_characterDialogue: <Character Dialogue Area>
+    m_position: {x: -50, y: -50}
+    inputNodeCount: 0
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Character
+    m_characterDialogue: This will make you less rusty.
+    m_position: {x: 195, y: -80.04}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: END
+    m_speakingCharacterName: <CharacterName Here>
+    m_characterDialogue: <Character Dialogue Area>
+    m_position: {x: 381, y: 170.2}
+    inputNodeCount: 1
+    outputNodeCount: 0
+    m_outputs: []
+    m_outputDialogs: []
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: Thank you! Here, take the antenna.
+    m_position: {x: 388.24, y: -0.3200531}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 2
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
