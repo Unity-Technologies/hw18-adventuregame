@@ -28,16 +28,24 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 3
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.PickUpNode
-    m_typeData: starfish
-    m_title: Pick Up
-    m_position: {x: 548.88, y: 26.599915}
-    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.SetGameObjectActiveNode
+    m_typeData: '{"m_GameObjectName":"chicken_starfish","m_Value":true}'
+    m_title: Set GameObject Active
+    m_position: {x: 722.48, y: 99.60001}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 4
+      m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.AnimTriggerNode
     m_typeData: Pick
     m_title: Anim Trigger
-    m_position: {x: 497.16006, y: 195.4}
+    m_position: {x: 415.16006, y: 168.4}
     m_outputs:
     - m_sourcePort: 0
       m_targetNode: 2
       m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.PickUpNode
+    m_typeData: starfish
+    m_title: Pick Up
+    m_position: {x: 555.88, y: 92.71991}
+    m_outputs: []

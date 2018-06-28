@@ -16,6 +16,7 @@ namespace UnityEngine.AdventureGame
 
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
+            Debug.Log(currentNode.m_typeData);
             SetGameObjectActiveNodeSettings settings = JsonUtility.FromJson<SetGameObjectActiveNodeSettings>(currentNode.m_typeData);
             GameObject[] objects = SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
             for (int i = 0; i < objects.Length; ++i)
