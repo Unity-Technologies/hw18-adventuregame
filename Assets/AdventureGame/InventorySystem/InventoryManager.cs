@@ -89,6 +89,9 @@ namespace UnityEngine.AdventureGame
 				{
 					items[i] = null;
 					UpdateUI(i);
+                    if(Selected == itemToRemove){
+                        ClearSelected();
+                    }
 					return true;
 				}
 			}
