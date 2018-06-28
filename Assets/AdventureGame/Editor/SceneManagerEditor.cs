@@ -92,7 +92,7 @@ namespace UnityEditor.AdventureGame
                 SceneManager manager = Object.FindObjectOfType<SceneManager>();
                 if (manager != null)
                 {
-                    EnsureProjectConsistency(manager);
+                    //EnsureProjectConsistency(manager);
                 }
             };
 
