@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39745ed693f00cd4d8f92ec4eaf54506, type: 3}
+  m_Name: Test
+  m_EditorClassIdentifier: 
+  m_graphNodes:
+  - m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+  - m_title: Default
+    m_position: {x: 86.709045, y: -48.410706}
+    m_outputs: []
+  - m_title: Default
+    m_position: {x: 454.9534, y: -43.866394}
+    m_outputs: []
+  - m_title: Default
+    m_position: {x: 296.49915, y: -265.53827}
+    m_outputs: []
+  - m_title: 
+    m_position: {x: -56.30883, y: -229.8647}
+    m_outputs: []
+  - m_title: Default
+    m_position: {x: -296.42883, y: -135.84073}
+    m_outputs: []
+  - m_title: 
+    m_position: {x: -356.04492, y: -394.40677}
+    m_outputs: []
+  - m_title: 
+    m_position: {x: -178.94478, y: -455.63272}
+    m_outputs: []
+  - m_title: Default
+    m_position: {x: 112.00524, y: -405.03278}
+    m_outputs: []
+  - m_title: 
+    m_position: {x: -482.1768, y: -612.8149}
+    m_outputs: []

@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using UnityEditor.AI;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AdventureGame;
 using UnityEngine.AI;
@@ -11,7 +10,6 @@ namespace UnityEditor.AdventureGame
     public class WalkableAreaEditor : Editor
     {
         readonly Color k_TransparentWhite = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-        readonly Vector2 k_DefaultTextureSize = new Vector2(512.0f, 512.0f);
 
         Material m_CollisionMeshMaterial;
         GameObject m_CollisionObject;
@@ -43,16 +41,9 @@ namespace UnityEditor.AdventureGame
 
         static float s_BrushSize = 5.0f;
         static PaintMode s_PaintMode = PaintMode.Painting;
-        static GUIStyle s_EditColliderButtonStyle;
 
         void OnEnable()
         {
-            SceneView sceneViewWindow = EditorWindow.GetWindow<SceneView>();
-            if (sceneViewWindow != null)
-            {
-                sceneViewWindow.Focus();
-            }
-
             m_WalkableArea = (WalkableArea)target;
 
             m_Sprite = serializedObject.FindProperty("m_sprite");
@@ -119,7 +110,8 @@ namespace UnityEditor.AdventureGame
 
             if (m_WalkableArea.m_sprite == null)
             {
-                string spritePath = Path.Combine(Path.Combine(SceneManager.Instance.m_outputPath, PrefabUtility.FindPrefabRoot(m_WalkableArea.transform.parent.gameObject).name), "Editor");
+                GameObject root = PrefabUtility.FindValidUploadPrefabInstanceRoot(m_WalkableArea.transform.parent.gameObject);
+                string spritePath = Path.Combine(Path.Combine(SceneManager.Instance.m_outputPath, root.name), "Editor");
                 Directory.CreateDirectory(spritePath);
                 string spriteAssetPath = AssetDatabase.GenerateUniqueAssetPath(Path.Combine(spritePath, string.Format("{0}.png", m_WalkableArea.name)));
 
@@ -133,7 +125,9 @@ namespace UnityEditor.AdventureGame
                     {
                         Directory.CreateDirectory(spritePath);
 
-                        m_PaintTexture = new Texture2D((int)k_DefaultTextureSize.x, (int)k_DefaultTextureSize.y, TextureFormat.RGBA32, false);
+                        WalkableAreaGroup group = m_WalkableArea.transform.parent.gameObject.GetComponent<WalkableAreaGroup>();
+
+                        m_PaintTexture = new Texture2D(group.m_textureWidth, group.m_textureHeight, TextureFormat.RGBA32, false);
                         Color[] colors = m_PaintTexture.GetPixels();
                         for (int i = 0; i < colors.Length; ++i)
                         {
@@ -345,14 +339,7 @@ namespace UnityEditor.AdventureGame
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
 
-            if (s_EditColliderButtonStyle == null)
-            {
-                s_EditColliderButtonStyle = new GUIStyle("Button");
-                s_EditColliderButtonStyle.padding = new RectOffset(0, 0, 0, 0);
-                s_EditColliderButtonStyle.margin = new RectOffset(0, 0, 0, 0);
-            }
-
-            if (GUILayout.Button("Regenerate NavMesh"))
+            if (GUILayout.Button("Regenerate Collision", GUILayout.Height(50)))
             {
                 RegenerateMesh();
             }
@@ -586,7 +573,10 @@ namespace UnityEditor.AdventureGame
 
         void RegenerateMesh()
         {
-            Mesh mesh = new Mesh();
+            if (m_WalkableArea == null)
+            {
+                return;
+            }
 
             string assetPath = AssetDatabase.GetAssetPath(m_WalkableArea.m_sprite);
             TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
@@ -629,6 +619,7 @@ namespace UnityEditor.AdventureGame
                 uv[i] = Vector2.zero;
             }
 
+            Mesh mesh = new Mesh();
             mesh.vertices = vertices;
             mesh.normals = normals;
             mesh.uv = uv;

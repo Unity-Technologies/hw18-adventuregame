@@ -1,0 +1,222 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
+  m_Name: TriggerArea
+  m_EditorClassIdentifier: 
+  m_graphNodes:
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 5
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 7
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 9
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 11
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 13
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 15
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 17
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 19
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 21
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 23
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 25
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 27
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 29
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 31
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSceneNode
+    m_typeData: 
+    m_title: Trigger Scene
+    m_position: {x: 256.96228, y: -34.583115}
+    m_outputs: []
