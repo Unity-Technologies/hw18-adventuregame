@@ -203,6 +203,7 @@ namespace UnityEngine.AdventureGame
         // Sent by trigger area in scene asking scene manager to load a new scene
         public void TriggerDoorway(string sceneName) {
             Debug.Log("Trigger Scene " + sceneName);
+            m_scenePrefabToLoad = sceneName;
             StartTransition();
         }
 
