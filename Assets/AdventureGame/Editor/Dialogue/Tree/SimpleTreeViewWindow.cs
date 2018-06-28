@@ -74,8 +74,7 @@ namespace Unity.Adventuregame.Dialogue {
                 chosen.AddChild(new TreeViewItem { id = m_SimpleTreeView.GetAndIncrementID(), depth = chosen.depth + 1, displayName = name });
             }
         }
-
-        [MenuItem ("Dialogue/TreeView")]
+        
         static void ShowWindow ()
         {
             var window = GetWindow<SimpleTreeViewWindow> ();
