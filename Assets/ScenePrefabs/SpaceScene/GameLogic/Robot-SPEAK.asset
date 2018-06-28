@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: Paint_White-LOOKAT
+  m_Name: Robot-SPEAK
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -20,9 +20,8 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
-    m_typeData: '{"character":"Character","dialogue":"Batteries of the spaceship are
-      leaking some white liquid."}'
-    m_title: Trigger Single Line
-    m_position: {x: 168, y: -20}
+  - m_type: UnityEngine.AdventureGame.TriggerDialogNode
+    m_typeData: e4aeb40ff9405ff4780d7f9a6d4c72c3
+    m_title: Trigger Dialog
+    m_position: {x: 99, y: -25}
     m_outputs: []
