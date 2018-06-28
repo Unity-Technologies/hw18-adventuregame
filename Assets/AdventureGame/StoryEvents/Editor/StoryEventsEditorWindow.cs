@@ -44,9 +44,14 @@ public class StoryEventsEditorWindow : EditorWindow
 					if (currentlyChangingNameIndex == i)
 					{
 						var changedTextInField = EditorGUILayout.TextField(storyEvents.events[i], GUILayout.ExpandWidth(false));
+						var storyEventExists = storyEvents.events.Exists((x) => string.Equals(x, changedTextInField));
+						var indexOfExistingElement = storyEvents.events.FindIndex((x) => string.Equals(x, changedTextInField));
 
-						if (!storyEvents.events.Exists((x) => string.Equals(x, changedTextInField))
-							|| storyEvents.events.FindAll((x) => string.Equals(x, changedTextInField)).Count <= 1)
+						if (string.Equals(string.Empty, changedTextInField))
+						{
+							EditorGUILayout.LabelField(" - you can't leave empty event name", GUILayout.ExpandWidth(true));
+						}
+						if (!storyEventExists || indexOfExistingElement == i)
 						{
 							storyEvents.events[i] = changedTextInField;
 							if (GUILayout.Button("Save Changes", GUILayout.ExpandWidth(false)))
@@ -56,7 +61,7 @@ public class StoryEventsEditorWindow : EditorWindow
 						}
 						else
 						{
-							EditorGUILayout.LabelField(" - you can't add same event", "", GUILayout.Width(400));
+							EditorGUILayout.LabelField(" - you can't add same event", GUILayout.ExpandWidth(true));
 						}
 					}
 					else
