@@ -42,7 +42,7 @@ MonoBehaviour:
     m_position: {x: 375, y: 183.20003}
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 4
+      m_targetNode: 6
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.DropNode
     m_typeData: whiteliquid
@@ -57,3 +57,11 @@ MonoBehaviour:
     m_title: Pick Up
     m_position: {x: 452.16, y: 377.92}
     m_outputs: []
+  - m_type: UnityEngine.AdventureGame.AnimTriggerNode
+    m_typeData: Pick
+    m_title: Anim Trigger
+    m_position: {x: 52, y: 373.92}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 4
+      m_targetPort: 0

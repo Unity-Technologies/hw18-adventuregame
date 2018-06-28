@@ -26,10 +26,18 @@ MonoBehaviour:
     m_position: {x: 227.88, y: 35.079956}
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 2
+      m_targetNode: 3
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.PickUpNode
     m_typeData: starfish
     m_title: Pick Up
     m_position: {x: 548.88, y: 26.599915}
     m_outputs: []
+  - m_type: UnityEngine.AdventureGame.AnimTriggerNode
+    m_typeData: Pick
+    m_title: Anim Trigger
+    m_position: {x: 497.16006, y: 195.4}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 2
+      m_targetPort: 0
