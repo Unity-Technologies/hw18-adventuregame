@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor.Callbacks;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
@@ -14,10 +15,27 @@ namespace UnityEditor.AdventureGame
         GameLogicGraphView m_GraphView;
         GameLogicData m_GameLogicData;
 
+        [OnOpenAsset(1)]
+        public static bool OpenGameLogicFromAsset(int instanceID, int line)
+        {
+            GameLogicData data = EditorUtility.InstanceIDToObject(instanceID) as GameLogicData;
+            OpenWindow(data);
+            return data != null; // we did not handle the open
+        }
+
         [MenuItem("Adventure Game/Game Logic Window")]
         public static void OpenWindow()
         {
-            GetWindow<GameLogicGraphViewWindow>();
+            GetWindow<GameLogicGraphViewWindow>("Game Logic", true, typeof(SceneView));
+        }
+
+        public static void OpenWindow(GameLogicData data)
+        {
+            if (data != null)
+            {
+                GameLogicGraphViewWindow view = GetWindow<GameLogicGraphViewWindow>("Game Logic", true, typeof(SceneView));
+                view.ShowScript(data);
+            }
         }
 
         public void ShowScript(GameLogicData data)
@@ -34,7 +52,6 @@ namespace UnityEditor.AdventureGame
         // Use this for initialization
         void OnEnable()
         {
-            titleContent.text = "Game Logic";
             var sampleGraphView = new GameLogicGraphView();
             m_GraphView = sampleGraphView;
 
