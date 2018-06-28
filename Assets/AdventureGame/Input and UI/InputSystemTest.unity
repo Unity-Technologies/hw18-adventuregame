@@ -152,6 +152,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 114642557834360634, guid: 57b63706ffb9b4bbf9b3a3c59d891eca,
+        type: 2}
+      propertyPath: defaultMouseCursor
+      value: 
+      objectReference: {fileID: 2800000, guid: 5e6920658dec17b4db7eb14b5939d343, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57b63706ffb9b4bbf9b3a3c59d891eca, type: 2}
   m_IsPrefabAsset: 0
