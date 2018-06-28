@@ -105,7 +105,7 @@ namespace UnityEngine.AdventureGame
 			}
 			Debug.Log("Selected " + items[index].Id);
 			this.Selected = items[index];
-			AdventureGameOverlayManager.Instance.ChangeCursor(items[index].sprite);
+			AdventureGameOverlayManager.Instance.ChangeCursor(items[index].sprite.texture);
 		}
 
 		public void ClearSelected()

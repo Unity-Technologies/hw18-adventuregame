@@ -76,7 +76,7 @@ namespace UnityEngine.AdventureGame
 
         // Settings for Mouse Cursor
         [Header("Settings for Mouse Cursor")]
-        public Sprite defaultMouseCursor;
+        public Texture2D defaultMouseCursor;
 
         // Callback that returns the currently selected action (or the result of a menu selection)
         public delegate void DialogueSelectionDelegate(int result);
@@ -125,7 +125,7 @@ namespace UnityEngine.AdventureGame
             }
 
             SetUpGameTypeUI();
-            SetUpCursor();
+            ChangeCursor();
 
             // Set up Dialogue Box prefab
             dialogueBoxPrefab = (GameObject)Resources.Load("DialogueBox", typeof(GameObject));
@@ -337,12 +337,25 @@ namespace UnityEngine.AdventureGame
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
             Destroy(currentlyDisplayedDialogueBox);
         }
+
         /// <summary>
         /// Changes the cursor to the given sprite, or back to the default sprite if null.
+        /// TODO(laurenfrazier): Find a way to ensure cursorTexture is of Cursor type, not UI.
         /// </summary>
-        public void ChangeCursor(Sprite cursorSprite = null)
+        public void ChangeCursor(Texture2D cursorTexture = null)
         {
-            // TODO(laurenfrazier): Change the cursor
+            CursorMode cursorMode = CursorMode.Auto;
+            Vector2 offset = Vector2.zero;
+            if (cursorTexture != null)
+            {
+                offset = new Vector2(cursorTexture.width / 2, cursorTexture.height / 2);
+                Cursor.SetCursor(cursorTexture, offset, cursorMode);
+            } else if (defaultMouseCursor != null) {
+                offset = new Vector2(defaultMouseCursor.width / 2, defaultMouseCursor.height / 2);
+                Cursor.SetCursor(defaultMouseCursor, offset, cursorMode);
+            } else {
+                Cursor.SetCursor(null, Vector2.zero, cursorMode);
+            }
         }
 
         public void HandleActionButtonClick(CharacterActionType characterActionType)
@@ -447,14 +460,6 @@ namespace UnityEngine.AdventureGame
                 dialogueSelectionDelegate(dialogueOption);
             }
             DestroyDialogueBox();
-        }
-
-        private void SetUpCursor()
-        {
-            if (defaultMouseCursor != null)
-            {
-                // TODO(laurenfrazier): Set up cursor
-            }
         }
 
         private void HandleAdvanceDialogue () {
