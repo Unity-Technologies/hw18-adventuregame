@@ -17,6 +17,7 @@
 						for (int i = 0; i < hits.Length; i++)
 						{
 							var hit = hits[i];
+							Debug.Log("Hits: " + i);
 							var interactableObject = hit.gameObject.GetComponent<Interactable>();
 							if (InventoryManager.Instance.Selected != null)
 							{
