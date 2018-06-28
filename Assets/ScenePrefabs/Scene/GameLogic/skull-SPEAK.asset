@@ -29,7 +29,7 @@ MonoBehaviour:
       m_targetNode: 2
       m_targetPort: 0
     - m_sourcePort: 1
-      m_targetNode: 3
+      m_targetNode: 5
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.DropNode
     m_typeData: silvercoin
@@ -37,24 +37,24 @@ MonoBehaviour:
     m_position: {x: 464, y: -68}
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 4
+      m_targetNode: 3
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
-    m_typeData: '{"character":"MainCharacter","dialogue":"It looks like it wants to
-      be fed a coin!"}'
-    m_title: Trigger Single Line
-    m_position: {x: 436, y: 91}
-    m_outputs: []
   - m_type: UnityEngine.AdventureGame.PickUpNode
     m_typeData: coin
     m_title: Pick Up
     m_position: {x: 596, y: -69}
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 5
+      m_targetNode: 4
       m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
-    m_typeData: '{"character":"MainCharacter","dialogue":"The coin turned to gold!"}'
+    m_typeData: '{"character":"Character","dialogue":"The coin turned to gold!"}'
     m_title: Trigger Single Line
     m_position: {x: 775, y: -130}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
+    m_typeData: '{"character":"Character","dialogue":"It looks like it wants to be
+      fed a coin!"}'
+    m_title: Trigger Single Line
+    m_position: {x: 436, y: 91}
     m_outputs: []
