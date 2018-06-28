@@ -45,9 +45,9 @@ namespace UnityEngine.AdventureGame
         {
             foreach (VisualElement ele in node.mainContainer)
             {
-                if (ele is PopupField<string>)
+                if (ele is TextField)
                 {
-                    return (ele as PopupField<string>).value;
+                    return (ele as TextField).value;
                 }
             }
 
