@@ -16,7 +16,7 @@ namespace UnityEngine.AdventureGame
             public string m_title;
             public Vector2 m_position;
             public List<GameLogicGraphEdge> m_outputs;
-            public string m_sceneToTrigger;
+
 
             public int GetReturnValue(int index)
             {
