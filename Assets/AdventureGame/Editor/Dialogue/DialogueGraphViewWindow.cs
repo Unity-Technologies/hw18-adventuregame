@@ -210,6 +210,7 @@ namespace Unity.Adventuregame {
                     Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
 
                 node.Select(m_GraphView, false);
+                node.addInput();
                 SaveGraphData();
                 return true;
             }
