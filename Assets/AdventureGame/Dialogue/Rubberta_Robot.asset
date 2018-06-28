@@ -1,0 +1,232 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b00c9334d1f2034cb28f8c5ae0474fb, type: 3}
+  m_Name: Rubberta_Robot
+  m_EditorClassIdentifier: 
+  m_dialogNodes:
+  - m_title: START
+    m_speakingCharacterName: 
+    m_characterDialogue: 
+    m_position: {x: -50, y: -50}
+    inputNodeCount: 0
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Rubberta
+    m_characterDialogue: Hi, I'm Rubberta Chicken!
+    m_position: {x: 124.544945, y: -3.8335216}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 2
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: Greetings, rubber friend. I am U347.
+    m_position: {x: 322.91995, y: -1.1885216}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Rubberta
+    m_characterDialogue: Maybe he can help me...
+    m_position: {x: 580.80743, y: -1.1885216}
+    inputNodeCount: 1
+    outputNodeCount: 4
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 5
+      m_targetPort: 0
+    - m_sourcePort: 1
+      m_targetNode: 14
+      m_targetPort: 0
+    - m_sourcePort: 2
+      m_targetNode: 16
+      m_targetPort: 0
+    - m_sourcePort: 3
+      m_targetNode: 4
+      m_targetPort: 0
+    m_outputDialogs:
+    - That's a nice antenna you have there!
+    - What happend to you?
+    - Dinosaurs are well-liked, right?
+    - See you later!
+  - m_title: END
+    m_speakingCharacterName: 
+    m_characterDialogue: 
+    m_position: {x: 882.3374, y: 293.729}
+    inputNodeCount: 1
+    outputNodeCount: 0
+    m_outputs: []
+    m_outputDialogs: []
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: Thank you! I am very proud of it.
+    m_position: {x: 959.0424, y: -128.14851}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 6
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Rubberta
+    m_characterDialogue: I kind of need it...
+    m_position: {x: 1173.6176, y: -129.20604}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 7
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: "I'll consider giving it to you\n if you help me."
+    m_position: {x: 1318.6176, y: -124.20604}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 8
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Rubberta
+    m_characterDialogue: Okay. What do you need?
+    m_position: {x: 1507.4049, y: -118.85217}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 9
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: 'As you can see, I can''t move.
+
+      I need something oily for my joints.'
+    m_position: {x: 1680.4069, y: -119.0278}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 10
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Rubberta
+    m_characterDialogue: 'How about you give me the antenna
+
+      first, then I''ll help you.'
+    m_position: {x: 1894.3635, y: -119.0278}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 11
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: No way.
+    m_position: {x: 2154.4326, y: -109.90252}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 12
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Rubberta
+    m_characterDialogue: 'Fine, but I must say, you have some
+
+      tRUST issues.'
+    m_position: {x: 1552.3357, y: -487.68988}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: Your humor does not compute.
+    m_position: {x: 1377.7594, y: 120.95219}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: There was a dust storm.
+    m_position: {x: 985.4978, y: 17.774435}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 15
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Rubberta
+    m_characterDialogue: More like a rust storm, am I right?
+    m_position: {x: 1156.5308, y: 6.4491887}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 13
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: "Yes, sadly it looks like there won't\n be any left soon."
+    m_position: {x: 1023.9191, y: 193.9495}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
