@@ -36,8 +36,16 @@ namespace UnityEngine.AdventureGame
             {
                 Debug.Log("Dialogue Start");
                 m_CurrentDialogue = dialogue;
-                m_CurrentDialogueNode = dialogue.m_dialogNodes[0];
-                m_DialogueEnd = onDialogueEnd;
+                int startIndex = 0;
+                for (int i = 0; i < dialogue.m_dialogNodes.Count; ++i)
+                {
+                    if (dialogue.m_dialogNodes[i].m_title == "START")
+                    {
+                        startIndex = i;
+                        break;
+                    }
+                }
+                m_CurrentDialogueNode = dialogue.m_dialogNodes[startIndex];
                 ContinueDialogue();
             }
         }
