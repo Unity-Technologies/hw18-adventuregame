@@ -9,35 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b00c9334d1f2034cb28f8c5ae0474fb, type: 3}
-  m_Name: 
+  m_Name: DemoDialog
   m_EditorClassIdentifier: 
   m_dialogNodes:
-  - m_title: START
-    m_speakingCharacterName: Rubberta
-    m_characterDialogue: Hi, I'm Rubberta chicken!
-    m_position: {x: -50, y: -50}
-    inputNodeCount: 0
-    outputNodeCount: 1
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 1
-      m_targetPort: 0
-    m_outputDialogs:
-    - 
-  - m_title: 
-    m_speakingCharacterName: Robot
-    m_characterDialogue: 'Greetings, my rubber friend!
-
-      I am U347.'
-    m_position: {x: 152.42583, y: -47.62901}
-    inputNodeCount: 1
-    outputNodeCount: 1
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 14
-      m_targetPort: 0
-    m_outputDialogs:
-    - 
   - m_title: 
     m_speakingCharacterName: Robot
     m_characterDialogue: Thank you, I am very proud of it myself.
@@ -46,18 +20,10 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 4
+      m_targetNode: 1
       m_targetPort: 0
     m_outputDialogs:
     - 
-  - m_title: END
-    m_speakingCharacterName: Robot
-    m_characterDialogue: Be well, my rubber friend!
-    m_position: {x: 715.9504, y: 533.4864}
-    inputNodeCount: 1
-    outputNodeCount: 0
-    m_outputs: []
-    m_outputDialogs: []
   - m_title: 
     m_speakingCharacterName: Rubberta
     m_characterDialogue: I kind of need it.
@@ -66,7 +32,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 5
+      m_targetNode: 2
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -78,7 +44,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 6
+      m_targetNode: 3
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -90,7 +56,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 7
+      m_targetNode: 4
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -106,7 +72,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 8
+      m_targetNode: 5
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -120,7 +86,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 9
+      m_targetNode: 6
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -132,7 +98,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 10
+      m_targetNode: 7
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -146,7 +112,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 14
+      m_targetNode: 11
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -158,7 +124,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 14
+      m_targetNode: 11
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -170,7 +136,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 11
+      m_targetNode: 8
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -182,7 +148,7 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 12
+      m_targetNode: 9
       m_targetPort: 0
     m_outputDialogs:
     - 
@@ -194,16 +160,16 @@ MonoBehaviour:
     outputNodeCount: 4
     m_outputs:
     - m_sourcePort: 0
-      m_targetNode: 2
+      m_targetNode: 0
       m_targetPort: 0
     - m_sourcePort: 1
-      m_targetNode: 13
+      m_targetNode: 10
       m_targetPort: 0
     - m_sourcePort: 2
-      m_targetNode: 15
+      m_targetNode: 12
       m_targetPort: 0
     - m_sourcePort: 3
-      m_targetNode: 3
+      m_targetNode: 16
       m_targetPort: 0
     m_outputDialogs:
     - That's a nice antenna you have there!
@@ -220,7 +186,65 @@ MonoBehaviour:
     outputNodeCount: 1
     m_outputs:
     - m_sourcePort: 0
+      m_targetNode: 11
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: 'Greetings, my rubber friend!
+
+      I am U347.'
+    m_position: {x: 283.42584, y: -40.46904}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 11
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: 
+    m_speakingCharacterName: Rubberta
+    m_characterDialogue: Hi, I'm Rubberta chicken!
+    m_position: {x: 88.940674, y: -34.831757}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 13
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: START
+    m_speakingCharacterName: 
+    m_characterDialogue: 
+    m_position: {x: -50, y: -50}
+    inputNodeCount: 0
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
       m_targetNode: 14
       m_targetPort: 0
     m_outputDialogs:
     - 
+  - m_title: 
+    m_speakingCharacterName: Robot
+    m_characterDialogue: Be well, my rubber friend!
+    m_position: {x: 697.3947, y: 446.6889}
+    inputNodeCount: 1
+    outputNodeCount: 1
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 17
+      m_targetPort: 0
+    m_outputDialogs:
+    - 
+  - m_title: END
+    m_speakingCharacterName: 
+    m_characterDialogue: 
+    m_position: {x: 885.5183, y: 623.7225}
+    inputNodeCount: 1
+    outputNodeCount: 0
+    m_outputs: []
+    m_outputDialogs: []
