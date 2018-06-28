@@ -206,6 +206,7 @@ namespace UnityEditor.AdventureGame
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetStoryEventNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSceneNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerDialogNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSingleLineNode)));
 
             return tree;
         }
@@ -298,7 +299,19 @@ namespace UnityEditor.AdventureGame
 
         public bool LoadGraphData()
         {
-            if (m_GameLogicData.m_graphNodes.Count == 0)
+	        List<Node> removeNodes = m_GraphView.nodes.ToList();
+	        foreach (Node node in removeNodes)
+	        {
+		        m_GraphView.RemoveElement(node);
+	        }
+
+	        List<Edge> removeEdges = m_GraphView.edges.ToList();
+	        foreach (Edge edge in removeEdges)
+	        {
+		        m_GraphView.RemoveElement(edge);
+	        }
+
+	        if (m_GameLogicData == null || m_GameLogicData.m_graphNodes.Count == 0)
             {
                 return false;
             }
