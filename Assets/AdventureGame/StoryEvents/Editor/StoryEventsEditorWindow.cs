@@ -19,6 +19,7 @@ public class StoryEventsEditorWindow : EditorWindow
 	void OnEnable()
 	{
 		storyEvents = AssetDatabase.LoadAssetAtPath<StoryEventsDatabase>(StoryEventsDatabase.storyEventDatabasePath);
+		titleContent.text = "Story events";
 	}
 
 	void OnGUI()
