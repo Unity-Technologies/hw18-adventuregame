@@ -179,10 +179,10 @@ namespace UnityEngine.AdventureGame
             Vector2 dialoguePoint = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
             if (characterName != null) {
                 GameObject speaker = GameObject.Find(characterName);
-                Renderer renderer = speaker.GetComponent<Renderer>();
-                float height = 150;
-                if (renderer != null) {
-                    height = renderer.bounds.size.y;
+                BoxCollider2D collider = speaker.GetComponent<BoxCollider2D>();
+                float height = 0;
+                if (collider != null) {
+                    height = collider.size.y;
                 }
                 Vector3 offsetPosition = new Vector3(speaker.transform.position.x, speaker.transform.position.y + height + kDialogueVerticalOffset, speaker.transform.position.z) ;
                 Camera cam = FindObjectsOfType<Camera>().First();
@@ -215,10 +215,7 @@ namespace UnityEngine.AdventureGame
         public void DisplayDialogueOptions(string[] dialogueOptions, string description = null, DialogueSelectionDelegate dialogueSelectionDelegate = null)
         {
             // If we are only showing a dialogue box, get rid of it before we display the next one.
-            if (currentlyDisplayedDialogueBox != null)
-            {
-                DestroyDialogueBox();
-            }
+            DestroyDialogueBox();
 
             // Create fresh dialogue box and add to screen
             GameObject dialogueBox = Instantiate(dialogueBoxPrefab);
@@ -336,7 +333,9 @@ namespace UnityEngine.AdventureGame
         public void DestroyDialogueBox()
         {
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
-            Destroy(currentlyDisplayedDialogueBox);
+            if (currentlyDisplayedDialogueBox != null) {
+                Destroy(currentlyDisplayedDialogueBox.gameObject);
+            }
         }
         /// <summary>
         /// Changes the cursor to the given sprite, or back to the default sprite if null.
@@ -469,11 +468,14 @@ namespace UnityEngine.AdventureGame
             if (dialogueAdvanceDelegate != null) {
                 dialogueAdvanceDelegate();
             }
-            if (currentlyDisplayedDialogue != null) {
-                Destroy(currentlyDisplayedDialogue.gameObject);
-            }
+            DestroyDialogueBox();
             awaitingDialogueAdvance = false;
             screenTouchPanel.SetActive(false);
+        }
+
+        private void DisplayDialogueMenuBoxFromPrefab(string title, string description, string[] options, Vector2 location) {
+            DestroyDialogueBox();
+
         }
         #endregion
     }

@@ -34,12 +34,12 @@ namespace UnityEngine.AdventureGame
         {
             if (IsAtDestination())
             {
-                m_Animator.SetBool("WalkLeft", false);
-                m_Animator.SetBool("WalkRight", false);
-                m_Animator.SetBool("WalkForward", false);
+                m_Animator.SetBool("Walk", false);
             }
             else
             {
+                m_Animator.SetBool("Walk", true);
+
                 Vector2 normalized = m_NavMeshAgent.velocity;
                 normalized.Normalize();
 
@@ -47,9 +47,19 @@ namespace UnityEngine.AdventureGame
                 // left or right or forward/backwards dot(u,v) = |u||v|cos(theta)
                 float cosTheta = Mathf.Cos(Mathf.PI / 3.0f);
                 float dot = Vector2.Dot(normalized, Vector2.right);
-                m_Animator.SetBool("WalkLeft", dot <= -cosTheta);
-                m_Animator.SetBool("WalkRight", dot >= cosTheta);
-                m_Animator.SetBool("WalkForward", dot < cosTheta && dot > -cosTheta);
+                bool movingLeft = dot <= -cosTheta;
+                Vector3 scale = transform.localScale;
+
+                if (movingLeft && scale.x > 0.0)
+                {
+                    scale.x *= -1;
+                    transform.localScale = scale;
+                }
+                else if (!movingLeft && scale.x < 0.0)
+                {
+                    scale.x *= -1;
+                    transform.localScale = scale;
+                }
             }
         }
 
