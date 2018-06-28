@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DialogueData", menuName = "Dialogue Data", order = 1)]
 public class SerializableDialogData : ScriptableObject
 {
     [Serializable]
@@ -28,5 +27,5 @@ public class SerializableDialogData : ScriptableObject
         public int m_targetPort;
     }
 
-    public List<SerializableDialogNode> m_dialogNodes;
+    public List<SerializableDialogNode> m_dialogNodes = new List<SerializableDialogNode>();
 }

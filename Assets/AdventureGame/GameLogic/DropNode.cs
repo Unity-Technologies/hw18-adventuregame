@@ -5,18 +5,18 @@ using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
-    public static class PickUpNode
+    public static class DropNode
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            InventoryItem inventoryItem = SceneManager.Instance.GetInventoryItem(currentNode.m_typeData);
-            if (inventoryItem == null)
-            {
-                Debug.LogErrorFormat("Could not find inventory item: {0}", currentNode.m_typeData);
-                yield break;
-            }
+            InventoryItem inventoryItem = InventoryManager.Instance.GetItemWithId(currentNode.m_typeData);
+			if (inventoryItem == null)
+			{
+				Debug.LogErrorFormat("Could not find inventory item: {0}", currentNode.m_typeData);
+				yield break;
+			}
 
-            inventoryItem.PickedUp();
+            InventoryManager.Instance.RemoveItem(inventoryItem);
 
             yield return currentNode.GetReturnValue(0);
         }
@@ -25,9 +25,9 @@ namespace UnityEngine.AdventureGame
         public static Node CreateNode(string typeData)
         {
             Node node = new Node();
-            node.title = "Pick Up";
+            node.title = "Drop";
 
-            node.mainContainer.style.backgroundColor = Color.cyan;
+            node.mainContainer.style.backgroundColor = Color.yellow;
 
             node.capabilities |= Capabilities.Movable;
             Port inputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(bool));
