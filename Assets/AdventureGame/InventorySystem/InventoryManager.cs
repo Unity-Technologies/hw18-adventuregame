@@ -42,7 +42,7 @@ namespace UnityEngine.AdventureGame
 		{
 			for (int i = 0; i < items.Length; i++)
 			{
-				if (items[i].Id == id)
+				if (items[i] != null && items[i].Id == id)
 				{
 					return items[i];
 				}
@@ -58,7 +58,9 @@ namespace UnityEngine.AdventureGame
 				return;
 			}
 
-			Selected.transform.position = new Vector3(position.x, position.y, 0.0f);
+			Selected.transform.position = new Vector3(position.x, 
+                                                      position.y, 
+                                                      Selected.transform.position.z);
 			Debug.Log("Dropping " + Selected.Id + " at " + Selected.transform.position);
 			Selected.Dropped();
 			ClearSelected();
@@ -89,6 +91,9 @@ namespace UnityEngine.AdventureGame
 				{
 					items[i] = null;
 					UpdateUI(i);
+                    if(Selected == itemToRemove){
+                        ClearSelected();
+                    }
 					return true;
 				}
 			}

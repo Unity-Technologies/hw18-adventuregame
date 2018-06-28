@@ -8,7 +8,7 @@ class TreeViewCollection : TreeView
     int currentID = 10;
 
     public int GetAndIncrementID() {
-        return ++currentID;
+        return currentID++;
     }
 
     public TreeViewCollection(TreeViewState treeViewState)

@@ -58,6 +58,11 @@ namespace Unity.Adventuregame {
             this.GetRootVisualContainer().Add(m_GraphView);
             OnSelectionChanged();
 
+            if (!LoadGraphData(k_TestGraphDataPath))
+            {
+                DialogueNode node = CreateStartNode();
+                m_GraphView.AddElement(node);
+            }
             m_GraphView.graphViewChanged += OnGraphViewChanged;
             m_GraphView.nodeCreationRequest += OnRequestNodeCreation;
             Selection.selectionChanged += OnSelectionChanged;
@@ -88,6 +93,20 @@ namespace Unity.Adventuregame {
             LoadGraphData();
         }
 
+        private DialogueNode CreateStartNode()
+        {
+            var node = CreateDialogueNode("START", 0, 0);
+            m_GraphView.AddElement(node);
+            node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
+            node.addOutput();
+
+            node.capabilities &= ~(Capabilities.Movable | Capabilities.Deletable);
+            node.style.backgroundColor = Color.green;
+            node.SetPosition(new Rect(new Vector2(-50, -50), new Vector2(100, 100)));
+
+            return node;
+        }
+
         protected void OnRequestNodeCreation(NodeCreationContext context)
         {
             SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), this);
@@ -115,8 +134,8 @@ namespace Unity.Adventuregame {
 
         protected DialogueNode CreateDialogueNode(string title, int inNodes, int outNodes)
         {
-            DialogueNode node = new DialogueNode();
-            node.Initialize(this);
+            DialogueNode node = new DialogueNode();              node.Initialize(this);
+            node.style.backgroundColor = Color.magenta;
             node.title = title;
 
             var characterName = new TextField()
@@ -149,7 +168,6 @@ namespace Unity.Adventuregame {
 
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
             tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue", icon)) {level = 1});
-            tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue Start", icon)) { level = 1 });
             tree.Add(new SearchTreeEntry(new GUIContent("Create Dialogue End", icon)) { level = 1 });
 
             return tree;
@@ -164,8 +182,6 @@ namespace Unity.Adventuregame {
                 m_GraphView.AddElement(node);
                 node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
 
-                m_GraphView.AddElement(node);
-
                 Vector2 pointInWindow = context.screenMousePosition - position.position;
                 Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
 
@@ -173,25 +189,7 @@ namespace Unity.Adventuregame {
                     Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
 
                 node.Select(m_GraphView, false);
-
                 SaveGraphData();
-                return true;
-            }
-
-            if (entry.name == "Create Dialogue Start")
-            {
-                var node = CreateDialogueNode("START", 0, 0);
-                m_GraphView.AddElement(node);
-                node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
-                node.addOutput();
-
-                Vector2 pointInWindow = context.screenMousePosition - position.position;
-                Vector2 pointInGraph = node.parent.WorldToLocal(pointInWindow);
-
-                node.SetPosition(new Rect(pointInGraph,
-                    Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
-
-                node.Select(m_GraphView, false);
                 return true;
             }
 
@@ -200,6 +198,7 @@ namespace Unity.Adventuregame {
                 var node = CreateDialogueNode("END", 0, 0);
                 m_GraphView.AddElement(node);
                 node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
+                node.style.backgroundColor = Color.magenta;
                 node.addInput();
 
                 Vector2 pointInWindow = context.screenMousePosition - position.position;
@@ -209,6 +208,7 @@ namespace Unity.Adventuregame {
                     Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
 
                 node.Select(m_GraphView, false);
+                SaveGraphData();
                 return true;
             }
             return OnSelectEntry(entry, context);
@@ -217,7 +217,7 @@ namespace Unity.Adventuregame {
         public void SaveGraphData()
         {
             if (m_DialogData == null)
-            {
+        {
                 return;
             }
 
@@ -243,6 +243,7 @@ namespace Unity.Adventuregame {
                 dialogGraphNode.m_position = currentNode.GetPosition().position;
                 dialogGraphNode.m_outputs = new List<SerializableDialogData.SerializableDialogEdge>();
                 dialogGraphNode.m_outputDialogs = new List<string>();
+                dialogGraphNode.m_nodeColor = currentNode.style.backgroundColor;
 
                 foreach (VisualElement element in currentNode.mainContainer)
                 {
@@ -296,7 +297,7 @@ namespace Unity.Adventuregame {
 
                 dialogGraphData.m_dialogNodes.Add(dialogGraphNode);
             }
-            
+
             EditorUtility.CopySerialized(dialogGraphData, m_DialogData);
             AssetDatabase.SaveAssets();
         }
@@ -311,7 +312,7 @@ namespace Unity.Adventuregame {
 
             List<Edge> removeEdges = m_GraphView.edges.ToList();
             foreach (Edge edge in removeEdges)
-            {
+        {
                 m_GraphView.RemoveElement(edge);
             }
 
@@ -330,6 +331,7 @@ namespace Unity.Adventuregame {
                 createdNodes.Add(node);
                 m_GraphView.AddElement(node);
                 node.title = m_DialogData.m_dialogNodes[i].m_title;
+                node.style.backgroundColor = dialogData.m_dialogNodes[i].m_nodeColor;
 
                 for (int j = 0; j < m_DialogData.m_dialogNodes[i].inputNodeCount; j++)
                 {
@@ -338,7 +340,7 @@ namespace Unity.Adventuregame {
 
                 for (int j = 0; j < m_DialogData.m_dialogNodes[i].outputNodeCount; j++)
                 {
-                    node.addOutput();
+                    node.addOutput();                
                 }
 
                 foreach (VisualElement element in node.outputContainer)

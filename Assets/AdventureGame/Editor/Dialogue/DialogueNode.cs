@@ -1,5 +1,6 @@
 using System.Text;
 using UnityEditor.Experimental.UIElements.GraphView;
+using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 using UnityEngine.Experimental.UIElements.StyleEnums;
 using UnityEngine.Experimental.UIElements.StyleSheets;
@@ -22,6 +23,7 @@ namespace Unity.Adventuregame {
 
         public void addOutput()
         {
+            style.backgroundColor = new Color(0, 0, 0, 0);
             Port outputPort = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(string));
             outputPort.portName = string.Empty;
             VisualElement test = new VisualElement();
