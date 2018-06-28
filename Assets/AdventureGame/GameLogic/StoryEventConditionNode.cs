@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor.AdventureGame;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine.Experimental.UIElements;
+using UnityEngine.Experimental.UIElements.StyleEnums;
 
 namespace UnityEngine.AdventureGame
 {
@@ -28,7 +31,7 @@ namespace UnityEngine.AdventureGame
 	        AddInputPort(node);
 			AddTrueOutputPort(node);
 	        AddFalseOutputPort(node);
-	        AddDropDown(node, typeData);
+	        AddDropDownAndButton(node, typeData);
 			
 			return node;
         }
@@ -59,7 +62,7 @@ namespace UnityEngine.AdventureGame
 		    node.outputContainer.Add(outputPort2);
 		}
 
-	    private static void AddDropDown(Node node, string typeData)
+	    private static void AddDropDownAndButton(Node node, string typeData)
 	    {
 			List<string> storyEvents = StoryEventsDatabase.StoryEventDatabase != null ? StoryEventsDatabase.StoryEventDatabase.events
 											: new List<string>();
@@ -68,8 +71,37 @@ namespace UnityEngine.AdventureGame
 			    new PopupField<string>(storyEvents,
 										string.IsNullOrEmpty(typeData) || !storyEvents.Exists((x) => string.Equals(x, typeData)) ? 0
 											: storyEvents.FindIndex((x) => string.Equals(x, typeData)));
-		    node.mainContainer.Insert(1, storyEventsDropdown);
+		    storyEventsDropdown.style.height = 20;
 
+			var openStoryEventWindowButton = new Button(OpenStoryEventWindow);
+		    openStoryEventWindowButton.text = "Add";
+		    openStoryEventWindowButton.style.height = 20;
+
+			var rowWithCommands = new VisualElement();
+		    rowWithCommands.style.flexDirection = FlexDirection.Row;
+		    rowWithCommands.Add(storyEventsDropdown);
+		    rowWithCommands.Add(openStoryEventWindowButton);
+
+		    node.mainContainer.Insert(1, rowWithCommands);
+	    }
+
+	    private static void OpenStoryEventWindow()
+	    {
+		    var type = Type.GetType("UnityEditor.AdventureGame.StoryEventsEditorWindow, Assembly-CSharp-Editor");
+		    if (type == null)
+		    {
+			    Debug.LogError("Failed to find class StoryEventsEditorWindow!");
+			    return;
+		    }
+
+		    MethodInfo method = type.GetMethod("OpenWindow", BindingFlags.Static | BindingFlags.Public);
+			if (method == null)
+		    {
+			    Debug.LogError("Failed to find method open window!");
+			    return;
+		    }
+
+			method.Invoke(null, null);
 		}
 
 		public static string ExtractExtraData(Node node)
