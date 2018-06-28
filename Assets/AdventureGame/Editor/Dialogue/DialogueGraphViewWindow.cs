@@ -122,7 +122,6 @@ namespace Unity.Adventuregame {
             node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
 
             node.capabilities &= ~(Capabilities.Movable | Capabilities.Deletable);
-            node.style.backgroundColor = Color.green;
             node.SetPosition(new Rect(new Vector2(-50, -50), new Vector2(100, 100)));
 
             return node;
@@ -211,6 +210,7 @@ namespace Unity.Adventuregame {
                     Vector2.zero)); // it's ok to pass zero here because width/height is dynamic
 
                 node.Select(m_GraphView, false);
+                node.addInput();
                 SaveGraphData();
                 return true;
             }
@@ -220,7 +220,7 @@ namespace Unity.Adventuregame {
                 var node = CreateDialogueNode("END", 0, 0);
                 m_GraphView.AddElement(node);
                 node.SetPosition(new Rect(new Vector2(10, 100), Vector2.zero));
-                node.style.backgroundColor = Color.magenta;
+                node.mainContainer.style.backgroundColor = Color.magenta;
                 node.addInput();
 
                 Vector2 pointInWindow = context.screenMousePosition - position.position;
@@ -239,11 +239,9 @@ namespace Unity.Adventuregame {
         public void SaveGraphData()
         {
             if (m_DialogData == null)
-        {
+            {
                 return;
             }
-
-            string assetPath = AssetDatabase.GetAssetPath(m_DialogData);
 
             List<Node> nodes = m_GraphView.nodes.ToList();
 
@@ -265,7 +263,6 @@ namespace Unity.Adventuregame {
                 dialogGraphNode.m_position = currentNode.GetPosition().position;
                 dialogGraphNode.m_outputs = new List<SerializableDialogData.SerializableDialogEdge>();
                 dialogGraphNode.m_outputDialogs = new List<string>();
-                dialogGraphNode.m_nodeColor = currentNode.style.backgroundColor;
 
                 foreach (VisualElement element in currentNode.mainContainer)
                 {
@@ -357,7 +354,6 @@ namespace Unity.Adventuregame {
                 createdNodes.Add(node);
                 m_GraphView.AddElement(node);
                 node.title = m_DialogData.m_dialogNodes[i].m_title;
-                node.style.backgroundColor = m_DialogData.m_dialogNodes[i].m_nodeColor;
 
                 for (int j = 0; j < m_DialogData.m_dialogNodes[i].inputNodeCount; j++)
                 {

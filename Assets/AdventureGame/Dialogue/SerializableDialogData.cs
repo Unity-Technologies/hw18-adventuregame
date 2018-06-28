@@ -16,7 +16,6 @@ public class SerializableDialogData : ScriptableObject
         public int outputNodeCount;
         public List<SerializableDialogEdge> m_outputs;
         public List<string> m_outputDialogs;
-        public Color m_nodeColor;
     }
 
     [Serializable]
