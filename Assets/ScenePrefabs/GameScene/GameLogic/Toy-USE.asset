@@ -46,7 +46,10 @@ MonoBehaviour:
     m_typeData: '{"character":"Character","dialogue":"I really am a dinosaur now!"}'
     m_title: Trigger Single Line
     m_position: {x: 593.80005, y: 10.759987}
-    m_outputs: []
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 6
+      m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
     m_typeData: '{"character":"Character","dialogue":"I still need to get more items
       before I paint myself."}'
@@ -58,4 +61,9 @@ MonoBehaviour:
       before I paint myself."}'
     m_title: Trigger Single Line
     m_position: {x: 233.79999, y: 195.35995}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.AnimTriggerNode
+    m_typeData: Dance
+    m_title: Anim Trigger
+    m_position: {x: 915.4845, y: 61.100357}
     m_outputs: []
