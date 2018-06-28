@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: coin-PICKUP
+  m_Name: starfish-SPEAK
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -20,8 +20,8 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.PickUpNode
-    m_typeData: coin
-    m_title: Pick Up
-    m_position: {x: 74, y: -57}
+  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
+    m_typeData: '{"character":"Character","dialogue":"It''s not very talkative."}'
+    m_title: Trigger Single Line
+    m_position: {x: 206.00003, y: -189.32004}
     m_outputs: []
