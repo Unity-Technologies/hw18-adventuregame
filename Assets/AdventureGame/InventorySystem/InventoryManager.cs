@@ -58,7 +58,9 @@ namespace UnityEngine.AdventureGame
 				return;
 			}
 
-			Selected.transform.position = new Vector3(position.x, position.y, 0.0f);
+			Selected.transform.position = new Vector3(position.x, 
+                                                      position.y, 
+                                                      Selected.transform.position.z);
 			Debug.Log("Dropping " + Selected.Id + " at " + Selected.transform.position);
 			Selected.Dropped();
 			ClearSelected();
