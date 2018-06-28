@@ -53,10 +53,11 @@ public class StoryEventsEditorWindow : EditorWindow
 						}
 						if (!storyEventExists || indexOfExistingElement == i)
 						{
-							storyEvents.events[i] = changedTextInField;
+							ChangeEvent(i, changedTextInField);
 							if (GUILayout.Button("Save Changes", GUILayout.ExpandWidth(false)))
 							{
 								currentlyChangingNameIndex = -1;
+								AssetDatabase.SaveAssets();
 							}
 						}
 						else
@@ -98,10 +99,17 @@ public class StoryEventsEditorWindow : EditorWindow
 	{
 		string newEvent = "New event";
 		storyEvents.events.Add(newEvent);
+		AssetDatabase.SaveAssets();
+	}
+
+	void ChangeEvent(int index, string newEventName)
+	{
+		storyEvents.events[index] = newEventName;
 	}
 
 	void DeleteEvent(int index)
 	{
 		storyEvents.events.RemoveAt(index);
+		AssetDatabase.SaveAssets();
 	}
 }
