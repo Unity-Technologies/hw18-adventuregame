@@ -5,7 +5,7 @@ namespace UnityEngine.AdventureGame
 {
 	public class InventoryManager : MonoBehaviour
 	{
-		public const int INVENTORY_SLOTS = 8;
+		public const int INVENTORY_SLOTS = 6;
 
 		public InventoryItem[] items = new InventoryItem[INVENTORY_SLOTS];
 		public InventoryItem Selected = null;

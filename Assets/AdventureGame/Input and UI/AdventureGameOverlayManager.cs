@@ -61,8 +61,12 @@ namespace UnityEngine.AdventureGame
         [Tooltip("Only set if Auto Create is true.")]
         public Button contextualActionButton;
 
+        // Settings for spoken text
+        [Header("Settings for Spoken Text")]
+        public bool autoCreateSpokenText;
+        
         // Settings for Dialogue Menus
-        [Header("Settings for Dialogue Menus")]
+        [Header("Settings for Dialogue Option Menus")]
         public bool autoCreateDialogueMenus;
         public GameObject dialogueBoxPrefab;
         [Tooltip("Use the Sprite Editor to set the slicing on the sprite.")]
@@ -199,7 +203,7 @@ namespace UnityEngine.AdventureGame
             }
 
             GameObject dialogueObject;
-            if (autoCreateDialogueMenus || dialogueBoxPrefab == null)
+            if (autoCreateSpokenText || dialogueBoxPrefab == null)
             {
                 dialogueObject = new GameObject("Current Dialogue");
                 Text dialogueText = dialogueObject.AddComponent<Text>();
