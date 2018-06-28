@@ -50,9 +50,5 @@ MonoBehaviour:
     m_position: {x: 388.24, y: -0.3200531}
     inputNodeCount: 1
     outputNodeCount: 1
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 2
-      m_targetPort: 0
-    m_outputDialogs:
-    - 
+    m_outputs: []
+    m_outputDialogs: []
