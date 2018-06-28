@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor.IMGUI.Controls;
 using UnityEditor;
 using System;
+using System.Linq;
 
 namespace Unity.Adventuregame.Dialogue {
     class SimpleTreeViewWindow : EditorWindow
@@ -44,11 +45,15 @@ namespace Unity.Adventuregame.Dialogue {
 
             if (e.type == EventType.MouseUp && e.button == 1) {
                 GenericMenu menu = new GenericMenu();
-                menu.AddItem(new GUIContent("new child"), false, Newchild, m_SimpleTreeView.GetRows()[m_SimpleTreeView.GetSelection()[0] - 1]);
+                var element = m_SimpleTreeView.GetRows().First(row => row.id == m_SimpleTreeView.GetSelection()[0]);
+                menu.AddItem(new GUIContent("new child"), false, Newchild, element);
                 menu.ShowAsContext();
             } else if (e.type == EventType.MouseDown && e.button == 0) {
-                if ((EditorApplication.timeSinceStartup - clickTime) < doubleClickTime)
-                    OpenWindow(m_SimpleTreeView.GetRows()[m_SimpleTreeView.GetSelection()[0] - 1]);
+                if (EditorApplication.timeSinceStartup - clickTime < doubleClickTime)
+                {
+                    var element = m_SimpleTreeView.GetRows().First(row => row.id == m_SimpleTreeView.GetSelection()[0]);
+                    OpenWindow(element);
+                }
 
                 clickTime = EditorApplication.timeSinceStartup;
             }

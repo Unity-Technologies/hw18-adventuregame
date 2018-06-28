@@ -13,13 +13,13 @@ namespace UnityEditor.AdventureGame
 
         Material m_CollisionMeshMaterial;
         GameObject m_CollisionObject;
-
+        
         SerializedProperty m_Sprite;
         SerializedProperty m_Detail;
         SerializedProperty m_Color;
 
-        IBaseArea m_BaseArea;
-        MonoBehaviour m_Behavior;
+        protected IBaseArea m_BaseArea;
+        protected MonoBehaviour m_Behavior;
         bool m_Painting = false;
         Texture2D m_PaintTexture;
 
@@ -34,15 +34,9 @@ namespace UnityEditor.AdventureGame
 
         public virtual void OnEnable()
         {
-            SceneView sceneViewWindow = EditorWindow.GetWindow<SceneView>();
-            if (sceneViewWindow != null)
-            {
-                sceneViewWindow.Focus();
-            }
-
             m_BaseArea = (IBaseArea)target;
             m_Behavior = (MonoBehaviour)target;
-
+            
             m_Sprite = serializedObject.FindProperty("m_sprite");
             m_Detail = serializedObject.FindProperty("m_detail");
             m_Color = serializedObject.FindProperty("m_color");
@@ -231,14 +225,18 @@ namespace UnityEditor.AdventureGame
 
         public override void OnInspectorGUI()
         {
+            GUILayout.Space(10);
+
             EditorGUILayout.PropertyField(m_Sprite);
             EditorGUILayout.PropertyField(m_Detail);
             EditorGUILayout.PropertyField(m_Color);
 
-            if (GUILayout.Button("Regenerate NavMesh"))
+            if (GUILayout.Button("Regenerate NavMesh", GUILayout.Height(50)))
             {
                 RegenerateMesh();
             }
+
+            GUILayout.Space(10);
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -527,8 +525,7 @@ namespace UnityEditor.AdventureGame
                 }
                 collider.SetPath(i, edgeVerts);
             }
-            EditorSceneManager.MarkSceneDirty(collider.gameObject.scene);
-
+            
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 MonoBehaviour prefab = PrefabUtility.GetCorrespondingObjectFromSource(m_Behavior) as MonoBehaviour;
@@ -541,6 +538,10 @@ namespace UnityEditor.AdventureGame
                         colliderPrefab.SetPath(i, collider.GetPath(i));
                     }
                 }
+            }
+            else
+            {
+                EditorSceneManager.MarkSceneDirty(collider.gameObject.scene);
             }
 
             EditorUtility.ClearProgressBar();

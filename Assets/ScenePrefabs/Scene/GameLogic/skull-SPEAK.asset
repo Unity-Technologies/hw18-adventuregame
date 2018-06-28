@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_graphNodes:
+  - m_type: 
+    m_typeData: 
+    m_title: Start
+    m_position: {x: -50, y: -50}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.ItemInInventoryConditionNode
+    m_typeData: silvercoin
+    m_title: Item In Inventory Condition
+    m_position: {x: 152, y: -113}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 2
+      m_targetPort: 0
+    - m_sourcePort: 1
+      m_targetNode: 5
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.DropNode
+    m_typeData: silvercoin
+    m_title: Drop
+    m_position: {x: 464, y: -68}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 3
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.PickUpNode
+    m_typeData: coin
+    m_title: Pick Up
+    m_position: {x: 596, y: -69}
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 4
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
+    m_typeData: '{"character":"Character","dialogue":"The coin turned to gold!"}'
+    m_title: Trigger Single Line
+    m_position: {x: 775, y: -130}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
+    m_typeData: '{"character":"Character","dialogue":"It looks like it wants to be
+      fed a coin!"}'
+    m_title: Trigger Single Line
+    m_position: {x: 436, y: 91}
+    m_outputs: []

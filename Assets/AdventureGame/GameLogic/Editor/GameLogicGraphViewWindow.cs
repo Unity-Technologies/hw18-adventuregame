@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor.Callbacks;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
@@ -14,16 +15,43 @@ namespace UnityEditor.AdventureGame
         GameLogicGraphView m_GraphView;
         GameLogicData m_GameLogicData;
 
-        [MenuItem("Adventure Game/Game Logic Window")]
+        [OnOpenAsset(1)]
+        public static bool OpenGameLogicFromAsset(int instanceID, int line)
+        {
+            GameLogicData data = EditorUtility.InstanceIDToObject(instanceID) as GameLogicData;
+            OpenWindow(data);
+            return data != null; // we did not handle the open
+        }
+
+        [MenuItem("Adventure Game/Game Logic Window &g")]
         public static void OpenWindow()
         {
-            GetWindow<GameLogicGraphViewWindow>();
+            GetWindow<GameLogicGraphViewWindow>("Game Logic", true, typeof(SceneView));
+        }
+
+        public static void OpenWindow(GameLogicData data)
+        {
+            if (data != null)
+            {
+                GameLogicGraphViewWindow view = GetWindow<GameLogicGraphViewWindow>("Game Logic", true, typeof(SceneView));
+                view.ShowScript(data);
+            }
+        }
+
+        public void ShowScript(GameLogicData data)
+        {
+            m_GameLogicData = data;
+
+            if (!LoadGraphData())
+            {
+                Node node = CreateRootNode();
+                m_GraphView.AddElement(node);
+            }
         }
 
         // Use this for initialization
         void OnEnable()
         {
-            titleContent.text = "Game Logic";
             var sampleGraphView = new GameLogicGraphView();
             m_GraphView = sampleGraphView;
 
@@ -43,6 +71,11 @@ namespace UnityEditor.AdventureGame
         void OnDisable()
         {
             Selection.selectionChanged -= OnSelectionChanged;
+        }
+
+        void OnLostFocus()
+        {
+            SaveGraphData();
         }
 
         void OnSelectionChanged()
@@ -140,7 +173,7 @@ namespace UnityEditor.AdventureGame
                 Debug.LogError("Failed to find method CreateNode()!");
                 return null;
             }
-
+            
             Node node = method.Invoke(null, new object[] {typedata}) as Node;
             if (node == null)
             {
@@ -164,9 +197,16 @@ namespace UnityEditor.AdventureGame
             Texture2D icon = EditorGUIUtility.FindTexture("cs Script Icon");
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Conditionals"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(StoryEventConditionNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(ItemInInventoryConditionNode)));
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Actions"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WalkToNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PickUpNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(DropNode)));
+			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetStoryEventNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSceneNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerDialogNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSingleLineNode)));
 
             return tree;
         }
@@ -259,7 +299,19 @@ namespace UnityEditor.AdventureGame
 
         public bool LoadGraphData()
         {
-            if (m_GameLogicData.m_graphNodes.Count == 0)
+	        List<Node> removeNodes = m_GraphView.nodes.ToList();
+	        foreach (Node node in removeNodes)
+	        {
+		        m_GraphView.RemoveElement(node);
+	        }
+
+	        List<Edge> removeEdges = m_GraphView.edges.ToList();
+	        foreach (Edge edge in removeEdges)
+	        {
+		        m_GraphView.RemoveElement(edge);
+	        }
+
+	        if (m_GameLogicData == null || m_GameLogicData.m_graphNodes.Count == 0)
             {
                 return false;
             }

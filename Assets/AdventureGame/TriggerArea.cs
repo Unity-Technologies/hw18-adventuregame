@@ -1,9 +1,15 @@
 ﻿namespace UnityEngine.AdventureGame
 {
     [RequireComponent(typeof(PolygonCollider2D))]
-    [RequireComponent(typeof(Triggerable))]
     public class TriggerArea : MonoBehaviour, IBaseArea
     {
+        public GameLogicData m_gameLogicData;
+
+        public void OnTriggered()
+        {
+            StartCoroutine(m_gameLogicData.Execute());
+        }
+
 #if UNITY_EDITOR
         public Sprite m_sprite;
         public Color m_color = new Color(1.0f, 1.0f, 0.0f, 0.25f);
