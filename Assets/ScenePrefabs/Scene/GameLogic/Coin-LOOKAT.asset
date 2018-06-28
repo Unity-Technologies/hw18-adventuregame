@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: 
+  m_Name: Coin-LOOKAT
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -20,6 +20,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -28,11 +29,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 2
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -41,6 +44,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 4
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -49,11 +53,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 5
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -62,6 +68,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 7
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -70,11 +77,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 8
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -83,6 +92,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 10
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -91,11 +101,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 11
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -104,6 +116,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 13
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -112,11 +125,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 14
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -125,6 +140,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 16
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -133,11 +149,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 17
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -146,6 +164,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 19
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -154,11 +173,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 20
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -167,6 +188,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 22
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -175,11 +197,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 23
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -188,6 +212,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 25
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -196,11 +221,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 26
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -209,6 +236,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 28
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -217,11 +245,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 29
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -230,6 +260,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 31
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -238,11 +269,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 32
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -251,6 +284,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 34
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -259,11 +293,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 35
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -272,6 +308,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 37
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -280,11 +317,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 38
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -293,6 +332,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 40
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -301,11 +341,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 41
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -314,6 +356,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 43
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -322,11 +365,13 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 44
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
   - m_type: 
     m_typeData: 
     m_title: Start
@@ -335,6 +380,7 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 46
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.WalkToNode
     m_typeData: NextToRock
     m_title: Walk To
@@ -343,8 +389,10 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 47
       m_targetPort: 0
+    m_sceneToTrigger: 
   - m_type: UnityEngine.AdventureGame.PrintNode
     m_typeData: MadeItHere!
     m_title: Print
     m_position: {x: 346, y: -61}
     m_outputs: []
+    m_sceneToTrigger: 
