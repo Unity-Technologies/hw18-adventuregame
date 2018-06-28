@@ -46,9 +46,6 @@ namespace UnityEngine.AdventureGame
             outputPort1.userData = null;
             node.outputContainer.Add(outputPort1);
 
-	        List<string> storyEvents = StoryEventsDatabase.StoryEventDatabase != null ? StoryEventsDatabase.StoryEventDatabase.events
-										: new List<string>();
-
             int waitSeconds = 0;
             int.TryParse(typeData, out waitSeconds);
 

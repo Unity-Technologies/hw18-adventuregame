@@ -62,7 +62,8 @@ namespace UnityEngine.AdventureGame
                 Debug.LogError("Failed to find method Execute()!");
                 yield break;
             }
-
+            
+            SceneManager.Instance.Character.Controllable = false;
             int next = -1;
             IEnumerator enumerator = (IEnumerator)method.Invoke(null, new object[] { node });
             while (enumerator.MoveNext())
@@ -81,6 +82,7 @@ namespace UnityEngine.AdventureGame
             {
                 yield return ExecuteNode(m_graphNodes[next]);
             }
+            SceneManager.Instance.Character.Controllable = true;
         }
     }
 }

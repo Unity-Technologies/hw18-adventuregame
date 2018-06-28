@@ -5,27 +5,45 @@ using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
-    public static class SetAnimBooleanNode
+    public static class SetGameObjectActiveNode
     {
         [Serializable]
-        public class SetAnimBooleanNodeSettings
+        public class SetGameObjectActiveNodeSettings
         {
-            public string m_AnimParameterName;
+            public string m_GameObjectName;
             public bool   m_Value;
         }
 
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            SetAnimBooleanNodeSettings settings = JsonUtility.FromJson<SetAnimBooleanNodeSettings>(currentNode.m_typeData);
-            SceneManager.Instance.Character.Animator.SetBool(settings.m_AnimParameterName, settings.m_Value);
+            SetGameObjectActiveNodeSettings settings = JsonUtility.FromJson<SetGameObjectActiveNodeSettings>(currentNode.m_typeData);
+            GameObject[] objects = SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+            for (int i = 0; i < objects.Length; ++i)
+            {
+                RecursiveSetActive(objects[i], settings);
+            }
             yield return currentNode.GetReturnValue(0);
+        }
+
+        static void RecursiveSetActive(GameObject go, SetGameObjectActiveNodeSettings setting)
+        {
+            if (go.name == setting.m_GameObjectName)
+            {
+                go.SetActive(setting.m_Value);
+                return;
+            }
+
+            foreach (Transform t in go.transform)
+            {
+                RecursiveSetActive(t.gameObject, setting);
+            }
         }
 
 #if UNITY_EDITOR
         public static Node CreateNode(string typeData)
         {
             Node node = new Node();
-            node.title = "Set Anim Boolean";
+            node.title = "Set GameObject Active";
 
 	        node.mainContainer.style.backgroundColor = Color.blue;
 
@@ -40,37 +58,37 @@ namespace UnityEngine.AdventureGame
             outputPort1.userData = null;
             node.outputContainer.Add(outputPort1);
 
-            SetAnimBooleanNodeSettings settings = JsonUtility.FromJson<SetAnimBooleanNodeSettings>(typeData);
+            SetGameObjectActiveNodeSettings settings = JsonUtility.FromJson<SetGameObjectActiveNodeSettings>(typeData);
             if (settings == null)
             {
-                settings = new SetAnimBooleanNodeSettings();
+                settings = new SetGameObjectActiveNodeSettings();
             }
 
-            var animParameterTextField = new TextField()
+            var gameObjectPath = new TextField()
             {
                 multiline = false,
-                value = settings.m_AnimParameterName
+                value = settings.m_GameObjectName
             };
-            node.mainContainer.Insert(1, animParameterTextField);
+            node.mainContainer.Insert(1, gameObjectPath);
 
-            var animParameterValueToggle = new Toggle()
+            var activeToggle = new Toggle()
             {
                 value = settings.m_Value
             };
-            node.mainContainer.Insert(2, animParameterValueToggle);
+            node.mainContainer.Insert(2, activeToggle);
 
             return node;
         }
 
         public static string ExtractExtraData(Node node)
         {
-            SetAnimBooleanNodeSettings settings = new SetAnimBooleanNodeSettings();
+            SetGameObjectActiveNodeSettings settings = new SetGameObjectActiveNodeSettings();
             
             foreach (VisualElement ele in node.mainContainer)
             {
                 if (ele is TextField)
                 {
-                    settings.m_AnimParameterName = (ele as TextField).value;
+                    settings.m_GameObjectName = (ele as TextField).value;
                 }
                 else if (ele is Toggle)
                 {
