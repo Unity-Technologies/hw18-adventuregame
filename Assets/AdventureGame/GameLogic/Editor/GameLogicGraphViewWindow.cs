@@ -80,18 +80,6 @@ namespace UnityEditor.AdventureGame
 
         void OnSelectionChanged()
         {
-            List<Node> removeNodes = m_GraphView.nodes.ToList();
-            foreach (Node node in removeNodes)
-            {
-                m_GraphView.RemoveElement(node);
-            }
-
-            List<Edge> removeEdges = m_GraphView.edges.ToList();
-            foreach (Edge edge in removeEdges)
-            {
-                m_GraphView.RemoveElement(edge);
-            }
-
             GameLogicData[] data = Selection.GetFiltered<GameLogicData>(SelectionMode.Assets);
             if (data.Length != 1)
             {
@@ -295,7 +283,19 @@ namespace UnityEditor.AdventureGame
 
         public bool LoadGraphData()
         {
-            if (m_GameLogicData.m_graphNodes.Count == 0)
+	        List<Node> removeNodes = m_GraphView.nodes.ToList();
+	        foreach (Node node in removeNodes)
+	        {
+		        m_GraphView.RemoveElement(node);
+	        }
+
+	        List<Edge> removeEdges = m_GraphView.edges.ToList();
+	        foreach (Edge edge in removeEdges)
+	        {
+		        m_GraphView.RemoveElement(edge);
+	        }
+
+			if (m_GameLogicData.m_graphNodes.Count == 0)
             {
                 return false;
             }
