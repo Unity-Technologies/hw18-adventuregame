@@ -5,10 +5,10 @@ using UnityEngine.Experimental.UIElements;
 
 namespace UnityEngine.AdventureGame
 {
-    public static class SetBoolAnimParameterNode
+    public static class SetAnimBooleanNode
     {
         [Serializable]
-        public class SetBoolAnimParameterSettings
+        public class SetAnimBooleanNodeSettings
         {
             public string m_AnimParameterName;
             public bool   m_Value;
@@ -16,7 +16,7 @@ namespace UnityEngine.AdventureGame
 
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-            SetBoolAnimParameterSettings settings = JsonUtility.FromJson<SetBoolAnimParameterSettings>(currentNode.m_typeData);
+            SetAnimBooleanNodeSettings settings = JsonUtility.FromJson<SetAnimBooleanNodeSettings>(currentNode.m_typeData);
             SceneManager.Instance.Character.Animator.SetBool(settings.m_AnimParameterName, settings.m_Value);
             yield return currentNode.GetReturnValue(0);
         }
@@ -25,7 +25,7 @@ namespace UnityEngine.AdventureGame
         public static Node CreateNode(string typeData)
         {
             Node node = new Node();
-            node.title = "Set Bool Anim Parameter";
+            node.title = "Set Anim Boolean";
 
 	        node.mainContainer.style.backgroundColor = Color.blue;
 
@@ -35,10 +35,10 @@ namespace UnityEngine.AdventureGame
             inputPort.userData = null;
             node.inputContainer.Add(inputPort);
 
-            SetBoolAnimParameterSettings settings = JsonUtility.FromJson<SetBoolAnimParameterSettings>(typeData);
+            SetAnimBooleanNodeSettings settings = JsonUtility.FromJson<SetAnimBooleanNodeSettings>(typeData);
             if (settings == null)
             {
-                settings = new SetBoolAnimParameterSettings();
+                settings = new SetAnimBooleanNodeSettings();
             }
 
             var animParameterTextField = new TextField()
@@ -59,7 +59,7 @@ namespace UnityEngine.AdventureGame
 
         public static string ExtractExtraData(Node node)
         {
-            SetBoolAnimParameterSettings settings = new SetBoolAnimParameterSettings();
+            SetAnimBooleanNodeSettings settings = new SetAnimBooleanNodeSettings();
             
             foreach (VisualElement ele in node.mainContainer)
             {

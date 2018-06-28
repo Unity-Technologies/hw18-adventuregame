@@ -204,8 +204,11 @@ namespace UnityEditor.AdventureGame
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSceneNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerDialogNode)));
 			tree.Add(CreateSearchTreeEntry(icon, 2, typeof(TriggerSingleLineNode)));
-            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetBoolAnimParameterNode)));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(WaitSecondsNode)));
+
+            tree.Add(new SearchTreeGroupEntry(new GUIContent("Animation"), 1));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(AnimTriggerNode)));
+            tree.Add(CreateSearchTreeEntry(icon, 2, typeof(SetAnimBooleanNode)));
 
             tree.Add(new SearchTreeGroupEntry(new GUIContent("Debug"), 1));
             tree.Add(CreateSearchTreeEntry(icon, 2, typeof(PrintNode)));

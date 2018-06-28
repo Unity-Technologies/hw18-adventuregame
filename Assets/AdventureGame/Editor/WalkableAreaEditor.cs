@@ -44,6 +44,12 @@ namespace UnityEditor.AdventureGame
 
         void OnEnable()
         {
+            if (SceneView.sceneViews.Count > 0)
+            {
+                SceneView sceneView = (SceneView)SceneView.sceneViews[0];
+                sceneView.Focus();
+            }
+
             m_WalkableArea = (WalkableArea)target;
 
             m_Sprite = serializedObject.FindProperty("m_sprite");
