@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: skull-SPEAK
+  m_Name: 
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -20,41 +20,32 @@ MonoBehaviour:
     - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.ItemInInventoryConditionNode
+  - m_type: UnityEngine.AdventureGame.SelectedInventoryItemConditionNode
     m_typeData: silvercoin
-    m_title: Item In Inventory Condition
-    m_position: {x: 152, y: -113}
-    m_outputs:
-    - m_sourcePort: 0
-      m_targetNode: 2
-      m_targetPort: 0
-    - m_sourcePort: 1
-      m_targetNode: 5
-      m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.DropNode
-    m_typeData: silvercoin
-    m_title: Drop
-    m_position: {x: 464, y: -68}
+    m_title: Selected Inventory Item Condition
+    m_position: {x: 114, y: 46}
     m_outputs:
     - m_sourcePort: 0
       m_targetNode: 3
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.PickUpNode
-    m_typeData: coin
-    m_title: Pick Up
-    m_position: {x: 596, y: -69}
+    - m_sourcePort: 1
+      m_targetNode: 2
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
+    m_typeData: '{"character":"Character","dialogue":"It doesn''t want that."}'
+    m_title: Trigger Single Line
+    m_position: {x: 436, y: 142}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.DropNode
+    m_typeData: silvercoin
+    m_title: Drop
+    m_position: {x: 437, y: -49.039917}
     m_outputs:
     - m_sourcePort: 0
       m_targetNode: 4
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
-    m_typeData: '{"character":"Character","dialogue":"The coin turned to gold!"}'
-    m_title: Trigger Single Line
-    m_position: {x: 775, y: -130}
-    m_outputs: []
-  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
-    m_typeData: '{"character":"Character","dialogue":"It looks like it wants to be
-      fed a coin!"}'
-    m_title: Trigger Single Line
-    m_position: {x: 436, y: 91}
+  - m_type: UnityEngine.AdventureGame.PickUpNode
+    m_typeData: coin
+    m_title: Pick Up
+    m_position: {x: 580.2001, y: -51.039917}
     m_outputs: []
