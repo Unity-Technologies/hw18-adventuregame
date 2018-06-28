@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: Paint_White-LOOKAT
+  m_Name: Paint_White-PICKUP
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
@@ -18,11 +18,18 @@ MonoBehaviour:
     m_position: {x: -50, y: -50}
     m_outputs:
     - m_sourcePort: 0
+      m_targetNode: 2
+      m_targetPort: 0
+  - m_type: UnityEngine.AdventureGame.PickUpNode
+    m_typeData: whiteliquid
+    m_title: Pick Up
+    m_position: {x: 434, y: 131}
+    m_outputs: []
+  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
+    m_typeData: '{"character":"Character","dialogue":"With my bare hands? Okay. "}'
+    m_title: Trigger Single Line
+    m_position: {x: 140, y: 43}
+    m_outputs:
+    - m_sourcePort: 0
       m_targetNode: 1
       m_targetPort: 0
-  - m_type: UnityEngine.AdventureGame.TriggerSingleLineNode
-    m_typeData: '{"character":"Character","dialogue":"Batteries of the spaceship are
-      leaking some white liquid."}'
-    m_title: Trigger Single Line
-    m_position: {x: 168, y: -20}
-    m_outputs: []
