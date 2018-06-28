@@ -59,9 +59,13 @@ namespace UnityEngine.AdventureGame
         {
             Debug.Log("Dialogue Advance");
             int outputsCount = m_CurrentDialogueNode.m_outputs.Count;
-            Debug.Log("always-called dialogue node: " + m_CurrentDialogueNode.m_characterDialogue);
+            Debug.Log("just closed dialogue node: " + m_CurrentDialogueNode.m_characterDialogue);
+            Debug.Log("selection: " + selection);
             if (outputsCount > 0 && selection < outputsCount)
             {
+                m_CurrentDialogueNode = m_CurrentDialogue.m_dialogNodes[m_CurrentDialogueNode.m_outputs[selection].m_targetNode];
+                Debug.Log("next dialogue node: " + m_CurrentDialogueNode.m_characterDialogue);
+                outputsCount = m_CurrentDialogueNode.m_outputs.Count;
                 if (outputsCount > 1)
                 {
                     var dialogueChoices = new string[outputsCount];
@@ -76,8 +80,6 @@ namespace UnityEngine.AdventureGame
                 }
                 else
                 {
-                    m_CurrentDialogueNode = m_CurrentDialogue.m_dialogNodes[m_CurrentDialogueNode.m_outputs[selection].m_targetNode];
-                Debug.Log("inside if dialogue node: " + m_CurrentDialogueNode.m_characterDialogue);
                     AdventureGameOverlayManager.Instance.DisplayCharacterDialogue(m_CurrentDialogueNode.m_characterDialogue, m_CurrentDialogueNode.m_speakingCharacterName, ContinueDialogue);
                 }
             }

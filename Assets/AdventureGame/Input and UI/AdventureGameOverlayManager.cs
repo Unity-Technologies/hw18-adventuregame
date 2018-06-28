@@ -367,6 +367,7 @@ namespace UnityEngine.AdventureGame
             for (int i = 0; i < dialogueOptions.Length; i++)
             {
                 string dialogueOption = dialogueOptions[i];
+                int dialogueIndex = i;
                 if (autoCreateDialogueMenus)
                 {
                     Button dialogueOptionButton = Instantiate(naiveActionButton);
@@ -376,12 +377,12 @@ namespace UnityEngine.AdventureGame
                     buttonText.fontSize = boxFontSize;
                     dialogueOptionButton.name = dialogueOption;
                     dialogueOptionButton.transform.SetParent(dialogueBox.transform, false);
-                    dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(i, dialogueSelectionDelegate); });
+                    dialogueOptionButton.onClick.AddListener(delegate { HandleDialogueOptionClick(dialogueIndex, dialogueSelectionDelegate); });
                 }
                 else
                 {
                     DialogueMenu dialogueMenu = dialogueBox.GetComponentInChildren<DialogueMenu>();
-                    dialogueMenu.AddButton(dialogueOption, delegate { HandleDialogueOptionClick(i, dialogueSelectionDelegate); });
+                    dialogueMenu.AddButton(dialogueOption, delegate { HandleDialogueOptionClick(dialogueIndex, dialogueSelectionDelegate); });
                 }
             }
         }
@@ -391,6 +392,7 @@ namespace UnityEngine.AdventureGame
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
             if (currentlyDisplayedDialogueBox != null)
             {
+                Debug.Log("Destroying the dialogue box: " + currentlyDisplayedDialogueBox);
                 Destroy(currentlyDisplayedDialogueBox.gameObject);
             }
         }
@@ -514,11 +516,11 @@ namespace UnityEngine.AdventureGame
 
         private void HandleDialogueOptionClick(int dialogueOption, DialogueSelectionDelegate dialogueSelectionDelegate = null)
         {
+            DestroyDialogueBox();
             if (dialogueSelectionDelegate != null)
             {
                 dialogueSelectionDelegate(dialogueOption);
             }
-            DestroyDialogueBox();
         }
 
         private void HandleAdvanceDialogue()
