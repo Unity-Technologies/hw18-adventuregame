@@ -12,7 +12,8 @@ namespace UnityEngine.AdventureGame
     {
         public static IEnumerator Execute(GameLogicData.GameLogicGraphNode currentNode)
         {
-	        yield return currentNode.GetReturnValue(InventoryManager.Instance.GetItemWithId(currentNode.m_typeData) != null ? 1 : 0);
+            bool itemInInventory = InventoryManager.Instance.GetItemWithId(currentNode.m_typeData) != null;
+	        yield return currentNode.GetReturnValue(itemInInventory ? 0 : 1);
         }
 
 #if UNITY_EDITOR

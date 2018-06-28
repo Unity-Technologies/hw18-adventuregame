@@ -35,6 +35,11 @@ namespace UnityEngine.AdventureGame
             inputPort.userData = null;
             node.inputContainer.Add(inputPort);
 
+            Port outputPort1 = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
+            outputPort1.portName = "";
+            outputPort1.userData = null;
+            node.outputContainer.Add(outputPort1);
+
             var targetId = new TextField()
             {
                 multiline = false,
