@@ -4,4 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/AdventureGame/Input and UI/InputSystemTest.unity
+    guid: 63390859a32624c419b39dadad05d2ad
+  m_configObjects: {}

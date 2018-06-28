@@ -7,3 +7,5 @@ adventuregame.csproj
 adventuregame.userprefs
 *.csproj
 obj/
+hw18-adventuregame.sln
+*.meta
