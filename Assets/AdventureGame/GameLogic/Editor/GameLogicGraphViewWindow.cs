@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor.Callbacks;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
@@ -14,16 +15,43 @@ namespace UnityEditor.AdventureGame
         GameLogicGraphView m_GraphView;
         GameLogicData m_GameLogicData;
 
-        [MenuItem("Adventure Game/Game Logic Window")]
+        [OnOpenAsset(1)]
+        public static bool OpenGameLogicFromAsset(int instanceID, int line)
+        {
+            GameLogicData data = EditorUtility.InstanceIDToObject(instanceID) as GameLogicData;
+            OpenWindow(data);
+            return data != null; // we did not handle the open
+        }
+
+        [MenuItem("Adventure Game/Game Logic Window &g")]
         public static void OpenWindow()
         {
-            GetWindow<GameLogicGraphViewWindow>();
+            GetWindow<GameLogicGraphViewWindow>("Game Logic", true, typeof(SceneView));
+        }
+
+        public static void OpenWindow(GameLogicData data)
+        {
+            if (data != null)
+            {
+                GameLogicGraphViewWindow view = GetWindow<GameLogicGraphViewWindow>("Game Logic", true, typeof(SceneView));
+                view.ShowScript(data);
+            }
+        }
+
+        public void ShowScript(GameLogicData data)
+        {
+            m_GameLogicData = data;
+
+            if (!LoadGraphData())
+            {
+                Node node = CreateRootNode();
+                m_GraphView.AddElement(node);
+            }
         }
 
         // Use this for initialization
         void OnEnable()
         {
-            titleContent.text = "Game Logic";
             var sampleGraphView = new GameLogicGraphView();
             m_GraphView = sampleGraphView;
 
@@ -43,6 +71,11 @@ namespace UnityEditor.AdventureGame
         void OnDisable()
         {
             Selection.selectionChanged -= OnSelectionChanged;
+        }
+
+        void OnLostFocus()
+        {
+            SaveGraphData();
         }
 
         void OnSelectionChanged()
@@ -83,11 +116,6 @@ namespace UnityEditor.AdventureGame
         {
             EditorApplication.update += DelayedSaveGraphData;
             return change;
-        }
-
-        public void OnGraphNodeChanged()
-        {
-            EditorApplication.update += DelayedSaveGraphData;
         }
 
         void DelayedSaveGraphData()
@@ -145,9 +173,8 @@ namespace UnityEditor.AdventureGame
                 Debug.LogError("Failed to find method CreateNode()!");
                 return null;
             }
-
-            Action action = OnGraphNodeChanged;
-            Node node = method.Invoke(null, new object[] {typedata, action}) as Node;
+            
+            Node node = method.Invoke(null, new object[] {typedata}) as Node;
             if (node == null)
             {
                 Debug.LogError("Failed to create node!");

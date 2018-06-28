@@ -525,8 +525,7 @@ namespace UnityEditor.AdventureGame
                 }
                 collider.SetPath(i, edgeVerts);
             }
-            EditorSceneManager.MarkSceneDirty(collider.gameObject.scene);
-
+            
             if (EditorApplication.isPlayingOrWillChangePlaymode)
             {
                 MonoBehaviour prefab = PrefabUtility.GetCorrespondingObjectFromSource(m_Behavior) as MonoBehaviour;
@@ -539,6 +538,10 @@ namespace UnityEditor.AdventureGame
                         colliderPrefab.SetPath(i, collider.GetPath(i));
                     }
                 }
+            }
+            else
+            {
+                EditorSceneManager.MarkSceneDirty(collider.gameObject.scene);
             }
 
             EditorUtility.ClearProgressBar();

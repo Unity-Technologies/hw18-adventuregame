@@ -14,7 +14,7 @@ namespace UnityEngine.AdventureGame
         }
 
 #if UNITY_EDITOR
-        public static Node CreateNode(string typeData, Action changeCallback)
+        public static Node CreateNode(string typeData)
         {
             Node node = new Node();
             node.title = "Print";
