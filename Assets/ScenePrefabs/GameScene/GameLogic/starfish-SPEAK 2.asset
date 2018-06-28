@@ -9,16 +9,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: 
+  m_Name: starfish-SPEAK 2
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 
     m_typeData: 
     m_title: Start
     m_position: {x: -50, y: -50}
-    m_outputs: []
+    m_outputs:
+    - m_sourcePort: 0
+      m_targetNode: 1
+      m_targetPort: 0
   - m_type: UnityEngine.AdventureGame.TriggerDialogNode
-    m_typeData: 
+    m_typeData: e4aeb40ff9405ff4780d7f9a6d4c72c3
     m_title: Trigger Dialog
     m_position: {x: 171, y: 65}
     m_outputs: []
