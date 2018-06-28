@@ -28,7 +28,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1421466547440886
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,7 +81,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bf21814e3b124fdda38bbfb6daaa667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonPrefab: {fileID: 0}
+  buttonPrefab: {fileID: 1732450128888808, guid: 81e68a1f549d04d3895182d3f624186d,
+    type: 2}
   titleFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
   titleFontSize: 14
   descriptionFont: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
@@ -228,5 +229,5 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 500}
+  m_SizeDelta: {x: 56, y: 56}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -28,55 +28,10 @@ SpriteAtlas:
       enableRotation: 1
       enableTightPacking: 1
     variantMultiplier: 1
-    packables:
-    - {fileID: 102900000, guid: 8053e014437ed184ead61e873924e9bd, type: 3}
+    packables: []
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: 26c6e15056d924ca8b25cbcffb5d7f8b, type: 3}
-  - {fileID: 21300000, guid: 7fc3cae153002ea4cbc221651e44ea9b, type: 3}
-  - {fileID: 21300000, guid: adba70a28ec1a9b4cb30ec6840110d3d, type: 3}
-  - {fileID: 21300000, guid: 7a4242f2401233246af52564d911affc, type: 3}
-  - {fileID: 21300000, guid: 6944ed93dc6e62646a16985e35d40c25, type: 3}
-  - {fileID: 21300000, guid: aed8aa84a025cd6498b64e88e41da6fb, type: 3}
-  - {fileID: 21300000, guid: 34e1f3a424812004597f2992f329d8cd, type: 3}
-  - {fileID: 21300000, guid: 168fc8359b3c44e4aa33da7f4d1d023a, type: 3}
-  - {fileID: 21300000, guid: 905b7e553b70b43cab52e4303cb1f09f, type: 3}
-  - {fileID: 21300000, guid: f0cb62685cb3391458cbf1b9063f3c95, type: 3}
-  - {fileID: 21300000, guid: d0475c78d06ed4a4dbfedb80e4ca0f07, type: 3}
-  - {fileID: 21300000, guid: 0725fd19f1bafd94a8d5a26e8988199a, type: 3}
-  - {fileID: 21300000, guid: 7f37e3b9eb25b784c9ce958604c3de5b, type: 3}
-  - {fileID: 21300000, guid: dd6061f9027eeb34a990f3fe234b9e94, type: 3}
-  - {fileID: 21300000, guid: 89aec91af5e2eac409402f7b7e2fb5c4, type: 3}
-  - {fileID: 21300000, guid: f8caa97a28e462b4e9b193330006b3e7, type: 3}
-  - {fileID: 21300000, guid: aea675aa379ef874baa727bef34e02d9, type: 3}
-  - {fileID: 21300000, guid: 6b5435ba143526c4d8e52aa7adbf15a9, type: 3}
-  - {fileID: 21300000, guid: a009c81cc81e751458b61c410d064176, type: 3}
-  - {fileID: 21300000, guid: b615232cb0fe35c478ffa05fdbe63c44, type: 3}
-  - {fileID: 21300000, guid: 17ed9ddc7a5b9774a8e5c7b85d3ba856, type: 3}
-  - {fileID: 21300000, guid: ffe7542f490cf4b498ca566b2a93e4d7, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - Cow
-  - Dinosaur_Blue
-  - Cow_toy_02
-  - Paint_White
-  - Dinosaur_Green
-  - Paint_Orange
-  - Paint_Red
-  - Cow_toy_01
-  - Spaceship
-  - Paint_Purple
-  - Paint_Cyan
-  - Paint_Green
-  - Dinosaur_Orange
-  - ToyChest
-  - Spaceship_toy_02
-  - Spaceship_toy_01
-  - Cow_toy_03
-  - Dinosaur_Purple
-  - Paint_Blue
-  - Paint_Black
-  - Paint_Yellow
-  - Spaceship_toy_03
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_Tag: Atlas_Toys
   m_IsVariant: 0

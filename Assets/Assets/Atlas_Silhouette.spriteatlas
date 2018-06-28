@@ -28,29 +28,10 @@ SpriteAtlas:
       enableRotation: 1
       enableTightPacking: 1
     variantMultiplier: 1
-    packables:
-    - {fileID: 102900000, guid: 553571afcfc07a84ea9f84bb4ae4195e, type: 3}
+    packables: []
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites:
-  - {fileID: 21300000, guid: 2ae30ad0010131c45bfc36e23f5ce489, type: 3}
-  - {fileID: 21300000, guid: 1c984bf127ed7dc4c9b8e99be69b81ef, type: 3}
-  - {fileID: 21300000, guid: dee44cb3e2d661d46a3bb054a401db3c, type: 3}
-  - {fileID: 21300000, guid: 80bf3c64c5ba37b408cbc8d6c175d594, type: 3}
-  - {fileID: 21300000, guid: 9242bd47c9bd4b64198b4a971496dea4, type: 3}
-  - {fileID: 21300000, guid: 31bac72a93813b8449c326506da50780, type: 3}
-  - {fileID: 21300000, guid: 3df490fbbe4a48d4d936b56814820955, type: 3}
-  - {fileID: 21300000, guid: a6c3b42ce9a8b93469a04585c78e5b8c, type: 3}
-  - {fileID: 21300000, guid: 86ebde7ee2b934647b085c7f36ee18c1, type: 3}
-  m_PackedSpriteNamesToIndex:
-  - SILHOUETTE_ToyChest_02
-  - SIKHOUETTE_Cow
-  - SILHOUETTE_ToyChest_Empty
-  - SILHOUETTE_Paint
-  - SILHOUETTE_ToyChest_01
-  - SILHOUETTE_Tree
-  - SILHOUETTE_Dinosaur
-  - SILHOUETTE_Spaceship
-  - SILHOUETTE_Starfish
+  m_PackedSprites: []
+  m_PackedSpriteNamesToIndex: []
   m_Tag: Atlas_Silhouette
   m_IsVariant: 0

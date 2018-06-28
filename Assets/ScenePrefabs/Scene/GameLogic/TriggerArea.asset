@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 519c5fa1e751b8048bbcf7707756bc80, type: 3}
-  m_Name: 
+  m_Name: TriggerArea
   m_EditorClassIdentifier: 
   m_graphNodes:
   - m_type: 

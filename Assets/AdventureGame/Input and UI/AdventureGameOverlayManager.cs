@@ -95,7 +95,6 @@ namespace UnityEngine.AdventureGame
         private GameObject currentlyDisplayedSystemMenu;
         private bool awaitingDialogueAdvance;
         private DialogueAdvanceDelegate dialogueAdvanceDelegate;
-        private Text currentlyDisplayedDialogue;
         private GameObject screenTouchPanel;
         private float kDialogueVerticalOffset = 2.0f;
         #endregion
@@ -178,16 +177,21 @@ namespace UnityEngine.AdventureGame
             Vector2 dialoguePoint = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
             if (characterName != null)
             {
-                GameObject speaker = GameObject.Find(characterName);
-                BoxCollider2D collider = speaker.GetComponent<BoxCollider2D>();
                 float height = 0;
-                if (collider != null)
+                Vector3 offsetPosition = Vector3.zero;
+                GameObject speaker = GameObject.Find(characterName);
+                if (speaker != null)
                 {
-                    height = collider.size.y;
+                    BoxCollider2D collider = speaker.GetComponent<BoxCollider2D>();
+                    if (collider != null)
+                    {
+                        height = collider.size.y;
+                    }
+                    offsetPosition = new Vector3(speaker.transform.position.x, speaker.transform.position.y + height + kDialogueVerticalOffset, speaker.transform.position.z);
                 }
-                Vector3 offsetPosition = new Vector3(speaker.transform.position.x, speaker.transform.position.y + height + kDialogueVerticalOffset, speaker.transform.position.z);
+                
                 Camera cam = FindObjectsOfType<Camera>().First();
-                if (cam != null && speaker != null)
+                if (cam != null)
                 {
                     Vector3 screenPosition = cam.WorldToScreenPoint(offsetPosition);
                     dialoguePoint = new Vector2(screenPosition.x, screenPosition.y);
@@ -206,12 +210,11 @@ namespace UnityEngine.AdventureGame
                 // TODO(laurenfrazier): Will each character have their own font/size/color?
                 dialogueText.font = menuFont;
                 dialogueText.fontSize = 44;
-
-                currentlyDisplayedDialogue = dialogueText;
             }
             else
             {
                 dialogueObject = Instantiate(dialogueBoxPrefab);
+                dialogueObject.SetActive(true);
                 DialogueMenu dialogueMenu = dialogueObject.GetComponentInChildren<DialogueMenu>();
                 if (dialogueMenu != null)
                 {
@@ -382,6 +385,8 @@ namespace UnityEngine.AdventureGame
         public void DestroyDialogueBox()
         {
             // TODO(laurenfrazier): Add a transition here, don't just make it disappear!
+
+            Debug.Log("Destroying object: " + currentlyDisplayedDialogueBox);
             if (currentlyDisplayedDialogueBox != null)
             {
                 Destroy(currentlyDisplayedDialogueBox.gameObject);
@@ -516,14 +521,13 @@ namespace UnityEngine.AdventureGame
 
         private void HandleAdvanceDialogue()
         {
+            DestroyDialogueBox();
+            awaitingDialogueAdvance = false;
+            screenTouchPanel.SetActive(false);
             if (dialogueAdvanceDelegate != null)
             {
                 dialogueAdvanceDelegate();
             }
-            DestroyDialogueBox();
-            awaitingDialogueAdvance = false;
-            currentlyDisplayedDialogue = null;
-            screenTouchPanel.SetActive(false);
         }
 
         private void DisplayDialogueMenuBoxFromPrefab(string title, string description, string[] options, Vector2 location)
