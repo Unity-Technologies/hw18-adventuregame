@@ -1,18 +1,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEditor.Experimental.UIElements;
 using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
+using UnityEngine.AdventureGame;
 using UnityEngine.Experimental.UIElements;
 
 namespace Unity.Adventuregame {
     public class DialogueGraphViewWindow : EditorWindow, ISearchWindowProvider
     {
-        const string k_TestGraphDataPath = "Assets/AdventureGame/Dialogue/Test.asset";
-
         protected SampleGraphView m_GraphView;
+        SerializableDialogData m_DialogData;
+
+        [OnOpenAsset(1)]
+        public static bool OpenGameLogicFromAsset(int instanceID, int line)
+        {
+            SerializableDialogData data = EditorUtility.InstanceIDToObject(instanceID) as SerializableDialogData;
+            OpenWindow(data);
+            return data != null; // we did not handle the open
+        }
+
+        [MenuItem("Adventure Game/Dialogue Window &g")]
+        public static void OpenWindow()
+        {
+            GetWindow<DialogueGraphViewWindow>("Dialogue", true, typeof(SceneView));
+        }
+
+        public static void OpenWindow(SerializableDialogData data)
+        {
+            if (data != null)
+            {
+                DialogueGraphViewWindow view = GetWindow<DialogueGraphViewWindow>("Dialogue", true, typeof(SceneView));
+                view.ShowScript(data);
+            }
+        }
+
+        public void ShowScript(SerializableDialogData data)
+        {
+            m_DialogData = data;
+
+            LoadGraphData();
+        }
 
         // Use this for initialization
         void OnEnable()
@@ -25,10 +56,45 @@ namespace Unity.Adventuregame {
             m_GraphView.StretchToParentSize();
 
             this.GetRootVisualContainer().Add(m_GraphView);
-
-            LoadGraphData(k_TestGraphDataPath);
+            
             m_GraphView.graphViewChanged += OnGraphViewChanged;
             m_GraphView.nodeCreationRequest += OnRequestNodeCreation;
+            Selection.selectionChanged += OnSelectionChanged;
+        }
+
+        void OnDisable()
+        {
+            Selection.selectionChanged -= OnSelectionChanged;
+        }
+
+        void OnLostFocus()
+        {
+            SaveGraphData();
+        }
+
+        void OnSelectionChanged()
+        {
+            List<Node> removeNodes = m_GraphView.nodes.ToList();
+            foreach (Node node in removeNodes)
+            {
+                m_GraphView.RemoveElement(node);
+            }
+
+            List<Edge> removeEdges = m_GraphView.edges.ToList();
+            foreach (Edge edge in removeEdges)
+            {
+                m_GraphView.RemoveElement(edge);
+            }
+
+            SerializableDialogData[] data = Selection.GetFiltered<SerializableDialogData>(SelectionMode.Assets);
+            if (data.Length != 1)
+            {
+                m_DialogData = null;
+                return;
+            }
+            m_DialogData = data[0];
+
+            LoadGraphData();
         }
 
         protected void OnRequestNodeCreation(NodeCreationContext context)
@@ -45,7 +111,7 @@ namespace Unity.Adventuregame {
         void DelayedSaveGraphData()
         {
             EditorApplication.update -= DelayedSaveGraphData;
-            SaveGraphData(m_GraphView.nodes.ToList(), k_TestGraphDataPath);
+            SaveGraphData();
         }
 
         DialogueNode DeserializeNode(SerializableDialogData.SerializableDialogNode graphNode)
@@ -116,8 +182,17 @@ namespace Unity.Adventuregame {
             return OnSelectEntry(entry, context);
         }
 
-        public void SaveGraphData(List<Node> nodes, string outputPath)
+        public void SaveGraphData()
         {
+            if (m_DialogData == null)
+            {
+                return;
+            }
+
+            string assetPath = AssetDatabase.GetAssetPath(m_DialogData);
+
+            List<Node> nodes = m_GraphView.nodes.ToList();
+
             SerializableDialogData dialogGraphData = ScriptableObject.CreateInstance<SerializableDialogData>();
             dialogGraphData.m_dialogNodes = new List<SerializableDialogData.SerializableDialogNode>();
 
@@ -188,32 +263,31 @@ namespace Unity.Adventuregame {
                 dialogGraphData.m_dialogNodes.Add(dialogGraphNode);
             }
 
-            AssetDatabase.CreateAsset(dialogGraphData, outputPath);
+            AssetDatabase.CreateAsset(dialogGraphData, assetPath);
             AssetDatabase.SaveAssets();
         }
 
-        public virtual bool LoadGraphData(string inputPath)
+        public virtual bool LoadGraphData()
         {
-            SerializableDialogData dialogData = AssetDatabase.LoadAssetAtPath<SerializableDialogData>(inputPath);
-            if (dialogData == null)
+            if (m_DialogData == null || m_DialogData.m_dialogNodes.Count == 0)
             {
                 return false;
             }
 
             // create the nodes
             List<DialogueNode> createdNodes = new List<DialogueNode>();
-            for (int i = 0; i < dialogData.m_dialogNodes.Count; ++i)
+            for (int i = 0; i < m_DialogData.m_dialogNodes.Count; ++i)
             {
-                DialogueNode node = DeserializeNode(dialogData.m_dialogNodes[i]);
+                DialogueNode node = DeserializeNode(m_DialogData.m_dialogNodes[i]);
                 createdNodes.Add(node);
                 m_GraphView.AddElement(node);
 
-                for (int j = 0; j < dialogData.m_dialogNodes[i].inputNodeCount; j++)
+                for (int j = 0; j < m_DialogData.m_dialogNodes[i].inputNodeCount; j++)
                 {
                     node.addInput();
                 }
 
-                for (int j = 0; j < dialogData.m_dialogNodes[i].outputNodeCount; j++)
+                for (int j = 0; j < m_DialogData.m_dialogNodes[i].outputNodeCount; j++)
                 {
                     node.addOutput();
                 }
@@ -221,11 +295,11 @@ namespace Unity.Adventuregame {
             }
 
             //connect the nodes
-            for (int i = 0; i < dialogData.m_dialogNodes.Count; ++i)
+            for (int i = 0; i < m_DialogData.m_dialogNodes.Count; ++i)
             {
-                for (int iEdge = 0; iEdge < dialogData.m_dialogNodes[i].m_outputs.Count; ++iEdge)
+                for (int iEdge = 0; iEdge < m_DialogData.m_dialogNodes[i].m_outputs.Count; ++iEdge)
                 {
-                    SerializableDialogData.SerializableDialogEdge edge = dialogData.m_dialogNodes[i].m_outputs[iEdge];
+                    SerializableDialogData.SerializableDialogEdge edge = m_DialogData.m_dialogNodes[i].m_outputs[iEdge];
                     Port outputPort = createdNodes[i].outputContainer[edge.m_sourcePort][1] as Port;
                     Port inputPort = createdNodes[edge.m_targetNode].inputContainer[edge.m_targetPort] as Port;
                     m_GraphView.AddElement(outputPort.ConnectTo(inputPort));

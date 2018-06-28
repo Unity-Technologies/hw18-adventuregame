@@ -295,7 +295,7 @@ namespace UnityEditor.AdventureGame
 
         public bool LoadGraphData()
         {
-            if (m_GameLogicData.m_graphNodes.Count == 0)
+            if (m_GameLogicData == null || m_GameLogicData.m_graphNodes.Count == 0)
             {
                 return false;
             }
