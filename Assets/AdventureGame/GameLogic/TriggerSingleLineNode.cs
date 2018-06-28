@@ -60,7 +60,7 @@ namespace UnityEngine.AdventureGame
             {
                 data = JsonUtility.FromJson<SingleLineNodeData>(typeData);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 data = new SingleLineNodeData();
             }
